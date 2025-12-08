@@ -1,12 +1,9 @@
 "use client";
-
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LoginEmailAndPassword } from "@/server/firebase_auth";
-//import { Loader } from "../../helper/Loading.js";
-//import { ErrorMessage } from "../../helper/ErrorMessage.js";
-//import { useSignInMutation } from "../../state/api";
+import ErrorText from "@/components/errorText";
 
 export default function Login() {
   const router = useRouter();
@@ -14,6 +11,7 @@ export default function Login() {
   const password = useRef();
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const loginTrigger = async () => {
     const emailString = email.current?.value;
@@ -30,27 +28,27 @@ export default function Login() {
     }
 
     try {
-      const info = await LoginEmailAndPassword({
+      setLoading(true);
+
+      await LoginEmailAndPassword({
         email: emailString,
         password: passwordString,
       });
 
-      //LocalStorage / cookie
-      localStorage.setItem("token", info?.token);
-
       router.push("/");
     } catch (e) {
-      console.log(e);
       setError(e?.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <main className="bg-background px-5 py-4 rounded shadow  md:w-7/10 w-[90%] lg:w-[35%]  mx-auto ">
-      <h1 className="text-3xl my-5 text-center font-roboto">Quich</h1>
+      <h1 className="text-3xl my-5 text-center font-roboto">QuichShop</h1>
       <form className=" px-3 py-2 space-y-4 min-h-[10vh]  ">
         <h1 className="text-2xl text-center">Login to your account</h1>
-        {/*error && <ErrorMessage>{error} </ErrorMessage>*/}
+        {error && <ErrorText>{error} </ErrorText>}
 
         <label className="*:block  block">
           <span className="text-xl">Email</span>
@@ -75,23 +73,22 @@ export default function Login() {
         <button
           type="button"
           onClick={loginTrigger}
-          className="block bg-teal-700 hover:bg-teal-900 transition text-white w-full font-oswald tracking-wide px-3 py-1 rounded shadow"
+          className="block bg-teal-700
+           hover:bg-teal-900 transition
+          text-white w-full font-oswald 
+           tracking-wide px-3 py-1 rounded shadow"
         >
-          Submit
+          {loading ? "..." : "Submit"}
         </button>
       </form>
 
-      <p className="text-center mt-4 text-blue-500 text-xs md:text-xl">
-        <Link href="/signup">Don&#39;t have an account... Sign Up now</Link>
+      <p className="text-center mt-4 text-blue-500 text-1">
+        <Link href="/signup">Don&#39;t have an account? Sign Up now</Link>
       </p>
       <div className="md:mt-3 mx-auto space-y-2 w-fit *:block">
-        <p className="text-center md:text-xl text-xs">Forgot password?</p>
-        <button
-          onClick={() => router.push("/forgotpassword")}
-          className="block bg-teal-900 text-xs md:text-xl text-white px-3 py-1 rounded shadow"
-        >
-          Request Password Reset Link
-        </button>
+        <p className="text-center mt-4 text-blue-500 text-1">
+          <Link href="/forgotpassword">Forgot password?</Link>
+        </p>
       </div>
     </main>
   );

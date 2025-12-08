@@ -10,19 +10,22 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { createSessionCookies } from "./session/createSessionCookies";
 
 export async function LoginEmailAndPassword({ email, password }) {
   try {
     const user = await signInWithEmailAndPassword(auth, email, password);
 
-    //if (!user.user?.emailVerified) {
-    //  throw new Error("Email not Verified yet!");
-    // }
-
     const tokenStr = await user.user.getIdToken(true);
+
+    //Save to LocalStorage/Cookies
+    const c = await createSessionCookies({ idToken: tokenStr });
+
+    console.log(c);
+
     return {
       token: tokenStr,
-      emailVerified: user.user?.emailVerified,
+      //  emailVerified: user.user?.emailVerified,
     };
   } catch (err) {
     if (err?.code?.includes("auth")) {
@@ -42,30 +45,25 @@ export async function SignupEmailAndPassword({ email, password }) {
 
     const user = await createUserWithEmailAndPassword(auth, email, password);
 
-    /*
-    await updateProfile(user.user, {
-      displayName: ,
-    });
-*/
-
     //Retrieve Token
     const token = await user.user.getIdToken(true);
+
+    //Save to LocalStorage/Cookies
+    await createSessionCookies({ idToken: token });
 
     /*
     const actionCode = {
       url: `${
-        process.env.NODE_ENV === "development"
+        process.env. === "development"
           ? "http://localhost:3000/auth"
           : "https://spacebiz.vercel.app/auth"
       }/verifyEmail?email=${email}`,
       handleCodeInApp: false,
-    };
-*/
-    //Redirect to verify-email;
+    };*/
 
     // await sendEmailVerification(user.user, actionCode);
 
-    return { token };
+    return { isSuccess: true };
   } catch (err) {
     if (err?.code?.includes("auth")) {
       let message = err.code.split("/")[1];

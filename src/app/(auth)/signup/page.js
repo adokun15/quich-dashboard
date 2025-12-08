@@ -1,9 +1,11 @@
 "use client";
+
 //import { ErrorMessage } from "../../helper/ErrorMessage.js";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SignupEmailAndPassword } from "@/server/firebase_auth";
+import ErrorText from "@/components/errorText";
 //import { useSignUpMutation } from "../../state/api";
 //import { Loader } from "../../helper/Loading.js";
 
@@ -15,6 +17,7 @@ export default function SignUp() {
   //const username = useRef();
   //Auth Signup Error;
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   //linking result to verifyEmail-->
   //const [trigger, { isLoading }] = useSignUpMutation({
@@ -46,31 +49,35 @@ export default function SignUp() {
     }
 
     try {
-      const info = await SignupEmailAndPassword({
+      setLoading(true);
+      await SignupEmailAndPassword({
         email: email.current?.value,
         password: password.current?.value,
         // name: username.current.value,
       });
 
       //LocalStorage / cookie
-      localStorage.setItem("token", info);
+      // localStorage.setItem("token", info);
 
       //redirect to Onboard
       router.push("/");
     } catch (err) {
       console.log(err);
       setError(err?.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <main className="bg-background md:px-5 px-2 py-4 rounded shadow shadow-slate-400 md:w-7/10 w-[90%] lg:w-[35%]  mx-auto ">
       <h1 className="text-3xl md:my-1 text-center tracking-wider font-roboto">
-        Spacebiz
+        QuichShop
       </h1>
-      <form className=" px-3 py-2 space-y-4 min-h-[10vh]  ">
-        <h1 className="text-2xl text-center">Join Quich Today</h1>
 
-        {/*error && <ErrorMessage>{error} </ErrorMessage>*/}
+      <form className=" px-3 py-2 space-y-4 min-h-[10vh]  ">
+        <h1 className="text-2xl text-center">Create an account today</h1>
+
+        {error && <ErrorText>{error} </ErrorText>}
 
         {/*<label className="*:block  block">
           <span className="text-xl">Name</span>
@@ -102,7 +109,7 @@ export default function SignUp() {
             type="password"
           />
         </label>
-
+        {/*
         <div className=" *:px-1 mt-5">
           <div className="space-x-2">
             <input type="checkbox" />
@@ -117,7 +124,7 @@ export default function SignUp() {
           <div className="space-x-2">
             <input type="checkbox" />
             <span>
-              I have read the {/* Redirect to Quich.shop/privacy*/}
+              I have read the
               <Link href="/privacy" className="underline">
                 Privacy and Policy
               </Link>{" "}
@@ -125,19 +132,20 @@ export default function SignUp() {
             </span>
           </div>
         </div>
+        */}
+
         <button
           type="button"
           onClick={signUptrigger}
-          className="block bg-teal-700 hover:bg-teal-900 transition text-white w-full font-oswald tracking-wide px-3 py-1 rounded shadow"
+          className="block bg-teal-700 hover:bg-teal-900 transition text-white
+           w-full font-oswald tracking-wide px-3 py-1 rounded shadow"
         >
-          Submit
+          {loading ? "..." : "Submit"}
         </button>
       </form>
 
-      <p className="text-center mt-2 text-blue-500 text-xs md:text-xl">
-        <Link href="/login">
-          Have an account already. Kindly click here to login.
-        </Link>
+      <p className="text-center mt-2 text-blue-500 text-xs ">
+        <Link href="/login">Login Here</Link>
       </p>
     </main>
   );

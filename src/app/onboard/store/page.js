@@ -1,4 +1,13 @@
 //2: Collect Store Information Here;
 export default function StoreCreation() {
-  return <p>Store Creation!</p>;
+  return (
+    <main>
+      <p>Logo</p>
+      <p>Organisation Name</p>
+      <p>Organisation Description</p>
+      <p>Category section</p>
+      <p>Brand Color</p>
+      <p>Add Community link!</p>
+    </main>
+  );
 }
