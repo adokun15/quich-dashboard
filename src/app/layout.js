@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnchange
         >
-          <div className="">{children}</div>
+          <div className="relative">{children}</div>
         </ThemeProvider>
       </body>
     </html>

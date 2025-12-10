@@ -1,7 +1,7 @@
 import Card from "@/components/card";
 import NavigateDashborad from "@/components/NavigateDashboard";
 import { getProducts } from "@/server/product/GetProducts";
-
+import Link from "next/link";
 //Product list Page:
 export default async function ProductsPage() {
   const products = await getProducts("store_id");
@@ -11,7 +11,7 @@ export default async function ProductsPage() {
     return (
       <main>
         <NavigateDashborad />
-        <p>{products?.message}</p>
+        <p className='text-center'>{products?.message}</p>
       </main>
     );
   }
@@ -22,7 +22,9 @@ export default async function ProductsPage() {
       <main className="max-w-3xl space-y-6 py-1 mx-auto min-h-screen">
         <div className="flex gap-2">
           <input className="" placeholder="Search product by name" />
-          <button className="text-nowrap">+ Add</button>
+          <button className="text-nowrap">
+            <Link href="/products/new">+ Add</Link>
+          </button>
         </div>
         <Card className="ring-highlight ring-2 ring-offset-1 py-1 rounded-full px-0">
           <div className="px-4  py-2 flex items-center justify-between">
@@ -31,7 +33,7 @@ export default async function ProductsPage() {
             </div>
 
             <div className="flex gap-3">
-              <p>Soldout?</p>
+              <p>Mark as Soldout</p>
               <p>Action</p>
             </div>
           </div>
@@ -39,7 +41,7 @@ export default async function ProductsPage() {
 
         <Card className="px-0">
           <div className="divide-y-2">
-            {products &&
+            {/*products &&
               products?.map((product) => (
                 <div
                   className="px-4  py-2 flex items-center justify-between"
@@ -55,7 +57,7 @@ export default async function ProductsPage() {
                     <p>Edit</p>
                   </div>
                 </div>
-              ))}
+              ))*/}
           </div>
         </Card>
 
