@@ -30,10 +30,15 @@ export default function Login() {
     try {
       setLoading(true);
 
-      await LoginEmailAndPassword({
+      const t = await LoginEmailAndPassword({
         email: emailString,
         password: passwordString,
       });
+
+      if (t?.message) {
+        setError(t?.message);
+        return;
+      }
 
       router.push("/");
     } catch (e) {

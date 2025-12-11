@@ -50,12 +50,16 @@ export default function SignUp() {
 
     try {
       setLoading(true);
-      await SignupEmailAndPassword({
+      const t = await SignupEmailAndPassword({
         email: email.current?.value,
         password: password.current?.value,
         // name: username.current.value,
       });
 
+      if (t?.message) {
+        setError(t?.message);
+        return;
+      }
       //LocalStorage / cookie
       // localStorage.setItem("token", info);
 
@@ -67,7 +71,7 @@ export default function SignUp() {
       setLoading(false);
     }
   };
-  
+
   return (
     <main className="bg-background md:px-5 px-2 py-4 rounded shadow shadow-slate-400 md:w-7/10 w-[90%] lg:w-[35%]  mx-auto ">
       <h1 className="text-3xl md:my-1 text-center tracking-wider font-roboto">

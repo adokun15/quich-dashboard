@@ -40,6 +40,6 @@ export const createSessionCookies = async ({ idToken }) => {
     return { isSuccess: true };
   } catch (error) {
     //Status, StatusCode, message
-    throw new Error(error?.message);
+    return {message: error?.message}
   }
 };
