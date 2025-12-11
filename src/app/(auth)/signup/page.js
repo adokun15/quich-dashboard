@@ -62,12 +62,12 @@ export default function SignUp() {
       //redirect to Onboard
       router.push("/");
     } catch (err) {
-      console.log(err);
       setError(err?.message);
     } finally {
       setLoading(false);
     }
   };
+  
   return (
     <main className="bg-background md:px-5 px-2 py-4 rounded shadow shadow-slate-400 md:w-7/10 w-[90%] lg:w-[35%]  mx-auto ">
       <h1 className="text-3xl md:my-1 text-center tracking-wider font-roboto">

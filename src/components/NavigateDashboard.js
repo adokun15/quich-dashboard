@@ -36,7 +36,6 @@ export default function NavigateDashborad() {
       </nav>
 
       <SpeedDial/>
-      {/* Contact Support | Feature Request | Report an Issue*/}
     </main>
   );
 }
