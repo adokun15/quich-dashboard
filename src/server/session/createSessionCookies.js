@@ -24,11 +24,11 @@ export const createSessionCookies = async ({ idToken }) => {
       }
     );
 
-    if (!cookie.ok) {
-      throw new Error("Error: Could not authenticate!");
-    }
-
     const c = await cookie.json();
+
+    if (c?.message && c?.statusCode) {
+      throw new Error(c?.message);
+    }
 
     const options = {
       maxAge: expiresIn,
@@ -40,6 +40,6 @@ export const createSessionCookies = async ({ idToken }) => {
     return { isSuccess: true };
   } catch (error) {
     //Status, StatusCode, message
-    return {message: error?.message}
+    throw new Error(error?.message);
   }
 };

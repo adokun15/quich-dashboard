@@ -21,7 +21,7 @@ export async function VerifyUserSession(sessionCookie) {
 
     return d?.data || null;
   } catch (error) {
-    console.log(error);
+    // console.log(error?.message);
     return {
       error: true,
       message: error?.message,

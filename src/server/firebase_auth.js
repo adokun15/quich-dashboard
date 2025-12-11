@@ -19,22 +19,28 @@ export async function LoginEmailAndPassword({ email, password }) {
     const tokenStr = await user.user.getIdToken(true);
 
     //Save to LocalStorage/Cookies
-    const c = await createSessionCookies({ idToken: tokenStr });
-
-    console.log(c);
+    await createSessionCookies({ idToken: tokenStr });
 
     return {
       token: tokenStr,
       //  emailVerified: user.user?.emailVerified,
     };
   } catch (err) {
+    console.log(err?.message);
+
     if (err?.code?.includes("auth")) {
       let message = err.code.split("/")[1];
-      throw new Error(message.split("-").join(" ")?.toUpperCase());
+      return {
+        error: true,
+        message: message.split("-").join(" ")?.toUpperCase(),
+      };
     } else if (err?.code?.includes("unavailable")) {
-      throw new Error("Poor Internet Detected!");
+      return { error: true, message: "Poor Internet Detected!" };
     } else {
-      throw new Error(err?.message || "Something went wrong. Try again later!");
+      return {
+        error: true,
+        message: err?.message || "Something went wrong. Try again later!",
+      };
     }
   }
 }
@@ -65,13 +71,21 @@ export async function SignupEmailAndPassword({ email, password }) {
 
     return { isSuccess: true };
   } catch (err) {
+    console.log(err?.message);
+
     if (err?.code?.includes("auth")) {
       let message = err.code.split("/")[1];
-      throw new Error(message.split("-").join(" ")?.toUpperCase());
+      return {
+        error: true,
+        message: message.split("-").join(" ")?.toUpperCase(),
+      };
     } else if (err?.code?.includes("unavailable")) {
-      throw new Error("Poor Internet Detected!");
+      return { error: true, message: "Poor Internet Detected!" };
     } else {
-      throw new Error(err?.message || "Something went wrong. Try again later!");
+      return {
+        error: true,
+        message: err?.message || "Something went wrong. Try again later!",
+      };
     }
   }
 }
