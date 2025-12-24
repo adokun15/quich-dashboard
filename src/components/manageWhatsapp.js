@@ -14,12 +14,13 @@ import { Sheet, SheetContent } from "./ui/sheet";
 import { useEffect, useState } from "react";
 import Card from "./card";
 import ErrorText from "./errorText";
-import { useSearchParams } from "next/navigation";
+//import { useSearchParams } from "next/navigation";
 
 export default function ManageWhatsapp({ store_url }) {
-  const store = useSearchParams();
+  //const store = useSearchParams();
 
-  const link = store.get("store") || store_url || null;
+  //const link = store.get("store") || store_url || null;
+  const link = store_url || null;
 
   //const [sheetOpen, triggerSheet] = useState(false);
 
