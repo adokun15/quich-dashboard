@@ -23,7 +23,7 @@ export const metadata = {
 };
 
 //Dynamic page load: Login / Homepage;
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, modals }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -36,6 +36,7 @@ export default function RootLayout({ children }) {
           disableTransitionOnchange
         >
           <div className="relative ">{children}</div>
+          <div>{modals}</div>
         </ThemeProvider>
       </body>
     </html>

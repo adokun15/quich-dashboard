@@ -1,8 +1,19 @@
+"use client";
 import Card from "@/components/card";
 import NavigateDashborad from "@/components/NavigateDashboard";
 import { Select } from "@/components/select";
 import { ToggleButton } from "@/components/ToggleButton";
 import Link from "next/link";
+
+/*
+import { useLinkStatus } from 'next/link'
+function Hint() {
+  const { pending } = useLinkStatus()
+  return (
+    <span aria-hidden className={`link-hint ${pending ? 'is-pending' : ''}`} />
+  )
+}
+ */
 
 export default function SettingsPage() {
   return (
@@ -20,16 +31,15 @@ export default function SettingsPage() {
             <input className="w-fit" type="checkbox" />
           </div>
 
-          <div>
-            <p>Receive push Notification</p>
-
-            <article className="flex gap-2 ml-2">
+          <div className="space-y-3">
+            <p className="text-muted">Receive push Notification</p>
+            <article className="flex justify-between ml-2">
               <p>New Orders</p>
-              <input className="w-fit" type="checkbox" />
+              <ToggleButton />
             </article>
-            <article className="flex gap-2 ml-2">
+            <article className="flex justify-between ml-2">
               <p>New Referrals</p>
-              <input className="w-fit" type="checkbox" />
+              <ToggleButton />
             </article>
           </div>
 
@@ -45,26 +55,36 @@ export default function SettingsPage() {
           </div>
         </Card>
 
-        <Card className="">
+        <Card className="space-y-4">
           <h2 className="text-2xl mb-4 ">Manage Store</h2>
 
-          <div>
-            <p>Manually disable store</p>
-            <p className="text-muted">
+          <div className="divide-2">
+            <article className="flex items-center  justify-between">
+              <p className=" font-medium">Shop Visibilty</p>
+              <ToggleButton />
+            </article>
+
+            <p className="text-muted font-normal">
               Although the link will still be active, but your store cannot take
               new orders
             </p>
-            <article className="flex justify-between">
-              <p>Shop Visibilty</p>
-              <ToggleButton />
-            </article>
           </div>
 
-          <div>
-            <p>Whatsapp Contact</p>
-            <p>0812350583344 (verified)</p>
-            <button>Change Number</button>
+          <div className="divide-2">
+            <article className="flex items-center  justify-between">
+              <p className=" font-medium">Store Whatsapp Contact</p>
+              <Link
+                href="/settings/verify_phone"
+                className="underline text-primary"
+              >
+                Change Number
+              </Link>
+            </article>
+
+            <p className="text-muted font-normal">0812350583344 (verified)</p>
           </div>
+
+          <div></div>
 
           {/* <div>
             <p>Allow store be display in certain region</p>
@@ -89,13 +109,36 @@ export default function SettingsPage() {
 
         <Card>
           <h2>Theme</h2>
-          <Select />
+          <Select
+            defaultValue=""
+            cn={() => {}}
+            items={[
+              {
+                name: "System",
+                value: "system",
+              },
+              {
+                name: "Light",
+                value: "light",
+              },
+              {
+                name: "Dark",
+                value: "dark",
+              },
+            ]}
+          />
         </Card>
 
         <Card>
           <p>Delete Account Permanently</p>
           <button className="bg-danger border-0 w-fit px-8">Delete</button>
         </Card>
+
+        <div className="**:block text-primary text-xl space-y-2">
+          <Link href="#">Privacy Policy</Link>
+          <Link href="#">Terms and Conditions</Link>
+          <Link href="#">About us</Link>
+        </div>
       </main>
     </>
   );

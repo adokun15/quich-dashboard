@@ -135,7 +135,15 @@ export default async function Home() {
               how your product works to your customer
             </p>
 
-            <input type="file" />
+            <input
+              type="file"
+              className="file:mr-4 file:rounded-full 
+              file:border-0 file:bg-background file:px-4 
+              file:py-2 file:text-sm file:font-semibold 
+              file:text-primary hover:file:bg-background/70 
+              dark:file:bg-violet-600 dark:file:text-violet-100 
+              dark:hover:file:bg-violet-500 ..."
+            />
             <button>Save Upload</button>
           </Card>
 
