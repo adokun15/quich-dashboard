@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/utils/theme-provider";
 import Link from "next/link";
 import Popover from "@/components/popover";
 import Image from "next/image";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +35,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnchange
         >
-          <div className="relative">{children}</div>
+          <div className="relative ">{children}</div>
         </ThemeProvider>
       </body>
     </html>
