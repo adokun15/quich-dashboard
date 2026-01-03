@@ -35,7 +35,7 @@ export default function RootLayout({ children, modals }) {
           enableSystem
           disableTransitionOnchange
         >
-          <div className="relative ">{children}</div>
+          <div className="relative bg-primary900 min-h-screen">{children}</div>
           <div>{modals}</div>
         </ThemeProvider>
       </body>

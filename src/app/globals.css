@@ -4,14 +4,23 @@
 /* Color */
 --background: hsl(117, 80%, 99%);
 --foreground: #171717;
+--primary: hsl(117, 75%, 30%);
 
+
+/*
 --card1: hsl(117, 80%, 95%);  
 --card2: hsl(117, 75%, 90%);  
-
---primary: hsl(117, 75%, 30%);
 --primary900: hsl(117, 75%, 90%);
 --primary800: hsl(117, 75%, 85%);
 --primary700: hsl(117, 75%, 80%);
+*/
+--card1: hsl(0, 0%, 99%);  
+--card2: hsl(0, 0%, 99%);  
+--primary900: hsl(117, 75%, 90%);
+--primary800: hsl(117, 75%, 85%);
+
+/* Card */
+--primary700: hsl(0, 0%, 99%);
 
 --secondary: hsl(57, 50%, 10%);
 
@@ -193,7 +202,7 @@ textarea{
 button{
   font: bold var(--text3) / 1em var(--font-sans);
   background-color: var(--primary); 
-  color: var(--color-text);
+  color: white;
   padding: var(--spacing2);
   border: 2px solid var(--border);  
   border-radius: 24px;

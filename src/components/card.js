@@ -1,7 +1,7 @@
 export default function Card({ className, children }) {
   return (
     <div
-      className={`shadow-md bg-card2 py-4 px-6 rounded-2xl dark: ${className}`}
+      className={`${className} shadow-md bg-primary800 py-4 px-6 rounded-2xl `}
     >
       {children}
     </div>

@@ -5,8 +5,6 @@ import NavigateDashborad from "@/components/NavigateDashboard";
 export default function Billing() {
   return (
     <>
-      <NavigateDashborad />
-
       <main className="max-w-3xl space-y-6 py-1 mx-auto min-h-screen">
         <div className="space-y-6">
           <article>

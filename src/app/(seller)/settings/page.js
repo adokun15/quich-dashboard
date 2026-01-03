@@ -18,8 +18,6 @@ function Hint() {
 export default function SettingsPage() {
   return (
     <>
-      <NavigateDashborad />
-
       <main className="max-w-3xl  space-y-6 py-1 pb-4 mx-auto min-h-screen dark:bg-black">
         <Card className=" space-y-4">
           <h2 className="text-2xl mb-4 ">Notification & Community</h2>

@@ -10,13 +10,13 @@ export default function Dropdown() {
     <main className="space-y-2 group/item relative">
       <button
         onClick={() => setControlledDropdown((p) => !p)}
-        className="inline-flex 
+        className=" text-white inline-flex 
  items-center justify-center peer box-border
-  border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-background/50 
-shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-1 focus:outline-none"
+  border border-transparent hover:bg-slate-700 focus:ring-4 focus:ring-background/50 
+shadow-xs font-medium leading-5 bg-muted  rounded-base text-sm px-4 py-1 focus:outline-none"
         type="button"
       >
-        Amos
+        My Account
       </button>
 
       <div
