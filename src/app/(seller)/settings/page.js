@@ -21,7 +21,6 @@ export default function SettingsPage() {
       <main className="max-w-3xl  space-y-6 py-1 pb-4 mx-auto min-h-screen dark:bg-black">
         <Card className=" space-y-4">
           <h2 className="text-2xl mb-4 ">Notification & Community</h2>
-
           <div>
             <p>
               Receive newsletters mail, We send weekly tips and we do not spam!
@@ -35,15 +34,18 @@ export default function SettingsPage() {
               <p>New Orders</p>
               <ToggleButton />
             </article>
-            <article className="flex justify-between ml-2">
-              <p>New Referrals</p>
-              <ToggleButton />
-            </article>
+            {/*
+          <article className="flex justify-between ml-2">
+            <p>New Referrals</p>
+            <ToggleButton />
+          </article>
+            */}
           </div>
 
           <div>
-            <p>Checkout our Whatsapp channel to get our updates</p>
-
+            <p>
+              Checkout our Whatsapp channel to keep in touch and get updates
+            </p>
             <Link
               href="/whatsapp-channel-link"
               className="text-primary underline"
@@ -55,7 +57,6 @@ export default function SettingsPage() {
 
         <Card className="space-y-4">
           <h2 className="text-2xl mb-4 ">Manage Store</h2>
-
           <div className="divide-2">
             <article className="flex items-center  justify-between">
               <p className=" font-medium">Shop Visibilty</p>
@@ -64,7 +65,7 @@ export default function SettingsPage() {
 
             <p className="text-muted font-normal">
               Although the link will still be active, but your store cannot take
-              new orders
+              any orders.
             </p>
           </div>
 
@@ -80,6 +81,9 @@ export default function SettingsPage() {
             </article>
 
             <p className="text-muted font-normal">0812350583344 (verified)</p>
+            <p className="text-muted font-normal">
+              *Can only be changed once in a week*
+            </p>
           </div>
 
           <div></div>
@@ -102,7 +106,12 @@ export default function SettingsPage() {
             <p className="text-muted">Test@gmail.com</p>
           </div>
 
-          <button>Change Password</button>
+              <Link
+                href="/settings/reset_password"
+                className="underline text-primary"
+              >
+                Change Password
+              </Link>
         </Card>
 
         <Card>
