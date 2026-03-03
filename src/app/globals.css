@@ -4,40 +4,36 @@
 /* Color */
 --background: hsl(117, 80%, 99%);
 --foreground: #171717;
+
 --primary: hsl(117, 75%, 30%);
-
-
-/*
---card1: hsl(117, 80%, 95%);  
---card2: hsl(117, 75%, 90%);  
---primary900: hsl(117, 75%, 90%);
---primary800: hsl(117, 75%, 85%);
---primary700: hsl(117, 75%, 80%);
-*/
---card1: hsl(0, 0%, 99%);  
---card2: hsl(0, 0%, 99%);  
---primary900: hsl(117, 75%, 90%);
---primary800: hsl(117, 75%, 85%);
-
-/* Card */
---primary700: hsl(0, 0%, 99%);
+--primarybg1: hsl(117, 75%, 90%);
+--primarybg2: hsl(117, 75%, 85%);
 
 --secondary: hsl(57, 50%, 10%);
+--secondarybg1: hsl(117, 75%, 90%);
+--secondarybg2: hsl(117, 75%, 85%);
 
---tertiary: hsl(57, 50%, 94%);  
 --accent: hsl(357, 80%, 20%);  
+--accentbg: hsl(357, 80%, 90%);  
 
 --text: hsl(150, 3%, 20%);
---text-muted:hsl(150, 3%, 45%);;
+--text-muted:hsl(150, 3%, 45%);
 
-
---border: hsl(117, 75%, 5%);;
+--border: hsl(117, 75%, 5%);
 --border-muted: hsl(149 100% 5%);
 
+--ring: hsl(117, 75%, 5%);
+--ring-muted: hsl(149 100% 5%);
+
+/*Text*/
+--input: hsl(117, 75%, 5%);
+--inputbg: hsl(117, 75%, 5%);
+
 --danger: hsl(8 68% 66%);
+--dangerbg: hsl(8 68% 66%);
+
 --warning: hsl(52 59% 44%);
---success: hsl(152 45% 49%);
---info: hsl(217 80% 68%);
+--warninbg: hsl(8 68% 66%);
 
 /* Spacing */
 --spacing1: 4px;
@@ -64,8 +60,12 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-geist-sans);
+  /*--font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono)
+ */
+
+  --font-sans: var(--font-open-sans);
+  --font-mono: var(--font-roboto-mono)
  
   
 --color-card1: var(--card1);  
@@ -115,38 +115,30 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --card1: hsl(117, 80%, 5%);  
-    --card2: hsl(117, 75%, 5%);
 
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --background: #0a0a0a;
+  --foreground: #ededed;
 
---card1: hsl(117, 80%, 95%);  
---card2: hsl(117, 75%, 90%);  
+  --card1: hsl(120, 17%, 5%);  
+  --card2: hsl(117, 75%, 90%);  
 
---primary: hsl(117, 75%, 30%);
---secondary: hsl(57, 50%, 10%);
+  --primary: hsl(117, 75%, 30%);
+  --secondary: hsl(57, 50%, 10%);
 
---tertiary: hsl(57, 50%, 94%);  
---accent: hsl(357, 80%, 20%);  
+  --tertiary: hsl(57, 50%, 94%);  
+  --accent: hsl(357, 80%, 20%);  
 
---text: hsl(150, 3%, 20%);
---text-muted:hsl(117, 75%, 10%);;
+  --text: hsl(150, 3%, 20%);
+  --text-muted:hsl(117, 75%, 10%);;
 
 
---border: hsl(117, 75%, 5%);;
---border-muted: hsl(149 100% 5%);
+  --border: hsl(117, 75%, 5%);;
+  --border-muted: hsl(149 100% 5%);
 
---danger: hsl(8 68% 66%);
---warning: hsl(52 59% 44%);
---success: hsl(152 45% 49%);
---info: hsl(217 80% 68%);
-
-/*    --color-primary: hsl(57, 50%, 10%);
-    --color-secondary: hsl(57, 50%, 90%);
-    --color-tertiary: hsl(117, 80%, 80%);
-    --color-accent: hsl(357, 80%, 80%);  
-  */
+  --danger: hsl(8 68% 66%);
+  --warning: hsl(52 59% 44%);
+  --success: hsl(152 45% 49%);
+  --info: hsl(217 80% 68%);
 }
 }
 

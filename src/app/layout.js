@@ -1,19 +1,15 @@
 import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Open_Sans, Roboto_Mono } from "next/font/google";
 import { ThemeProvider } from "@/utils/theme-provider";
-import Link from "next/link";
-import Popover from "@/components/popover";
-import Image from "next/image";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import Sidebar from "@/components/Sidebar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const OpenSans = Geist({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const RobotoMono = Geist_Mono({
+  variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 
@@ -27,7 +23,7 @@ export default function RootLayout({ children, modals }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}
+        className={`${OpenSans.variable} ${RobotoMono.variable} antialiased bg-background`}
       >
         <ThemeProvider
           attribute="class"

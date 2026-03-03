@@ -11,9 +11,7 @@ import React, { useRef, useState } from "react";
 //import { toast } from "sonner";
 
 const AddProduct = ({ uid, link, bank, phone, modal, controlModal }) => {
- 
     const token = localStorage.getItem("token");
-
     /*
     const { role } = useVerifyUserQuery(
         { token },
@@ -211,3 +209,121 @@ const AddProduct = ({ uid, link, bank, phone, modal, controlModal }) => {
 
 export default AddProduct;
 
+//Image
+/*
+import { useState } from "react";
+import { useAddSingleProductImageMutation } from "@/state/endpoints/products.js";
+import { useParams } from "react-router-dom";
+import placeImg from "@/asset/product-demo.png";
+import { Button } from "@/components/ui/button.jsx";
+import { Loader } from "@/helper/Loading.jsx";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog.jsx";
+export function AddProductImage({ uid, link, imgUrl, modal, controlModal }) {
+  const { inventoryId } = useParams();
+
+  //Img Preview
+  const [previewImg, setPreviewImage] = useState("");
+  //Img Large Error : > 5mb
+  const [imgError, setImageError] = useState("");
+
+  //Current File
+  const [imgFile, setImgFile] = useState(null);
+
+  //Upload
+  const [uploadProductImg, { isLoading: uploading }] =
+    useAddSingleProductImageMutation({ fixedCacheKey: "edit-product-image" });
+
+  //Listener for Change
+  const handleImgChange = (e) => {
+    const imgFile = e.target.files[0];
+
+    const size = (imgFile.size / (1024 * 1024)).toFixed(2);
+
+    setPreviewImage(URL.createObjectURL(imgFile));
+
+    if (size > 50) {
+      setImageError("Image is too large. Pick Image less than 50mb");
+      return;
+    }
+
+    setImgFile(imgFile);
+    setImageError("");
+  };
+
+  //Trigger for Upload
+  const handleUpload = async () => {
+    if (!uid || !link) {
+      setImageError("Something went wrong. You seem to be logged out already!");
+      return;
+    }
+
+    if (imgError) return;
+
+    await uploadProductImg({
+      uid,
+      file: imgFile,
+      link,
+      productId: inventoryId,
+    })
+      .unwrap()
+      .then(controlModal)
+      .catch((err) => {
+        setImageError(err?.message || err);
+      });
+  };
+  //px-5 py-4 rounded shadow  shadow-slate-400 space-y-4 lg:w-[35%]  mx-auto
+  //   bg-white w-full min-h-full overflow-y-auto md:h-fit block md:w-[55%] md:mx-auto md:mt-[5vh]
+  return (
+    <Dialog open={modal} onOpenChange={controlModal}>
+      <DialogContent classNmae="max-h-[80vh] overflow-auto">
+        <form>
+          <div className="space-y-3">
+            <DialogTitle asChild>
+              <h1 className="grow md:text-3xl text-center text-2xl font-sans_serif">
+                Add product Image
+              </h1>
+            </DialogTitle>
+          </div>
+          <p className="md:text-[1.2rem] text-[0.9rem] text-center font-roboto">
+            Let Your customer know what you are selling
+          </p>
+          <p className="text-xs text-red-600">{imgError}</p>
+          <div className="rounded overflow-hidden">
+            <img
+              src={previewImg || imgUrl || placeImg}
+              width={120}
+              height={120}
+              alt="product"
+            />
+          </div>
+
+          <div className="*:mr-4 flex flex-wrap  justify-between">
+            <label
+              type="button"
+              className="p-2 text-[1.2rem] md:text-[1.5rem] cursor-pointer rounded text-teal-800 bg-slate-200"
+            >
+              <input
+                accept=".png,.jpeg,.jpg,image/pngm,image/jpeg,image/jpg"
+                type="file"
+                name="logo"
+                onChange={handleImgChange}
+                className="hidden"
+              />
+              {previewImg ? "Change Image" : "Upload a new Product Image"}
+            </label>
+            {previewImg && (
+              <Button
+                type="button"
+                onClick={handleUpload}
+                clxName="bg-teal-800 text-slate-200"
+              >
+                {uploading ? <Loader /> : "Save Image"}
+              </Button>
+            )}
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+*/
