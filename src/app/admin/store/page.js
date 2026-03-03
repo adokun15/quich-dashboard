@@ -1,4 +1,3 @@
-import { getUser } from "@/server/user/GetUser";
 import NavigateDashborad from "@/components/NavigateDashboard";
 import Sidebar from "@/components/Sidebar";
 import WhatsappCommunity from "@/components/WhatsappCommunity";
@@ -7,7 +6,7 @@ import ControlHours from "@/components/ControlHours";
 import AboutVideo from "@/components/AboutVideo";
 
 export default async function Home() {
-  const user = await getUser();
+  const user = {};
 
   return (
     <>

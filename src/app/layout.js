@@ -1,11 +1,7 @@
 import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/utils/theme-provider";
-import Link from "next/link";
-import Popover from "@/components/popover";
-import Image from "next/image";
+import { ThemeProvider } from "../utils/theme-provider";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,17 +13,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Dashboard | QuichShop",
-  description: "Manage your store for your customers.",
-};
-
 //Dynamic page load: Login / Homepage;
 export default function RootLayout({ children, modals }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -35,7 +26,7 @@ export default function RootLayout({ children, modals }) {
           enableSystem
           disableTransitionOnchange
         >
-          <div className="relative bg-primary900 min-h-screen">{children}</div>
+          <div className="relative  min-h-screen">{children}</div>
           <div>{modals}</div>
         </ThemeProvider>
       </body>
