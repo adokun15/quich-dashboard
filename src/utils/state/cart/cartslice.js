@@ -5,8 +5,38 @@ import { createSlice } from "@reduxjs/toolkit";
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    totalPrice: 1000,
+    totalPrice: 60000,
     cart: [
+      {
+        productName: "Moimoi",
+        qty: 5,
+        //role,
+        price: 200,
+        productId: "id-1",
+        //stock: productQty,
+        total: 1000,
+        productImage: null,
+      },
+      {
+        productName: "Moimoi",
+        qty: 5,
+        //role,
+        price: 200,
+        productId: "id-1",
+        //stock: productQty,
+        total: 1000,
+        productImage: null,
+      },
+      {
+        productName: "Moimoi",
+        qty: 5,
+        //role,
+        price: 200,
+        productId: "id-1",
+        //stock: productQty,
+        total: 1000,
+        productImage: null,
+      },
       {
         productName: "Moimoi",
         qty: 5,

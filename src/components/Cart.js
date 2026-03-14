@@ -23,8 +23,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "./Modal";
 
-export default function Cart({ close, modal }) {
+export default function Cart({ trigger: close, modal }) {
   const { store_slug } = useParams();
 
   //const { data: cart } = useGetCartQuery(store_slug, { skip: !storeLink });
@@ -47,12 +48,9 @@ export default function Cart({ close, modal }) {
   };
 
   //Close modal if cart is empty
-  useEffect(() => {
-    if (cart?.length === 0) close();
-  }, [cart, close]);
 
   return (
-    <>
+    <Modal show={modal}>
       <div className="space-y-3 flex items-center">
         <h1 className="grow md:text-3xl text-center text-3xl font-sans_serif">
           Cart
@@ -102,8 +100,8 @@ export default function Cart({ close, modal }) {
             NGN{cart?.totalPrice}
           </button>
         </Link>
-      </div>{" "}
-    </>
+      </div>
+    </Modal>
   );
 }
 

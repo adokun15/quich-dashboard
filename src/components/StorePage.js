@@ -9,6 +9,7 @@ import StoreProfile from "./StoreProfile";
 //import { SingleItemDisplay } from "./SingleProductItem";
 import Cart from "./Cart";
 import SingleItemDisplay from "./SingleProductItem";
+import { CartModalToggle } from "@/utils/state/modal/modalSlice";
 
 /*
 
@@ -33,28 +34,26 @@ import { Naira } from "@/helper/Naira.jsx";
 export default function StorePageComponent({ children }) {
   const { store_slug: storeLink } = useParams();
 
-  const [isCart, setToggle] = useState(false);
   const [itemId, setItemId] = useState(null);
-
-  //For Cart and singleItem
-  const [storeModalOpen, setModalToggle] = useState(false);
-
-  const toggleModalCart = () => {
-    setToggle(true);
-    setModalToggle((p) => !p);
-  };
-
-  const toggleModalItem = (id = null) => {
-    setToggle(false);
-    setItemId(id);
-    setModalToggle((p) => !p);
-  };
-
-  //load cart;
-  const { cart, totalPrice } = useSelector((state) => state.cart);
 
   //Dispatch function
   const dispatch = useDispatch();
+
+  const toggleModalCart = () => {
+    dispatch(CartModalToggle());
+  };
+
+  const toggleModalItem = (id = null) => {
+    //  setToggle(false);
+    //setItemId(id);
+    // setModalToggle((p) => !p);
+  };
+
+  //load modal
+  const { cart_modal } = useSelector((state) => state.modal);
+
+  //load cart;
+  const { cart, totalPrice } = useSelector((state) => state.cart);
 
   //Load cart once
   useEffect(() => {
@@ -78,13 +77,14 @@ export default function StorePageComponent({ children }) {
   return (
     <main className="relative md:flex md:h-screen">
       <>
-        <SingleItemDisplay
+        {/* <SingleItemDisplay
           modal={storeModalOpen && !isCart}
           itemId={itemId}
           close={toggleModalItem}
         />
+        */}
 
-        <Cart close={toggleModalCart} modal={storeModalOpen && isCart} />
+        <Cart trigger={toggleModalCart} modal={cart_modal} />
       </>
 
       <main>{children}</main>
