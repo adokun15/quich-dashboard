@@ -23,23 +23,10 @@ export default function SettingsPage() {
           <h2 className="text-2xl mb-4 ">Notification & Community</h2>
           <div>
             <p>
-              Receive newsletters mail, We send weekly tips and we do not spam!
+              Receive promotional message on whatsapp, We send weekly tips and
+              we do not spam!
             </p>
             <input className="w-fit" type="checkbox" />
-          </div>
-
-          <div className="space-y-3">
-            <p className="text-muted">Receive push Notification</p>
-            <article className="flex justify-between ml-2">
-              <p>New Orders</p>
-              <ToggleButton />
-            </article>
-            {/*
-          <article className="flex justify-between ml-2">
-            <p>New Referrals</p>
-            <ToggleButton />
-          </article>
-            */}
           </div>
 
           <div>
@@ -62,56 +49,9 @@ export default function SettingsPage() {
               <p className=" font-medium">Shop Visibilty</p>
               <ToggleButton />
             </article>
-
-            <p className="text-muted font-normal">
-              Although the link will still be active, but your store cannot take
-              any orders.
-            </p>
           </div>
 
-          <div className="divide-2">
-            <article className="flex items-center  justify-between">
-              <p className=" font-medium">Store Whatsapp Contact</p>
-              <Link
-                href="/settings/verify_phone"
-                className="underline text-primary"
-              >
-                Change Number
-              </Link>
-            </article>
-
-            <p className="text-muted font-normal">0812350583344 (verified)</p>
-            <p className="text-muted font-normal">
-              *Can only be changed once in a week*
-            </p>
-          </div>
-
-          <div></div>
-
-          {/* <div>
-            <p>Allow store be display in certain region</p>
-            <p>NationWide, Lagos</p>
-            <div>
-            <input />
-              <button>add</button>
-              </div>
-              </div>*/}
-        </Card>
-
-        <Card className="space-y-3">
-          <h2 className="text-2xl mb-4 ">Account</h2>
-
-          <div>
-            <h2>Email and Password (Active)</h2>
-            <p className="text-muted">Test@gmail.com</p>
-          </div>
-
-              <Link
-                href="/settings/reset_password"
-                className="underline text-primary"
-              >
-                Change Password
-              </Link>
+          {/*Allow store be display in certain region*/}
         </Card>
 
         <Card>

@@ -1,14 +1,9 @@
 import { ToggleButton } from "@/components/ToggleButton";
-import {
-  faChevronRight,
-  faPen,
-  faPlus,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPen, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Card from "@/components/card";
 
-const getStoreProducts = async () => {
+//Access cookies for token;
+const getCustomersData = async () => {
   try {
     // Get User Cookies first: 30mins
     const cookie = await cookies();
@@ -20,7 +15,7 @@ const getStoreProducts = async () => {
 
     //Fetch data if token exist;
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/products`,
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/customers`,
       {
         method: "GET",
         headers: {
@@ -42,9 +37,8 @@ const getStoreProducts = async () => {
     return {
       data: {
         merchant: {}, //From the token; 'name, store_name, slug_id, user_id'
-        products: [],
-        current_page: 2, // 10 - 20 ordered
-        total_products: 130,
+        customers: [],
+        total_customers: 13,
       },
     };
   } catch (e) {
@@ -52,20 +46,22 @@ const getStoreProducts = async () => {
   }
 };
 
-export default async function ProductsPage() {
-  /* if (products?.statusCode === 500) {
+export default async function CustomersPage() {
+  const customers = [];
+
+  if (customers?.statusCode === 500) {
     return (
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
         <div className="flex justify-between px-4">
           <div>
-            <h2 className="text-6">Products</h2>
+            <h2 className="text-6">customers</h2>
             <p className="text-muted text-2">
-              Manage all items and inventory on your store
+              Keep track of all your business sales.
             </p>
           </div>
           <button className="px-6">
             <FontAwesomeIcon className="mr-3" icon={faPlus} />
-            <span>Add</span>
+            <span>create</span>
           </button>
         </div>
         <div className="flex gap-2">
@@ -78,35 +74,24 @@ export default async function ProductsPage() {
           </button>
         </div>
 
-        <p className="text-center text-2xl">{products?.message}</p>
+        <p className="text-center text-2xl">{customers?.message}</p>
       </main>
     );
   }
-*/
+
   return (
     <>
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
         <div className="flex justify-between px-4">
           <div>
-            <h2 className="text-6">
-              <p>
-                Home <FontAwesomeIcon icon={faChevronRight} />
-                Products
-              </p>
-            </h2>
-            <p className="text-muted text-2">
-              Manage all items and inventory on your store
-            </p>
+            <h2 className="text-6">customers</h2>
+            <p className="text-muted text-2">Know who is buying from you</p>
           </div>
-          <button className="px-6 bg-white shadow border-none text-underline text-primary">
-            <FontAwesomeIcon className="mr-3" icon={faPlus} />
-            <span>Filter</span>
-          </button>
         </div>
 
         <article className="flex px-4 justify-between">
           <div>
-            <p className="text-3 font-medium">Add product via whatsapp </p>
+            <p className="text-3 font-medium">Total customers: 8 </p>
           </div>
 
           <div>
@@ -121,22 +106,20 @@ export default async function ProductsPage() {
           <thead className="text-xs text-gray-500 uppercase bg-gray-50 ">
             <tr className="">
               <th scope="col" className="px-6 py-3">
-                S/N
+                CustomerID
               </th>
-              <th className="px-6 py-3 text-nowrap">Product</th>
-              <th className="px-6 py-3 text-nowrap">Price</th>
-              <th className="px-6 py-3 text-nowrap">Mark as Soldout</th>
-              <th className="px-6 py-3 text-nowrap">Action</th>
+              <th className="px-6 py-3 text-nowrap">Customer Name</th>
+              <th className="px-6 py-3 text-nowrap">Customer Phone</th>
+              <th className="px-6 py-3 text-nowrap">Total Amount</th>
+              <th className="px-6 py-3 text-nowrap">Blacklist</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>1</td>
-              <td>Wiper Diaper</td>
-              <td>NGN600</td>
-              <td>
-                <ToggleButton defaultState={true} />
-              </td>
+              <td>Ahmed.</td>
+              <td>09067575746</td>
+              <td>NGN60000</td>
               <td>
                 <FontAwesomeIcon icon={faPen} />
               </td>
@@ -144,37 +127,7 @@ export default async function ProductsPage() {
           </tbody>
         </table>
 
-        <div className="divide-y-2">
-          {/*products &&
-              products?.map((product) => (
-                <div
-                  className="px-4  py-2 flex items-center justify-between"
-                  key={product?.productId}
-                >
-                  <div>
-                    <p className="text-4 font-medium">{product?.name}</p>
-                    <p className="text-2">NGN400</p>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <p>Yes</p>
-                    <p>Edit</p>
-                  </div>
-                </div>
-              ))*/}
-        </div>
-
-        <div className="flex justify-between items-center">
-          <p>
-            Total product:{" "}
-            <span className="text-xl font-semibold">3 / 190</span>
-          </p>
-
-          <div className="flex gap-x-4">
-            <button>prev</button>
-            <button>next</button>
-          </div>
-        </div>
+        <div className="divide-y-2"> </div>
       </main>
     </>
   );

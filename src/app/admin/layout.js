@@ -3,6 +3,8 @@
 import NavigateDashborad from "@/components/NavigateDashboard";
 //import Sidebar from "@/components/Sidebar";
 
+
+//Translate token -- user object
 export default function SellerLayout({ children }) {
   return (
     <>

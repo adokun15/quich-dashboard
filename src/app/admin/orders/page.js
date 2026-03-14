@@ -2,6 +2,51 @@ import { ToggleButton } from "@/components/ToggleButton";
 import { faPen, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+//Access cookies for token;
+const getCustomersData = async () => {
+  try {
+    // Get User Cookies first: 30mins
+    const cookie = await cookies();
+    const user_token = cookie?.get("quich_login_token");
+
+    if (!user_token) {
+      redirect("/");
+    }
+
+    //Fetch data if token exist;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/orders`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user_token?.value}`,
+        },
+      },
+    );
+
+    const data = await res.json();
+
+    if (!data?.status) {
+      // Prompt modal if cookie has expired
+
+      //Show modal if store name don't match!
+      return { error: data?.message, status_code: data?.status_code };
+    }
+
+    return {
+      data: {
+        merchant: {}, //From the token; 'name, store_name, slug_id, user_id'
+        orders: [],
+        current_page: 2, // 10 - 20 ordered
+        total_orders: 130,
+      },
+    };
+  } catch (e) {
+    return { error: e?.message };
+  }
+};
+
 export default async function OrdersPage() {
   const orders = [];
 
@@ -17,7 +62,7 @@ export default async function OrdersPage() {
           </div>
           <button className="px-6">
             <FontAwesomeIcon className="mr-3" icon={faPlus} />
-            <span>create</span>
+            <span>Add</span>
           </button>
         </div>
         <div className="flex gap-2">
@@ -45,24 +90,10 @@ export default async function OrdersPage() {
               Keep track of all your business sales.
             </p>
           </div>
-          <button className="px-6 bg-white shadow border-none text-underline text-primary">
-            <FontAwesomeIcon className="mr-3" icon={faPlus} />
-            <span>create</span>
-          </button>
+          <div>
+            <p className="text-3 font-medium">Filter Order </p>
+          </div>
         </div>
-
-        <article className="flex px-4 justify-between">
-          <div>
-            <p className="text-3 font-medium">Total Orders: 8 </p>
-          </div>
-
-          <div>
-            <input
-              className=" min-w-2xl rounded-full pl-2 "
-              placeholder="Search product by name"
-            />
-          </div>
-        </article>
 
         <table className="w-full  text-gray-500  text-left">
           <thead className="text-xs text-gray-500 uppercase bg-gray-50 ">
@@ -71,9 +102,9 @@ export default async function OrdersPage() {
                 OrderID
               </th>
               <th className="px-6 py-3 text-nowrap">Customer</th>
-              <th className="px-6 py-3 text-nowrap">Amt</th>
+              <th className="px-6 py-3 text-nowrap">Amount</th>
               <th className="px-6 py-3 text-nowrap">Status</th>
-              <th className="px-6 py-3 text-nowrap">Action</th>
+              <th className="px-6 py-3 text-nowrap">View order</th>
             </tr>
           </thead>
           <tbody>
@@ -81,8 +112,7 @@ export default async function OrdersPage() {
               <td>1</td>
               <td>Ahmed. 09067575746</td>
               <td>NGN6000</td>
-              <td>Confirmed</td>
-
+              <td>Pending</td>
               <td>
                 <FontAwesomeIcon icon={faPen} />
               </td>
