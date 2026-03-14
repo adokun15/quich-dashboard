@@ -7,12 +7,7 @@ import { useParams } from "react-router-dom";
 
 import ItemsListInStore from "./ItemListInStore";
 
-const getProducts = async () => {};
-
-export default function StoreProductsList({ store_slug }) {
-  //Get store products;
-  const products = [];
-
+export default function StoreProductsList({ store_slug, products }) {
   // const {
   // data: products,
   //    isLoading,

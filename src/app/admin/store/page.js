@@ -5,6 +5,12 @@ import ManageStore from "@/components/ManageStore";
 import ControlHours from "@/components/ControlHours";
 import AboutVideo from "@/components/AboutVideo";
 
+/*
+What i notice while editing?
+- max stock by a single user;
+- conditions: Cart must be more than 5k ?
+
+*/
 export default async function Home() {
   const user = {};
 

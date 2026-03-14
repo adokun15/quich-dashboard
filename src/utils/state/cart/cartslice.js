@@ -5,49 +5,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    totalPrice: 60000,
-    cart: [
-      {
-        productName: "Moimoi",
-        qty: 5,
-        //role,
-        price: 200,
-        productId: "id-1",
-        //stock: productQty,
-        total: 1000,
-        productImage: null,
-      },
-      {
-        productName: "Moimoi",
-        qty: 5,
-        //role,
-        price: 200,
-        productId: "id-1",
-        //stock: productQty,
-        total: 1000,
-        productImage: null,
-      },
-      {
-        productName: "Moimoi",
-        qty: 5,
-        //role,
-        price: 200,
-        productId: "id-1",
-        //stock: productQty,
-        total: 1000,
-        productImage: null,
-      },
-      {
-        productName: "Moimoi",
-        qty: 5,
-        //role,
-        price: 200,
-        productId: "id-1",
-        //stock: productQty,
-        total: 1000,
-        productImage: null,
-      },
-    ],
+    totalPrice: 0,
+    cart: [],
+    merchant_id: "",
+    cartId: "",
   },
   reducers: {
     getCart: (state, action) => {
@@ -55,9 +16,15 @@ export const cartSlice = createSlice({
 
       const cartInCookies = cookies.getItem(`quich_${active_store}`);
 
-      const cart = cartInCookies ? JSON.parse(cartInCookies) : state?.cart;
+      const { cart, merchant_id, cartId, totalPrice } = cartInCookies
+        ? JSON.parse(cartInCookies)
+        : {};
 
-      state.cart = cart;
+      //Initialize
+      state.cart = cart || [];
+      state.merchant_id = merchant_id || "";
+      state.cartId = cartId || "";
+      state.totalPrice = totalPrice || 0;
     },
 
     addSingleItemToCart: (state, action) => {
@@ -65,14 +32,14 @@ export const cartSlice = createSlice({
 
       //destructed Item Object
       const {
-        productName,
-        productImage,
-        qty,
+        product_name,
+        product_img,
         price,
-        merchantId,
-        productId,
+        merchant_id,
+        product_id,
+        qty,
 
-        //    role, //new
+        //   //role, //new
         //  productQty,
       } = item;
 
@@ -91,7 +58,7 @@ export const cartSlice = createSlice({
 
         //previous item INDEX
         const existingCartItemIndex = previousCartItem.cart?.findIndex(
-          (prev) => prev.productId === productId,
+          (prev) => prev.product_id === product_id,
         );
 
         //Previous Item that exist before
@@ -111,27 +78,35 @@ export const cartSlice = createSlice({
           const amt = qty * price;
           cart = [
             {
-              productName,
+              product_name,
+              product_id,
               qty,
-              role,
               price,
-              productId,
-              //stock: productQty,
               total: amt,
-              productImage,
+              product_img,
+              //role,
+              //stock: productQty,
             },
             ...previousCartItem?.cart,
           ];
         }
+
+        const totalPrice = cart?.reduce((acc, cur) => acc + cur?.total, 0);
+
+        //update State;
+        state.cart = cart;
+        state.merchant_id = merchant_id;
+        state.cartId = previousCartItem?.cartId;
+        state.totalPrice = totalPrice;
 
         //update cart:
         cookies.setItem(
           `quich_${store}`,
           JSON.stringify({
             cart,
-            merchantId,
+            merchant_id,
             cartId: previousCartItem?.cartId,
-            totalPrice: cart?.reduce((acc, cur) => acc + cur?.total, 0),
+            totalPrice,
           }),
           {
             expires: 2 * 24 * 60 * 60 * 1000,
@@ -146,34 +121,35 @@ export const cartSlice = createSlice({
         const amt = qty * price;
         cart = [
           {
-            productName,
+            product_name,
             total: amt,
             qty,
             // stock: productQty,
-            role,
+            //role,
             price,
-            productId,
-            productImage,
+            product_id,
+            product_img,
           },
         ];
 
-        //Set pre cookies
-        cookies().set(
-          `quich_${store}`,
-          JSON.stringify({
-            cart,
-            merchantId,
-            cartId: generateRandomDigit,
-            totalPrice: +qty * +price,
-          }),
-          {
-            expires: 2 * 24 * 60 * 60 * 1000,
-          },
-        );
-      }
+        const cart_data = {
+          cart,
+          merchant_id,
+          cartId: generateRandomDigit,
+          totalPrice: +qty * +price,
+        };
 
-      state.cart = cart;
-      // return {};
+        //Set pre cookies
+        cookies.setItem(`quich_${store}`, JSON.stringify(cart_data), {
+          expires: 2 * 24 * 60 * 60 * 1000,
+        });
+
+        //update State;
+        state.cart = cart_data.cart;
+        state.merchant_id = cart_data.merchant_id;
+        state.cartId = cart_data.cartId;
+        state.totalPrice = cart_data.totalPrice;
+      }
     },
 
     updateCart: (state, action) => {
@@ -191,7 +167,7 @@ export const cartSlice = createSlice({
 
       //item to be updated
       const oldItem = allCartItem.cart?.find(
-        (item) => item.productId === itemId,
+        (item) => item.product_id === itemId,
       );
 
       if (status === "ADD") {
@@ -199,9 +175,9 @@ export const cartSlice = createSlice({
         const newItems = allCartItem.cart.map((item) => {
           return {
             ...item,
-            qty: item.productId === itemId ? +item?.qty + 1 : +item.qty,
+            qty: item.product_id === itemId ? +item?.qty + 1 : +item.qty,
             total:
-              item.productId === itemId
+              item.product_id === itemId
                 ? (+item?.qty + 1) * +item.price
                 : +item.total,
           };
@@ -213,9 +189,9 @@ export const cartSlice = createSlice({
         const newItems = allCartItem.cart.map((item) => {
           return {
             ...item,
-            qty: item.productId === itemId ? +item?.qty - 1 : +item.qty,
+            qty: item.product_id === itemId ? +item?.qty - 1 : +item.qty,
             total:
-              item.productId === itemId
+              item.product_id === itemId
                 ? (+item?.qty - 1) * +item.price
                 : +item.total,
           };
@@ -224,18 +200,24 @@ export const cartSlice = createSlice({
 
         if (+oldItem.qty === 1) {
           const othercart = allCartItem.cart.filter(
-            (item) => item.productId !== itemId,
+            (item) => item.product_id !== itemId,
           );
           cart = [...othercart];
           totalPrice = othercart?.reduce((acc, cur) => acc + cur?.total, 0);
         }
       }
 
+      //update State;
+      state.cart = cart;
+      state.merchant_id = allCartItem.merchant_id;
+      state.cartId = allCartItem.cartId;
+      state.totalPrice = totalPrice;
+
       cookies.setItem(
         `quich_${store}`,
         JSON.stringify({
           cart,
-          merchantId: allCartItem.merchantId,
+          merchant_id: allCartItem.merchant_id,
           cartId: allCartItem.cartId,
           totalPrice,
         }),
@@ -243,8 +225,6 @@ export const cartSlice = createSlice({
           expires: 2 * 24 * 60 * 60 * 1000,
         },
       );
-
-      state.cart += cart;
     },
 
     removeItemFromCart: (state, action) => {
@@ -261,7 +241,7 @@ export const cartSlice = createSlice({
       let totalPrice = 0;
 
       const othercart = allCartItem.cart.filter(
-        (item) => item.productId !== itemId,
+        (item) => item.product_id !== itemId,
       );
       cart = [...othercart];
 
@@ -281,6 +261,9 @@ export const cartSlice = createSlice({
       );
 
       state.cart = cart;
+      state.merchant_id = allCartItem.merchant_id;
+      state.cartId = allCartItem.cartId;
+      state.totalPrice = totalPrice;
     },
   },
 });

@@ -22,13 +22,13 @@ export default async function StoreProfile(params) {
             </div>
           )*/}
         <h3 className="font-sans_serif lg:text-5xl md:text-4xl text-3xl text-teal-800">
-          My Business name
+          {store?.store_name}
         </h3>
         <div className="text-slate-400 space-y-2 my-4">
           <article className="flex gap-5 ">
-            <p className="">Shopping & Retails</p>
+            <p className="">{store?.store_category}</p>
           </article>
-          <article className=" my-4">Buy stuff with no regret!</article>
+          <article className=" my-4">{store?.store_bio}</article>
         </div>
         <article className=" my-4">active</article>
         {/*<button
