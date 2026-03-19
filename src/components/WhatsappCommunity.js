@@ -3,7 +3,7 @@ import { TextInput } from "@/components/input";
 
 export default function WhatsappCommunity() {
   return (
-    <Card className="p-6 max-w-md">
+    <Card className="p-6 w-full">
       {/* Header */}
       <div className="space-y-1">
         <p className="font-semibold text-base text-gray-900">
@@ -14,27 +14,12 @@ export default function WhatsappCommunity() {
         </p>
       </div>
 
-      {/* Input */}
-      <div className="mt-4">
-        <TextInput
-          placeholder="https://chat.whatsapp.com/..."
-          className="w-full"
+      <div className="mt-4 max-w-full flex gap-x-3 ">
+        <input
+          className="bg-input px-2 border-border outline-border border py-1.5 w-full"
+          placeholder="The Store Name"
         />
-      </div>
-
-      {/* Action */}
-      <div className="mt-5 flex justify-end">
-        <button
-          className="
-            inline-flex items-center justify-center
-            rounded-lg px-4 py-2
-            text-sm font-medium
-            bg-black text-white
-            hover:bg-gray-800
-            focus:outline-none focus:ring-2 focus:ring-black/20
-            disabled:opacity-50
-          "
-        >
+        <button className="grow border-border bg-primary py-1 rounded px-2 text-white">
           Save
         </button>
       </div>

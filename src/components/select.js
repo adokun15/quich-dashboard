@@ -1,9 +1,10 @@
-export function Select({ children, items }) {
+export function Select({ className, items }) {
   return (
     <form class="">
       <select
-        class="block w-full px-3 py-2.5 bg-primary700 border border-primary900 text-sm rounded-base
-         focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+        className={`${className} block min-w-full has-open:bg-red-600  py-2.5 bg-input 
+        border border-border 
+  `}
       >
         {/* <option selected>Choose a country</option>*/}
         {items?.map((item) => (
