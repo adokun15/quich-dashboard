@@ -26,6 +26,7 @@ export default function StoreDangerZone() {
         </div>
       </Card>
 
+      {/*
       <Card>
         <h2 className="text-xl font-semibold">Delete Store</h2>
         <p className="text-muted text-desc">After De</p>
@@ -35,6 +36,7 @@ export default function StoreDangerZone() {
           </button>
         </div>
       </Card>
+ */}
     </div>
   );
 }

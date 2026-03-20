@@ -8,54 +8,64 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import NavItem from "./NavItem";
 
 export default function Sidebar() {
   return (
     <main
-      className="flex flex-row md:flex-col text-3 md:bg-primary700 h-fit md:rounded-2xl gap-x-4 w-full
-     overflow-x-auto md:max-w-[20%] lg:max-w-lg text-xl gap-y-2"
+      className="flex flex-row md:flex-col
+       max-w-fit shrink text-3
+       md:bg-primary90 border-r-2 
+       border-r-primary70 h-fit md:rounded-tr-xl md:rounded-br-xl shadow-xl  
+       gap-x-4 w-full
+      text-xl gap-y-2 pr-8 pl-2 py-2"
     >
-      <article className="flex md:px-6 px-2 w-fit md:w-full bg-primary700 gap-2 items-center py-4 rounded">
-        <FontAwesomeIcon icon={faBagShopping} className="text-primary" />
-        <p>
-          <Link href="/admin">Home</Link>
-        </p>
-      </article>
+      <NavItem
+        href="/admin"
+        className="flex px-6 rounded-full py-2 gap-2 items-center"
+      >
+        {/* <FontAwesomeIcon icon={faBagShopping} className="text-primary" />*/}
+        <p>Home</p>
+      </NavItem>
 
-      <article className="flex md:px-6 px-2 w-fit md:w-full bg-primary700 gap-2 items-center py-4 rounded">
-        <FontAwesomeIcon icon={faBagShopping} className="text-primary" />
-        <p>
-          <Link href="/admin/products/asda">Products</Link>
-        </p>
-      </article>
+      <NavItem
+        href="/admin/products"
+        className="flex px-6 rounded-full py-2 gap-2 items-center"
+      >
+        {/* <FontAwesomeIcon icon={faBagShopping} className="text-primary" />*/}
+        <p>Products</p>
+      </NavItem>
 
-      <article className="flex md:px-6 px-2 w-fit md:w-full bg-primary700 gap-2 items-center py-4 rounded">
-        <FontAwesomeIcon icon={faBagShopping} className="text-primary" />
-        <p>
-          <Link href="/admin/category/asd">Category</Link>
-        </p>
-      </article>
+      <NavItem
+        href="/admin/category"
+        className="flex px-6 rounded-full py-2 gap-2 items-center"
+      >
+        {/* <FontAwesomeIcon icon={faBagShopping} className="text-primary" />*/}
+        <p>Category</p>
+      </NavItem>
+      <NavItem
+        href="/admin/orders"
+        className="flex px-6 rounded-full py-2 gap-2 items-center"
+      >
+        {/* <FontAwesomeIcon icon={faBagShopping} className="text-primary" />*/}
+        <p>Orders</p>
+      </NavItem>
 
-      <article className="flex  md:px-6 px-2 w-fit md:w-full gap-2  bg-primary700 items-center py-4 rounded">
-        <FontAwesomeIcon icon={faFileInvoice} className="text-primary" />{" "}
-        <p>
-          <Link href="/admin/orders/adsa">Orders</Link>
-        </p>
-      </article>
+      <NavItem
+        href="/admin/customers"
+        className="flex px-6 rounded-full py-2 gap-2 items-center"
+      >
+        {/* <FontAwesomeIcon icon={faBagShopping} className="text-primary" />*/}
+        <p>Customers</p>
+      </NavItem>
 
-      <article className="flex  md:px-6 px-2 w-fit md:w-full gap-2  bg-primary700 items-center py-4 rounded">
-        <FontAwesomeIcon icon={faFileInvoice} className="text-primary" />{" "}
-        <p>
-          <Link href="/admin/customers/adsass">Customers</Link>
-        </p>
-      </article>
-
-      <article className="flex md:px-6 px-4 w-fit md:w-full gap-2 bg-primary700 items-center py-4 rounded">
-        <FontAwesomeIcon className="text-primary" icon={faHome} />
-        <p>
-          <Link href="/admin/store">Store</Link>
-        </p>
-      </article>
+      <NavItem
+        href="/admin/store"
+        className="flex px-6 rounded-full py-2 gap-2 items-center"
+      >
+        {/* <FontAwesomeIcon icon={faBagShopping} className="text-primary" />*/}
+        <p>Store</p>
+      </NavItem>
     </main>
   );
 }

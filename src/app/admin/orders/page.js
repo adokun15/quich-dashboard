@@ -1,3 +1,4 @@
+import OrdersTableInfo from "@/components/OrdersTable";
 import { ToggleButton } from "@/components/ToggleButton";
 import { faPen, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -83,44 +84,18 @@ export default async function OrdersPage() {
   return (
     <>
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
-        <div className="flex justify-between px-4">
-          <div>
+        <div className="flex justify-between">
+          <div className="px-4">
             <h2 className="text-6">Orders</h2>
             <p className="text-muted text-2">
               Keep track of all your business sales.
             </p>
           </div>
-          <div>
-            <p className="text-3 font-medium">Filter Order </p>
-          </div>
+
+          <button className="text-primary ">How are Orders created ?</button>
         </div>
 
-        <table className="w-full  text-gray-500  text-left">
-          <thead className="text-xs text-gray-500 uppercase bg-gray-50 ">
-            <tr className="">
-              <th scope="col" className="px-6 py-3">
-                OrderID
-              </th>
-              <th className="px-6 py-3 text-nowrap">Customer</th>
-              <th className="px-6 py-3 text-nowrap">Amount</th>
-              <th className="px-6 py-3 text-nowrap">Status</th>
-              <th className="px-6 py-3 text-nowrap">View order</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Ahmed. 09067575746</td>
-              <td>NGN6000</td>
-              <td>Pending</td>
-              <td>
-                <FontAwesomeIcon icon={faPen} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="divide-y-2"> </div>
+        <OrdersTableInfo />
       </main>
     </>
   );

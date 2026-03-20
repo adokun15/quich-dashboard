@@ -20,9 +20,9 @@ export default async function SellerLayout({ children }) {
   return (
     <>
       <NavigateDashborad />
-      <main className="px-6 py-2 rounded flex md:flex-row flex-col gap-4  mx-auto ">
+      <main className="px-6 py-2 rounded flex md:flex-row flex-col gap-4   ">
         <Sidebar />
-        {children}
+        <div className="w-full grow">{children}</div>
       </main>
     </>
   );

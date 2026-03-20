@@ -1,3 +1,4 @@
+import CustomersTableInfo from "@/components/CustomersTable";
 import { ToggleButton } from "@/components/ToggleButton";
 import { faPen, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -83,51 +84,11 @@ export default async function CustomersPage() {
     <>
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
         <div className="flex justify-between px-4">
-          <div>
-            <h2 className="text-6">customers</h2>
-            <p className="text-muted text-2">Know who is buying from you</p>
-          </div>
+          <h2 className="text-6">Customers</h2>
+          <p className="text-primary underline">How are customers added?</p>
         </div>
 
-        <article className="flex px-4 justify-between">
-          <div>
-            <p className="text-3 font-medium">Total customers: 8 </p>
-          </div>
-
-          <div>
-            <input
-              className=" min-w-2xl rounded-full pl-2 "
-              placeholder="Search product by name"
-            />
-          </div>
-        </article>
-
-        <table className="w-full  text-gray-500  text-left">
-          <thead className="text-xs text-gray-500 uppercase bg-gray-50 ">
-            <tr className="">
-              <th scope="col" className="px-6 py-3">
-                CustomerID
-              </th>
-              <th className="px-6 py-3 text-nowrap">Customer Name</th>
-              <th className="px-6 py-3 text-nowrap">Customer Phone</th>
-              <th className="px-6 py-3 text-nowrap">Total Amount</th>
-              <th className="px-6 py-3 text-nowrap">Blacklist</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Ahmed.</td>
-              <td>09067575746</td>
-              <td>NGN60000</td>
-              <td>
-                <FontAwesomeIcon icon={faPen} />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div className="divide-y-2"> </div>
+        <CustomersTableInfo />
       </main>
     </>
   );
