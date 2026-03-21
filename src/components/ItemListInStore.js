@@ -25,28 +25,35 @@ export default function ItemsListInStore({ products }) {
 
       {/*!isError && (*/}
 
-      <ul className="md:grid block gap-4 md:grid-cols-2 my-5 space-y-4 md:space-y-0">
+      <ul className="grid-cols-2 md:grid-cols-3 grid gap-x-3 gap-y-6 max-w-full">
         {products?.length > 0 &&
           products?.map((product) => (
             <li
               onClick={() => openModal(product)}
               key={product.product_id}
-              className="rounded-2xl hover:cursor-pointer m-auto shadow  shadow-gray-200 pb-4  overflow-hidden w-fit"
+              className=" hover:cursor-pointer mx-auto bg-primary90
+              shadow shadow-gray-200 pb-4 overflow-hidden w-54 h-fit"
             >
               <Image
-                src={product?.product_img[0] || null}
+                src={
+                  product?.product_img
+                    ? product?.product_img[0]
+                    : "/icons/gray_logo.png"
+                }
                 alt={product?.product_name}
-                className="max-h-[300px] min-w-[300px] max-w-[320px] min-h-4/5"
+                width={120}
+                height={120}
+                className=""
               />
-              <p className="mx-2 mt-4 text-2xl font-bold text-pretty text-teal-900 font-sans_serif">
+              <p className="mx-2 mt-4 text-based font-medium text-pretty text-teal-900 font-sans_serif">
                 {product?.product_name}
               </p>
-              <p className=" mx-2 font-bold tracking-wide font-roboto">
+              <p className=" mx-2 font-medium text-muted text-desc tracking-wide font-roboto">
                 NGN{product?.amount}
               </p>
             </li>
           ))}
-        {products.length === 0 && (
+        {products && products.length === 0 && (
           <p className="text-center my-3 text-xl font-oswald">
             No product available at the moment
           </p>

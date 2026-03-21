@@ -1,3 +1,4 @@
+//import StorePageComponent from "@/components/StorePage";
 import StorePageComponent from "@/components/StorePage";
 import StoreProductsList from "@/components/StoreProductsList";
 import StoreProfile from "@/components/StoreProfile";
@@ -74,5 +75,4 @@ export default async function MerchantStoreHome(params) {
 -storeprofile.js --- merchant
 -Storepage.js(initially)
 -Storeproductlist.js --- products
-
 */

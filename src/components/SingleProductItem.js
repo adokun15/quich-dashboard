@@ -92,7 +92,7 @@ export default function SingleItemDisplay({ product, close, modal: isOpen }) {
   return (
     <Modal show={isOpen}>
       <div className="bg-white relative">
-        <h1 className="text-center md:text-3xl  text-2xl font-sans_serif">
+        <h1 className="text-center md:text-3xl text-2xl font-sans_serif">
           {product?.product_name}
         </h1>
 
@@ -110,7 +110,7 @@ export default function SingleItemDisplay({ product, close, modal: isOpen }) {
 
         {product?.description && (
           <div className=" text-xl space-x-2 my-4 font-roboto text-gray-500">
-            <span className="text-yellow-400 text-3xl font-serif ">~</span>
+            <span className="text-secondary text-3xl font-serif ">~</span>
             <span>{product?.description}</span>
           </div>
         )}

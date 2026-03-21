@@ -5,8 +5,6 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import StoreProfile from "./StoreProfile";
-//import { SingleItemDisplay } from "./SingleProductItem";
 import Cart from "./Cart";
 import SingleItemDisplay from "./SingleProductItem";
 import {
@@ -75,7 +73,7 @@ export default function StorePageComponent({ children }) {
   // });
 
   return (
-    <main className="relative md:flex md:h-screen">
+    <main className="relative py-6 bg-background md:h-screen">
       <>
         <SingleItemDisplay
           modal={product_modal.show}
@@ -86,9 +84,9 @@ export default function StorePageComponent({ children }) {
         <Cart trigger={toggleModalCart} modal={cart_modal} />
       </>
 
-      <main>{children}</main>
+      <main className="md:max-w-2xl mx-auto space-y-8">{children}</main>
 
-      <div className="pb-16 md:mx-[10vw] mx-1 my-[3vh]">
+      <div className=" pb-16 md:mx-[10vw] mx-1 my-[3vh]">
         {cart && cart?.length >= 1 && (
           // !isLoading &&
           // !isError &&
@@ -107,10 +105,10 @@ export default function StorePageComponent({ children }) {
 
         {/*!isLoading && !isError && ()*/}
         <Link
-          href="/auth"
+          href="/"
           className="bg-white w-fit h-fit block px-4 mx-auto py-2 shadow hover:shadow-gray-300 mt-10 transition text-xl fira-sans-regular text-teal-800 "
         >
-          Create your own Store
+          Create your Quich Shop
         </Link>
       </div>
     </main>

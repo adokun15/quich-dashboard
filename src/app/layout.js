@@ -26,7 +26,7 @@ export default function RootLayout({ children, modals }) {
           enableSystem
           disableTransitionOnchange
         >
-          <div className="relative  min-h-screen">{children}</div>
+          <div className="relative min-h-screen">{children}</div>
           <div>{modals}</div>
         </ThemeProvider>
       </body>
