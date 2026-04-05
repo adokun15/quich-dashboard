@@ -3,7 +3,7 @@
 export const verifyIdentity = async (token) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/auth`,
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/user`,
       {
         method: "GET",
         credentials: "include",

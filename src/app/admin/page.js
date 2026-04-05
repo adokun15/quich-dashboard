@@ -74,7 +74,12 @@ export default function AdminHome() {
 
         {/* Overview of Store */}
         <Card className="flex justify-between">
-          <p className="text-based">Orders</p>
+          <p className="text-based">Views Today </p>
+          <p className="text-xl font-medium">67</p>
+        </Card>
+
+        <Card className="flex justify-between">
+          <p className="text-based">Orders(this weeks)</p>
           <p className="text-xl font-medium">900</p>
         </Card>
 
@@ -90,9 +95,31 @@ export default function AdminHome() {
       </section>
 
       <section>
+        <h2 className="text-muted font-semibold">
+          Add your video to your store
+        </h2>
+      </section>
+
+      {/*
+ SlideShow;
+ 
+ <section>
         <h2 className="text-muted font-semibold">Guide to Use QuichShop!</h2>
         <article className=" text-muted text-desc">Coming soon!</article>
       </section>
+*/}
+      <section>
+        <h2 className="text-muted font-semibold">Recent activity</h2>
+      </section>
+
+      <section>
+        <h2 className="text-muted font-semibold">Support</h2>
+        <p>Contact via email: help@quich.shop</p>
+        <p>Want us to add a dope feature? let us know</p>
+        <p>Engage with us on X and our Whatsapp channel</p>
+        <p>Send a feedback on whatsapp</p>
+      </section>
+
       {/*
       <section>
         <h2>Activity Log!</h2>
