@@ -9,7 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Actions;
 
-export default function CustomersTableInfo() {
+export default function CustomersTableInfo({
+  customers,
+  total_customers,
+  page,
+}) {
   return (
     <main>
       {/* Search, Filter, Sort; */}
@@ -39,46 +43,18 @@ export default function CustomersTableInfo() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>Food Customer</td>
-            <td>Edit</td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>Food Customer</td>
-            <td>Edit</td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>Food Customer</td>
-            <td>Edit</td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>Food Customer</td>
-            <td>Edit</td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>Food Customer</td>
-            <td>Edit</td>
-          </tr>
+          {customers &&
+            customers.length &&
+            customers?.map((customer) => (
+              <tr key={customer?.customer_id}>
+                <td>
+                  <h3>{customer?.name}</h3>
+                  <p>0{customer?.phone}</p>
+                </td>
+                <td>{customer?.tag || "No tag"}</td>
+                <td>Edit</td>
+              </tr>
+            ))}
         </tbody>
       </table>
 

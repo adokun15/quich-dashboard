@@ -7,6 +7,9 @@ export async function CreateOrder({ cart, store_id, customer }) {
     `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/orders`,
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         store_id,
         cart,
@@ -17,6 +20,7 @@ export async function CreateOrder({ cart, store_id, customer }) {
 
   const order = await res.json();
 
+  console.log(order);
   //Return Error if available
   if (order?.error) {
     return {
@@ -28,5 +32,5 @@ export async function CreateOrder({ cart, store_id, customer }) {
   }
 
   //rETURN data
-  return { order };
+  return order;
 }

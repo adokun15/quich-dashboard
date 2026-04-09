@@ -32,20 +32,23 @@ export default function Cart({ trigger: close, modal }) {
   //const { data: cart } = useGetCartQuery(store_slug, { skip: !storeLink });
 
   //get latest cart item
-  const { cart, totalPrice, cartId } = useSelector((state) => state.cart);
+  const { cart, totalPrice, cartId, store_id } = useSelector(
+    (state) => state.cart,
+  );
+
   const dispatch = useDispatch();
 
   //Cart action: Update
   const incrementHandler = (id) => {
-    dispatch(updateCart({ itemId: id, status: "ADD", store: store_slug }));
+    dispatch(updateCart({ itemId: id, status: "ADD", store_id, store_slug }));
   };
   const decrementHandler = (id) => {
-    dispatch(updateCart({ itemId: id, status: "LESS", store: store_slug }));
+    dispatch(updateCart({ itemId: id, status: "LESS", store_id, store_slug }));
   };
 
   //Cart action: Remove
   const removeItem = (id) => {
-    dispatch(removeItemFromCart({ itemId: id, storeId: store_slug }));
+    dispatch(removeItemFromCart({ itemId: id, store_slug, storeId: store_id }));
   };
 
   //Close modal if cart is empty

@@ -52,7 +52,6 @@ export default function StorePageComponent({ children }) {
   //load cart;
   const { cart, totalPrice } = useSelector((state) => state.cart);
 
-  console.log(cart);
   //Load cart once
   useEffect(() => {
     dispatch(getCart({ storeId: storeLink }));

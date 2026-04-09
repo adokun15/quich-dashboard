@@ -4,15 +4,15 @@ import { faPen, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Access cookies for token;
-const getCustomersData = async () => {
+const getOrdersData = async () => {
   try {
     // Get User Cookies first: 30mins
-    const cookie = await cookies();
-    const user_token = cookie?.get("quich_login_token");
+    //  const cookie = await cookies();
+    //const user_token = cookie?.get("quich_login_token");
 
-    if (!user_token) {
-      redirect("/");
-    }
+    //  if (!user_token) {
+    //    redirect("/");
+    // }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -21,7 +21,7 @@ const getCustomersData = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user_token?.value}`,
+          Authorization: `Bearer some-token`,
         },
       },
     );
@@ -35,21 +35,16 @@ const getCustomersData = async () => {
       return { error: data?.message, status_code: data?.status_code };
     }
 
-    return {
-      data: {
-        merchant: {}, //From the token; 'name, store_name, slug_id, user_id'
-        orders: [],
-        current_page: 2, // 10 - 20 ordered
-        total_orders: 130,
-      },
-    };
+    return data.data;
   } catch (e) {
     return { error: e?.message };
   }
 };
 
 export default async function OrdersPage() {
-  const orders = [];
+  const orders = await getOrdersData();
+
+  console.log(orders);
 
   if (orders?.statusCode === 500) {
     return (
@@ -95,7 +90,7 @@ export default async function OrdersPage() {
           <button className="text-primary ">How are Orders created ?</button>
         </div>
 
-        <OrdersTableInfo />
+        <OrdersTableInfo {...orders} />
       </main>
     </>
   );

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Actions;
 
-export default function OrdersTableInfo() {
+export default function OrdersTableInfo({ orders, total_orders, page }) {
   return (
     <main>
       {/* Search, Filter, Sort; */}
@@ -41,52 +41,26 @@ export default function OrdersTableInfo() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>#10023</td>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>NGN900</td>
-            <td>completed v</td>
-            <td>09/09/26 19:09</td>
-          </tr>
-          <tr>
-            <td>#10023</td>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>NGN900</td>
-            <td>completed v</td>
-            <td>09/09/26 19:09</td>
-          </tr>
-          <tr>
-            <td>#10023</td>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>NGN900</td>
-            <td>completed v</td>
-            <td>09/09/26 19:09</td>
-          </tr>
-          <tr>
-            <td>#10023</td>
-            <td>
-              <h3>Ahmed</h3>
-              <p>234 705 741 3268</p>
-            </td>
-            <td>NGN900</td>
-            <td>completed v</td>
-            <td>09/09/26 19:09</td>
-          </tr>
+          {orders &&
+            orders?.length > 0 &&
+            orders?.map((order) => (
+              <tr key={order?.order_id}>
+                <td>#{order?.order_id}</td>
+                <td>
+                  <h3>{order?.customer_name}</h3>
+                  <p>{order?.customer_phone}</p>
+                </td>
+                <td>NGN{order?.total_amount}</td>
+                <td className="capitalize">{order?.status}</td>
+                <td>{new Date(order?.order_creation).toLocaleDateString()}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
       {/* Limit, Paginate */}
       <div className="flex justify-between">
-        <p className="text-3 font-medium grow">Total 8 </p>
+        <p className="text-3 font-medium grow">Total {total_orders} </p>
 
         <article className="flex gap-4">
           <button>

@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const getCustomersData = async () => {
   try {
     // Get User Cookies first: 30mins
-    const cookie = await cookies();
-    const user_token = cookie?.get("quich_login_token");
+    // const cookie = await cookies();
+    //const user_token = cookie?.get("quich_login_token");
 
-    if (!user_token) {
-      redirect("/");
-    }
+    //   if (!user_token) {
+    //   redirect("/");
+    // }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -21,7 +21,7 @@ const getCustomersData = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user_token?.value}`,
+          Authorization: `Bearer some-token-ok`,
         },
       },
     );
@@ -35,21 +35,16 @@ const getCustomersData = async () => {
       return { error: data?.message, status_code: data?.status_code };
     }
 
-    return {
-      data: {
-        merchant: {}, //From the token; 'name, store_name, slug_id, user_id'
-        customers: [],
-        total_customers: 13,
-      },
-    };
+    return data.data;
   } catch (e) {
     return { error: e?.message };
   }
 };
 
 export default async function CustomersPage() {
-  const customers = [];
+  const customers = await getCustomersData();
 
+  console.log(customers);
   if (customers?.statusCode === 500) {
     return (
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
@@ -88,7 +83,7 @@ export default async function CustomersPage() {
           <p className="text-primary underline">How are customers added?</p>
         </div>
 
-        <CustomersTableInfo />
+        <CustomersTableInfo {...customers} />
       </main>
     </>
   );

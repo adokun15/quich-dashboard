@@ -2,6 +2,7 @@
 
 import Card from "@/components/card";
 import ErrorText from "@/components/errorText";
+import { CreateOrder } from "@/server/order/CreateOrder";
 import { getCart } from "@/utils/state/cart/cartslice";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +24,7 @@ export default function Checkout() {
   });
 
   //load cart;
-  const { cart } = useSelector((state) => state.cart);
+  const { cart, store_id } = useSelector((state) => state.cart);
 
   //Dispatch function
   const dispatch = useDispatch();
@@ -58,7 +59,6 @@ export default function Checkout() {
 
   const handlerCustomerName = (e) => {
     const value = e.target.value;
-    setPaymentError("");
 
     //Check for more condition
     if (!isNaN(+value) && value !== "") {
@@ -82,7 +82,7 @@ export default function Checkout() {
   const checkoutHandler = async () => {
     //Validate input
 
-    //phone name
+    //name
     if (customerName?.enteredValue.length <= 2) {
       setCustomerName((prev) => {
         return {
@@ -104,7 +104,18 @@ export default function Checkout() {
       return;
     }
 
-    /*console.log({
+    const order = await CreateOrder({
+      cart,
+      store_id,
+      customer: {
+        name: customerName?.enteredValue,
+        phone: customerPhone?.enteredValue,
+      },
+    });
+
+    console.log(order);
+    /*  
+    console.log({
       customer: {
         phone: String(customerPhone.enteredValue),
         email: customerEmail.enteredValue,
@@ -115,8 +126,7 @@ export default function Checkout() {
       merchantId: data?.merchantId,
       cartId: data?.cartId,
     });
-    */
-    /*  
+    
     await paymentRequest({
       customer: {
         phone: String(customerPhone.enteredValue),
@@ -147,6 +157,7 @@ export default function Checkout() {
         );
       });*/
   };
+  console.log(cart);
   return (
     <main className="md:w-3/5 my-5 md:mx-auto space-y-4 overflow-x-hidden">
       <h1 className="font-sans_serif md:text-5xl text-3xl border-b-2 w-fit m-auto px-3 border-l-2  text-center md:text-start text-teal-800">
@@ -167,7 +178,6 @@ export default function Checkout() {
           <input
             onChange={handlerCustomerName}
             value={customerName.enteredValue}
-            clx="w-full font-roboto text-xl"
             required
             placeholder="Enter your Name"
           />
@@ -192,10 +202,7 @@ export default function Checkout() {
       <Card className="mx-4 space-y-4">
         <h2 className="font-bold text-2xl font-sans_serif">Cart Items</h2>
         <p>
-          <Link
-            className="hover:underline my-3 text-teal-700"
-            href={`/store/${storeLink}`}
-          >
+          <Link className="hover:underline my-3 text-teal-700" href={`/`}>
             <FontAwesomeIcon icon={faArrowLeft} /> Keep Shopping
           </Link>
         </p>
@@ -208,9 +215,7 @@ export default function Checkout() {
                 className="flex justify-between md:gap-6 "
               >
                 <div className="space-x-3">
-                  <h2 className="font-bold text-xl font-oswald">
-                    {item.productName}
-                  </h2>
+                  <h2 className="font-bold text-xl font-oswald">{item.name}</h2>
                   <p className="italic text-gray-400">x {item.qty}</p>
                 </div>
                 <article>NGN{item.total}</article>

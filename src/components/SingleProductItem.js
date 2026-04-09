@@ -48,8 +48,17 @@ export default function SingleItemDisplay({ product, close, modal: isOpen }) {
   const CartHandler = (item) => {
     dispatch(
       addSingleItemToCart({
-        item: { ...item, price: item?.amount, qty },
-        store: storeLink,
+        item: {
+          product_id: item?.id,
+          description: item?.description,
+          images: item?.images,
+          price: +item?.price,
+          productQty: item?.quantity,
+          name: item?.name,
+          qty,
+        },
+        store_id: item?.store_id,
+        store_slug: storeLink,
       }),
     );
 
@@ -90,10 +99,10 @@ export default function SingleItemDisplay({ product, close, modal: isOpen }) {
   //product?.productQty * product?.price;
 
   return (
-    <Modal show={isOpen}>
-      <div className="bg-white relative">
+    <Modal show={isOpen} className="flex justify-center items-center">
+      <div className="bg-white md:max-w-md  mx-auto relative">
         <h1 className="text-center md:text-3xl text-2xl font-sans_serif">
-          {product?.product_name}
+          {product?.name}
         </h1>
 
         {/*product?.product_img && (
@@ -125,10 +134,11 @@ export default function SingleItemDisplay({ product, close, modal: isOpen }) {
 
         <p className="flex my-2 space-x-3">
           <span className="font-bold font-roboto ">Amount</span>
-          NGN{+product?.amount}
+          NGN{product?.price}
         </p>
 
         <div className="my-4 flex gap-4 flex-wrap">
+          <button onClick={close}>Close</button>
           <button
             // disabled={theValueLimitReached}
             onClick={() => CartHandler(product)}
