@@ -1,4 +1,5 @@
 // Simple proxy used by Next to control routing for specific paths.
+import { cookies } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 export default async function proxy(req) {
   const host = req.headers.get("host") || "";
@@ -6,14 +7,28 @@ export default async function proxy(req) {
 
   let subdomain = host?.split(".")[0];
 
-
-  // Only rewrite checkout route
+  // Store Routes
   if (pathname === "/checkout") {
-    return NextResponse.rewrite(new URL(`/store/${subdomain}/checkout`, req.url));
+    return NextResponse.rewrite(
+      new URL(`/store/${subdomain}/checkout`, req.url),
+    );
   }
 
   if (pathname === "/" && !pathname?.startsWith("/admin")) {
     return NextResponse.rewrite(new URL(`/store/${subdomain}`, req.url));
+  }
+
+  //Admin Page:
+  if (pathname?.startsWith("/admin")) {
+    const cookie = await cookies();
+
+    // if (!cookie.get("quich-session")) {
+    //Validate here and Cache Request
+
+    //Home or Login
+    // return NextResponse.redirect(new URL("/", req.url));
+    //}
+    return NextResponse.next();
   }
 
   return NextResponse.next();
@@ -21,7 +36,7 @@ export default async function proxy(req) {
 
 export const config = {
   // Ensure both /settings and nested paths are matched.
-  matcher: ["/", "/checkout", "/admin"],
+  matcher: ["/", "/checkout", "/admin/:path*"],
 };
 
 //Validate /admin Paths

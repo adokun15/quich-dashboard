@@ -3,12 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 
 export default async function StoreProfile(params) {
-  const store = params.store;
-
-  //const { data, isLoading, isFetching, isError } = useGetMerchantQuery(link, {
-  //  fixedCacheKey: "store-merchant",
-  //});
-  // console.log(store);
+  const store = await params.store;
 
   return (
     <>
@@ -27,14 +22,14 @@ export default async function StoreProfile(params) {
           />
           <div className="grow">
             <h3 className="font-sans_serif md:text-4xl text-3xl text-primary">
-              {store?.store_name}
+              {store?.name}
             </h3>
-            <p className="text-desc text-muted">{store?.store_category}</p>
+            <p className="text-desc text-muted">{store?.category}</p>
           </div>
         </div>
 
         <article className="text-muted font-medium text-based ">
-          {store?.store_bio}
+          {store?.bio}
         </article>
 
         <article className=" flex text-desc items-center gap-4 my-4">

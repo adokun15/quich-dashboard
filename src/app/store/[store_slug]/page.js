@@ -27,10 +27,10 @@ const getStoreInfo = async (slug_id) => {
   }
 };
 
-const getStoreProduct = async (slug_id) => {
+const getStoreProduct = async (store_id) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/store/${slug_id}/products?limit=20&category=all`,
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/store/${store_id}/products?limit=20`,
       {
         method: "GET",
         headers: {
@@ -45,26 +45,35 @@ const getStoreProduct = async (slug_id) => {
       return { error: data?.message, status_code: data?.status_code };
     }
 
-    return data;
+    return data?.data;
   } catch (e) {
     return { error: e?.message };
   }
 };
 
-export const metadata = {
-  title: "The Store",
-};
+export async function generateMetadata({ params }) {
+  const { store_slug } = await params;
+  const w = await getStoreInfo(store_slug);
+  return {
+    title: w?.data?.store?.name || "Store Not Found",
+  };
+}
 
 //This Default page is the user store
 export default async function MerchantStoreHome(params) {
   const { store_slug } = await params?.params;
-  const store = await getStoreInfo(store_slug);
-  const product = await getStoreProduct(store_slug);
+  const data = await getStoreInfo(store_slug);
+
+  // if (!status) {
+  //   throw new Error(message);
+  //  }
+
+  const products = await getStoreProduct(data?.data?.store?.id);
 
   return (
     <StorePageComponent>
-      <StoreProfile store={store?.data} />
-      <StoreProductsList products={product?.data?.products} />
+      <StoreProfile store={data?.data?.store} />
+      <StoreProductsList products={products} />
     </StorePageComponent>
   );
 }

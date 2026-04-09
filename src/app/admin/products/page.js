@@ -12,12 +12,12 @@ import ProductTableInfo from "@/components/ProductTable";
 const getStoreProducts = async () => {
   try {
     // Get User Cookies first: 30mins
-    const cookie = await cookies();
-    const user_token = cookie?.get("quich_login_token");
+    //const cookie = await cookies();
+    //const user_token = cookie?.get("quich_login_token");
 
-    if (!user_token) {
-      redirect("/");
-    }
+    //if (!user_token) {
+    // redirect("/");
+    // }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -26,13 +26,13 @@ const getStoreProducts = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user_token?.value}`,
+          Authorization: `Bearer some-token-value`,
         },
       },
     );
 
     const data = await res.json();
-
+    console.log(data);
     if (!data?.status) {
       // Prompt modal if cookie has expired
 
@@ -40,14 +40,7 @@ const getStoreProducts = async () => {
       return { error: data?.message, status_code: data?.status_code };
     }
 
-    return {
-      data: {
-        merchant: {}, //From the token; 'name, store_name, slug_id, user_id'
-        products: [],
-        current_page: 2, // 10 - 20 ordered
-        total_products: 130,
-      },
-    };
+    return data?.data;
   } catch (e) {
     return { error: e?.message };
   }
@@ -84,6 +77,7 @@ export default async function ProductsPage() {
     );
   }
 */
+  const products = await getStoreProducts();
   return (
     <>
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
@@ -100,7 +94,7 @@ export default async function ProductsPage() {
           </p>
         </div>
 
-        <ProductTableInfo />
+        <ProductTableInfo {...products} />
       </main>
     </>
   );

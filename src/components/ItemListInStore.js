@@ -25,31 +25,34 @@ export default function ItemsListInStore({ products }) {
 
       {/*!isError && (*/}
 
-      <ul className="grid-cols-2 md:grid-cols-3 grid gap-x-3 gap-y-6 max-w-full">
+      <ul
+        className="grid-cols-1 w-full gap-4 
+      sm:grid-cols-2 md:grid-cols-3 
+      grid gap-x-4 justify-normal
+       gap-y-2 max-w-full"
+      >
         {products?.length > 0 &&
           products?.map((product) => (
             <li
               onClick={() => openModal(product)}
-              key={product.product_id}
+              key={product.id}
               className=" hover:cursor-pointer mx-auto bg-primary90
               shadow shadow-gray-200 pb-4 overflow-hidden w-54 h-fit"
             >
               <Image
                 src={
-                  product?.product_img
-                    ? product?.product_img[0]
-                    : "/icons/gray_logo.png"
+                  product?.images ? product?.images[0] : "/icons/gray_logo.png"
                 }
-                alt={product?.product_name}
+                alt={product?.name}
                 width={120}
                 height={120}
-                className=""
+                className="w-auto h-auto"
               />
               <p className="mx-2 mt-4 text-based font-medium text-pretty text-teal-900 font-sans_serif">
-                {product?.product_name}
+                {product?.name}
               </p>
               <p className=" mx-2 font-medium text-muted text-desc tracking-wide font-roboto">
-                NGN{product?.amount}
+                NGN{product?.price}
               </p>
             </li>
           ))}

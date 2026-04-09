@@ -3,8 +3,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "./card";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import ProductImageUpload from "./ProductImageUpload";
+import { useState } from "react";
 
 export default function SingleProductForm() {
+  const [url, setUrl] = useState(null);
+
+  const onUpload = (filepath) => {
+    setUrl(`${filepath}`);
+    //Edit Product Image to
+    console.log(filepath);
+  };
   return (
     <main className="w-full max-w-xl mx-auto space-y-4">
       <section className="flex justify-between">
@@ -21,6 +30,14 @@ export default function SingleProductForm() {
           <button className="text-danger">...</button>
         </article>
       </section>
+
+      <ProductImageUpload
+        store_id="test_store"
+        onUpload={onUpload}
+        size={250}
+        url={url}
+        product_id={"product_1"}
+      />
 
       <form className=" space-y-4">
         <Card>
