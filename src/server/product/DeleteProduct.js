@@ -1,7 +1,8 @@
+"use server";
 import { getToken } from "@/utils/local-access";
 
 // Update customerda
-export async function DeleteOrder({ store_id, order_id }) {
+export async function DeleteProductAction({ store_id, product_id }) {
   //Prevent bad field;
   const token = await getToken();
 
