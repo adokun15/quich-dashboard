@@ -15,13 +15,7 @@ export default function WhatsappCommunity() {
       </div>
 
       <div className="mt-4 max-w-full flex gap-x-3 ">
-        <input
-          className="bg-input px-2 border-border outline-border border py-1.5 w-full"
-          placeholder="The Store Name"
-        />
-        <button className="grow border-border bg-primary py-1 rounded px-2 text-white">
-          Save
-        </button>
+        <input className="" placeholder="Store Community" />
       </div>
     </Card>
   );

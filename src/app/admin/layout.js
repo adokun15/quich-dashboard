@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 //import Sidebar from "@/components/Sidebar";
 
 //Translate token -- user object
-export default async function SellerLayout({ children }) {
+export default async function SellerLayout({ billing, children }) {
   const token = await getToken();
 
   //Not Even a user!

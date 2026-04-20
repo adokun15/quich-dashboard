@@ -38,8 +38,52 @@ const getSingleProduct = async (id) => {
   }
 };
 
+//Prefetch category data
+const category = async () => {
+  try {
+    // Get User Cookies first: 30mins
+    // const cookie = await cookies();
+    //const user_token = cookie?.get("quich_login_token");
+
+    //   if (!user_token) {
+    //   redirect("/");
+    // }
+
+    //Fetch data if token exist;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/category`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer some-token-ok`,
+        },
+      },
+    );
+
+    const data = await res.json();
+
+    if (!data?.status) {
+      // Prompt modal if cookie has expired
+
+      //Show modal if store name don't match!
+      return { error: data?.message, status_code: data?.status_code };
+    }
+
+    const d = data?.data?.category?.map((c) => ({
+      slug: c?.slug,
+      id: c?.id,
+      name: c?.name,
+    }));
+    return d;
+  } catch (e) {
+    return { error: e?.message };
+  }
+};
 export default async function SingleProductPage({ params }) {
   const { productId } = await params;
   const product = await getSingleProduct(productId);
-  return <SingleProductForm product={product} />;
+
+  const data = await category();
+  return <SingleProductForm product={product} getCategoryItem={data} />;
 }

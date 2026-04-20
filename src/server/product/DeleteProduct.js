@@ -1,10 +1,11 @@
 "use server";
 import { getToken } from "@/utils/local-access";
+import { DeleteProductImage } from "./ProductImage";
 
 // Update customerda
-export async function DeleteProductAction({ store_id, product_id }) {
+export async function DeleteProductAction({ product_id, hasFile }) {
   //Prevent bad field;
-  const token = await getToken();
+  /* const token = await getToken();
 
   if (!token) {
     return {
@@ -14,25 +15,27 @@ export async function DeleteProductAction({ store_id, product_id }) {
       },
     };
   }
+*/
+
+  if (hasFile)
+    await DeleteProductImage({ filepath: hasFile, productId: product_id });
 
   //Proceed to Backend
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/orders/${order_id}`,
+    `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/products/${product_id}`,
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer SOME-TOKEN-VALUE`,
       },
-      body: JSON.stringify({
-        store_id,
-      }),
     },
   );
 
   const product = await res.json();
   //Return Error if available
 
-  if (product?.error) {
+  if (!product?.status) {
     return {
       error: {
         message: product?.error?.message,
@@ -42,5 +45,5 @@ export async function DeleteProductAction({ store_id, product_id }) {
   }
 
   //rETURN data
-  return { product };
+  return product;
 }

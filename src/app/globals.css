@@ -7,7 +7,7 @@
 
 --primary: hsl(140, 50%, 50%);
 --primary-70: hsl(140, 50%, 70%);
---primary-90: hsl(140, 50%, 95%);
+--primary-90: hsl(140, 50%, 99%);
 
 --secondary: hsl(64, 95%, 50%);
 --secondary-70: hsl(64, 95%, 70%);
@@ -18,7 +18,7 @@
 --text: hsl(140, 90%, 5%);
 --muted:  hsl(140, 0%, 50%);
 
---input: hsl(140, 50%, 70%);
+--input: hsl(180, 1%, 86%);
 
 --danger-red: hsl(8, 77%, 38%);
 
@@ -33,7 +33,6 @@
 }
 
 @theme inline {
-
 
 /*colors*/
 --color-background: var(--background);
@@ -101,18 +100,122 @@ body {
 /*  font-family: Arial, Helvetica, sans-serif; */
 }
 
-
-/*
+/*Based Input Class*/
 input {
-  border: 2px solid var(--secondary);
   display: block;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  padding: var(--spacing2);
-  border-radius: var(--spacing2);
+  font-weight: 500;
+  color:var(--muted);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
   outline: none;
+  font-size: var(--text-base);
   width: 100%;
+  background-color: var(--input);
+  max-width: 30vw;
 }
 
+textarea{
+  /*box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);*/
+  font-weight: 500;
+  color:var(--muted);
+  display: block;
+  resize: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+  min-height: 10rem;
+  width: 100%;
+  font-size: var(--text-base);
+  width: 100%;
+  background-color: var(--input);
+  max-width: 30vw;
+}
+
+button {
+  display: block;
+  padding: 0.25rem 1rem;
+  outline: none;
+  width:fit-content;
+}
+
+/*Hover*/
+
+button:hover{
+  color: muted;
+  transition-duration: 1.2s;
+  transition-property: color;
+  transition-timing-function: ease-in;
+  opacity: 50%; 
+}
+
+input:focus, textarea:focus{
+  transition-duration: 0.4s;
+  transition-property: all;
+  transition-timing-function: ease-in;
+  border:1px solid var(--muted);
+}
+
+
+/*Filled Button Class*/
+.filled_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white; 
+  border-radius: 0.5rem;
+}
+
+
+
+/*Muted Button Class*/
+.muted_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*Disabled Button Class*/
+.disabled_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*Danger Button Class*/
+.danger_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*Linked Button Class*/
+.linked_button{
+  font: medium; 
+  
+  color: var(--text);
+}
+
+
+
+/*Outline Button Class*/
+.outlined_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*
 textarea{
   border: 2px solid var(--secondary);
   display: block;

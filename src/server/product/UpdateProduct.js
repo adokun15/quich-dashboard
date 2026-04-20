@@ -32,14 +32,14 @@ export async function UpdateProductDetail({ updates, product_id }) {
   const product = await res.json();
   //Return Error if available;
 
-  /*if (!product?.status) {
+  if (!product?.status) {
     return {
       error: {
         message: product?.error?.message,
         status: product?.error?.status,
       },
     };
-  }*/
+  }
 
   //rETURN data
   return product.data;

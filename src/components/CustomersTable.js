@@ -6,6 +6,7 @@ import {
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 //Actions;
 
@@ -48,8 +49,10 @@ export default function CustomersTableInfo({
             customers?.map((customer) => (
               <tr key={customer?.customer_id}>
                 <td>
-                  <h3>{customer?.name}</h3>
-                  <p>0{customer?.phone}</p>
+                  <Link href={`/admin/customers/${customer?.customer_id}`}>
+                    <h3>{customer?.name}</h3>
+                    <p>0{customer?.phone}</p>
+                  </Link>
                 </td>
                 <td>{customer?.tag || "No tag"}</td>
                 <td>Edit</td>

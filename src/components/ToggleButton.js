@@ -1,9 +1,10 @@
 "use client";
-export function ToggleButton({ cn, defaultState = false }) {
-  const detectState = function (ev) {
+export function ToggleButton({ cn, field_name = "", defaultState = false }) {
+  const detectState = function (e) {
     //Bubble request back up!
     const current = e.currentTarget.checked;
-    cn(current);
+    const field = e.target?.dataset?.field_name;
+    cn({ field, state: current });
   };
 
   return (
@@ -12,6 +13,7 @@ export function ToggleButton({ cn, defaultState = false }) {
         defaultChecked={defaultState}
         onClick={detectState}
         type="checkbox"
+        data-field_name={field_name}
         value=""
         class="sr-only peer"
       />

@@ -2,7 +2,11 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "./card";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import ProductImageUpload from "./ProductImageUpload";
 import { useEffect, useState } from "react";
 import { UpdateProductDetail } from "@/server/product/UpdateProduct";
@@ -11,34 +15,23 @@ import { DeleteProductAction } from "@/server/product/DeleteProduct";
 import Image from "next/image";
 import { useFormStateData } from "@/utils/state/FormState";
 import { useRouter } from "next/navigation";
+import { ToggleButton } from "./ToggleButton";
+import { SelectActionButton, SelectForm } from "./select";
 
-export default function SingleProductForm({ product }) {
+export default function SingleProductForm({ product, getCategoryItem }) {
   const router = useRouter();
 
   //Manage field
   const {
     handleInputChanges,
+    handleSelectChanges,
     hasEmptyError,
+    handleBooleanChanges,
     isDirty,
     hasUpdatedField,
     updatedField,
+    newData,
   } = useFormStateData({ oldStateData: product });
-
-  const [url, setUrl] = useState(null);
-
-  //Upload Image to Supabase
-  const onUpload = async (filepath) => {
-    setUrl(`${filepath}`);
-    //Edit Product Image to
-    console.log(filepath);
-  };
-
-  //Remove/Change Image on Supabase
-  const onExistingUpload = async (filepath) => {
-    setUrl(`${filepath}`);
-    //Edit Product Image to
-    console.log(filepath);
-  };
 
   //Update Product Detail
   const EditProduct = async () => {
@@ -63,28 +56,49 @@ export default function SingleProductForm({ product }) {
   };
 
   //Delete Product DETAIL;
-  const DeleteProduct = async (id, store_id) => {
-    const product = await DeleteProductAction({
-      store_id: product?.store_id,
+  const DeleteProduct = async () => {
+    if (!window.confirm("Are you sure you want to remove this product?"))
+      return;
+
+    const res = await DeleteProductAction({
       product_id: product?.id,
+      hasFile: product?.images,
     });
 
-    if (product) {
-      // Redirect to Products
-    }
+    //rEdirect to /products
+    console.log(res);
+
+    //aLERT TO USER
+    router.push("/admin/products");
   };
 
+  const closeModal = () => {};
   return (
-    <main>
+    <main className="md:max-w-3xl m-auto">
+      {/* Other Action */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-medium">Edit Product</h2>
+
+        <div className="flex gap-x-4">
+          <SelectActionButton title="Action" action_display={closeModal}>
+            <button id="share_button">Share Product</button>
+          </SelectActionButton>
+
+          <button onClick={DeleteProduct}>Delete</button>
+        </div>
+      </div>
+
       {/* Form */}
       <form className=" space-y-4">
-        <Card>
+        <Card className="space-y-4">
           <div>
             {/*hasEmptyError?.field === "name" && (
               <p>Name of product cannot be empty!</p>
             )*/}
             <p>Name</p>
             <input
+              placeholder="Enter your product name"
+              maxLength={30}
               onChange={handleInputChanges}
               data-field_name="name"
               defaultValue={product?.name}
@@ -94,6 +108,8 @@ export default function SingleProductForm({ product }) {
           <div>
             <p>Price</p>
             <input
+              placeholder="Enter your Price"
+              maxLength={7}
               onChange={handleInputChanges}
               data-field_name="price"
               defaultValue={product?.price}
@@ -104,33 +120,71 @@ export default function SingleProductForm({ product }) {
         <Card>
           <p>Description</p>
           <textarea
+            placeholder="What does your product do?"
+            maxLength={500}
             onChange={handleInputChanges}
             data-field_name="description"
             defaultValue={product?.description}
           ></textarea>
         </Card>
 
-        {product?.category_id && (
-          <Card>
-            <p>Category: {product?.category_info?.name}</p>
-            <button>Change Category</button>
-            <button>Remove Category</button>
-          </Card>
-        )}
-        {!product?.category_id && (
-          <Card>
-            <p>Category: Not In any Category</p>
-            <button>Add Category</button>
-          </Card>
-        )}
+        <ProductImageUpload
+          store_id={product?.store_id}
+          product_id={product?.id}
+          imgUrl={product?.images}
+        />
+
+        <Card className="">
+          <div className="flex justify-between items-center">
+            <p>Category</p>
+          </div>
+
+          <div className=" ">
+            {/* <input
+                disabled={true}
+                className="disabled:cursor-not-allowed"
+                value={product?.category_info?.name}
+              /> */}
+            <SelectForm
+              items={getCategoryItem}
+              onChangeValue={handleSelectChanges}
+              title={
+                product?.category_id
+                  ? product?.category_info?.name
+                  : "Add to a Category"
+              }
+              // items={["Category 1", "Category 2", "Category 3"]}
+              // hasSearch="Enter category name"
+            />
+          </div>
+        </Card>
 
         <Card>
-          <p>Inventory: {product?.quantity}</p>
-          <p>Sold Out: {product?.mark_soldout ? "Yes" : "No"}</p>
+          <div className="flex justify-between items-center">
+            <p>Sold Out</p>
+            <ToggleButton
+              field_name={"mark_soldout"}
+              cn={handleBooleanChanges}
+              defaultState={product?.mark_soldout}
+            />
+          </div>
+
+          {!newData?.mark_soldout && (
+            <div>
+              <p>Inventory: </p>
+              <input
+                placeholder="Enter the amount of stock left"
+                maxLength={1000}
+                onChange={handleInputChanges}
+                data-field_name="quantity"
+                defaultValue={product?.quantity}
+              />
+            </div>
+          )}
         </Card>
         <button
           type="button"
-          className="px-4 py-2 rounded disabled:text-muted font-bold  text-white disabled:bg-primary/50 bg-primary transition-colors"
+          className="filled_button disabled:opacity-60 disabled:text-gray-700"
           disabled={!isDirty}
           onClick={EditProduct}
         >

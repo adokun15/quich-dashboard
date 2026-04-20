@@ -6,6 +6,7 @@ import {
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 //Actions;
 
@@ -45,7 +46,11 @@ export default function OrdersTableInfo({ orders, total_orders, page }) {
             orders?.length > 0 &&
             orders?.map((order) => (
               <tr key={order?.order_id}>
-                <td>#{order?.order_id}</td>
+                <td>
+                  <Link href={`orders/${order?.order_id}`}>
+                    #{order?.order_id}
+                  </Link>
+                </td>
                 <td>
                   <h3>{order?.customer_name}</h3>
                   <p>{order?.customer_phone}</p>

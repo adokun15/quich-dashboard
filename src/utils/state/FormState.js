@@ -15,6 +15,16 @@ export const useFormStateData = ({ oldStateData }) => {
     init();
   }, []);
 
+  function handleSelectChanges({ field, data }) {
+    console.log(field);
+    console.log(data);
+    //Data is some Id / Data
+    setFormData((prev) => ({
+      ...prev,
+      [field]: data,
+    }));
+  }
+
   function handleInputChanges(e) {
     const field = e.target?.dataset?.field_name;
     const value = e.target.value;
@@ -22,6 +32,15 @@ export const useFormStateData = ({ oldStateData }) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
+    }));
+  }
+
+  function handleBooleanChanges({ field, state }) {
+    if (typeof state !== "boolean" || field == "") return;
+
+    setFormData((prev) => ({
+      ...prev,
+      [field]: state,
     }));
   }
 
@@ -46,23 +65,28 @@ export const useFormStateData = ({ oldStateData }) => {
         console.log(value);
         if (currentData[key] === newUpdate[key] && (value === "" || Number(value) === 0)) {
             setHasEmptyError((p) => ({ ...p, field: key }));
-        } else {
-            setHasEmptyError((p) => ({ ...p, field: null }));
-    }
-}
+            } else {
+              setHasEmptyError((p) => ({ ...p, field: null }));
+          }
+          }
 };
     callOnce();
-}, [formData, currentData]);
-*/
+    }, [formData, currentData]);
+    */
 
   const isDirty = Object.keys(formData || {}).some(
     (key) => formData[key] !== currentData?.[key],
   );
 
+  const updatedField = getUpdatedFields(currentData, formData);
+
   return {
     isDirty,
     hasEmptyError,
     handleInputChanges,
-    updatedField: getUpdatedFields(currentData, formData),
+    handleSelectChanges,
+    handleBooleanChanges,
+    newData: { ...oldStateData, ...updatedField },
+    updatedField,
   };
 };

@@ -37,15 +37,15 @@ export default function ItemsListInStore({ products }) {
               onClick={() => openModal(product)}
               key={product.id}
               className=" hover:cursor-pointer mx-auto bg-primary90
-              shadow shadow-gray-200 pb-4 overflow-hidden w-54 h-fit"
+              shadow shadow-gray-200 pb-4 overflow-hidden w-fit h-fit"
             >
               <Image
                 src={
                   product?.images ? product?.images[0] : "/icons/gray_logo.png"
                 }
                 alt={product?.name}
-                width={120}
-                height={120}
+                width={200}
+                height={250}
                 className="w-auto h-auto"
               />
               <p className="mx-2 mt-4 text-based font-medium text-pretty text-teal-900 font-sans_serif">

@@ -1,4 +1,8 @@
 import Card from "@/components/card";
+import { faViadeoSquare } from "@fortawesome/free-brands-svg-icons";
+import { faNoteSticky } from "@fortawesome/free-regular-svg-icons";
+import { faExternalLink, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -57,22 +61,48 @@ export default function AdminHome() {
     <main className="space-y-6 mx-auto max-w-xl">
       <section className="space-y-2">
         <h1 className="text-2xl font-bold">Good Afternoon, Daniel!</h1>
-        <div className="flex text-primary gap-x-4">
+        <div className="flex  gap-x-4">
           {/* Outline Buttons */}
-          <button>Share Store</button>
-          <button>Upgrade plan</button>
+          <button className="outline_button">Share Store</button>
+          <button className="outline_button">Upgrade plan</button>
         </div>
       </section>
 
       <section className="space-y-2">
-        <div className="flex justify-between">
-          <p className="text-muted font-semibold">Store Overview</p>
-          <button className="text-primary underline">
-            Check your store here{" "}
+        <div className="flex items-center justify-between">
+          <p className="text-muted  font-semibold">Store Overview</p>
+          <button className="rounded-full text-muted px-6 py-2 ">
+            <Link className="" href="/">
+              Check your store here{" "}
+            </Link>
+            <FontAwesomeIcon icon={faExternalLink} />
           </button>
         </div>
 
-        {/* Overview of Store */}
+        <Card>
+          <article className="flex justify-between items-center">
+            <h2>Credit Left</h2>
+            <p className="bg-secondary px-6 rounded-full text-muted py-1">
+              Premium
+            </p>
+          </article>
+          <p className="text-6xl">300</p>
+        </Card>
+        <Card>
+          <div>
+            <p className="text-base font-medium">
+              Upload a video about your business, atleast 30-seconds - 60
+              seconds long
+            </p>
+            <p className="text-muted text-desc">paid feature</p>
+          </div>
+          <FontAwesomeIcon
+            className="text-center text-primary w-full text-[15rem]"
+            icon={faVideo}
+          />
+          <button className="bg-input rounded w-full">Upload</button>
+        </Card>
+        {/* Overview of Store 
         <Card className="flex justify-between">
           <p className="text-based">Views Today </p>
           <p className="text-xl font-medium">67</p>
@@ -92,32 +122,68 @@ export default function AdminHome() {
           <p className="text-based">Active Customers</p>
           <p className="text-xl font-medium">13</p>
         </Card>
-      </section>
-
-      <section>
-        <h2 className="text-muted font-semibold">
-          Add your video to your store
-        </h2>
+          */}
       </section>
 
       {/*
- SlideShow;
- 
+ SlideShow; 
  <section>
         <h2 className="text-muted font-semibold">Guide to Use QuichShop!</h2>
         <article className=" text-muted text-desc">Coming soon!</article>
       </section>
 */}
       <section>
-        <h2 className="text-muted font-semibold">Recent activity</h2>
+        <h2 className="text-muted font-semibold">Usage Log (Whatsapp)</h2>
+        <Card className="">
+          <ul className="space-y-4">
+            <li className="flex items-center justify-between">
+              <div>
+                <p>Created a Product</p>
+                <p className="text-muted text-desc">@ 5pm Today</p>
+              </div>
+              <p className="font-medium">5 credit </p>
+            </li>
+            <li className="flex items-center justify-between">
+              <div>
+                <p>Created a Product</p>
+                <p className="text-muted text-desc">@ 5pm Today</p>
+              </div>
+              <p className="font-medium">5 credit </p>
+            </li>
+            <li className="flex items-center justify-between">
+              <div>
+                <p>Created a Product</p>
+                <p className="text-muted text-desc">@ 5pm Today</p>
+              </div>
+              <p className="font-medium">5 credit </p>
+            </li>
+          </ul>
+        </Card>
       </section>
 
       <section>
         <h2 className="text-muted font-semibold">Support</h2>
-        <p>Contact via email: help@quich.shop</p>
-        <p>Want us to add a dope feature? let us know</p>
-        <p>Engage with us on X and our Whatsapp channel</p>
-        <p>Send a feedback on whatsapp</p>
+        <div className="space-y-5">
+          <Card className="">
+            <p>Email help@quich.shop</p>
+          </Card>
+          <Card className="">
+            <p>Engage with us on socials</p>
+            <p>x(Twitter)</p>
+            <p>Whatsapp Channel</p>
+          </Card>
+
+          <Card className="">
+            <p>Want us to add a dope feature? let us know</p>
+          </Card>
+
+          <Card className="">
+            <p>
+              <FontAwesomeIcon icon={faNoteSticky} />
+              Send a feedback
+            </p>
+          </Card>
+        </div>
       </section>
 
       {/*

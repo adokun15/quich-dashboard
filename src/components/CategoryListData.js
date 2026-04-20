@@ -50,7 +50,9 @@ export default function CategoryListData({ category, pages, total_category }) {
             {category?.map((c) => (
               <tr key={c?.id}>
                 <td>
-                  <h3>{c?.name}</h3>
+                  <h3>
+                    <Link href={`/admin/category/${c?.id}`}>{c?.name}</Link>
+                  </h3>
                 </td>
                 <td>{c?.isvisible ? "Visible" : "Not visible"}</td>
               </tr>
