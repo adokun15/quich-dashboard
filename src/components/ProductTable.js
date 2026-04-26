@@ -81,14 +81,14 @@ export default function ProductTableInfo({
                   onClick={() => toProductId(p?.id)}
                   className="hover:bg-gray-50 transition"
                 >
-                  <td className="px-6 py-4 flex font-medium text-gray-900">
+                  <td className="px-6 py-4 items-center gap-3 flex font-medium text-gray-900">
                     <div>
-                      {!p.images && (
+                      {p?.images && (
                         <Image
-                          src={p.images[0]}
-                          height={10}
-                          width={10}
-                          la
+                          className="w-[60px] h-[40px]"
+                          src={p?.images[0]}
+                          height={40}
+                          width={60}
                           alt={p.name}
                         />
                       )}

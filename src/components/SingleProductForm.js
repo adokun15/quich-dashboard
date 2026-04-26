@@ -38,7 +38,6 @@ export default function SingleProductForm({ product, getCategoryItem }) {
     // if (!isDirty && hasEmptyError) return;
 
     //Check if the updated Value has an Empty String
-
     const res = await UpdateProductDetail({
       updates: updatedField,
       product_id: product?.id,

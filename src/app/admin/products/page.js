@@ -8,6 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "@/components/card";
 import ProductTableInfo from "@/components/ProductTable";
+import CreateButtonAction from "@/components/CreateButton";
 
 const getStoreProducts = async ({ filter = {} }) => {
   try {
@@ -92,15 +93,19 @@ export default async function ProductsPage({ searchParams }) {
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
         <div className="flex justify-between px-4">
           <div>
-            <h2 className="text-6">Products</h2>
+            <h2 className="text-2xl font-medium">Products</h2>
             <p className="text-muted text-2">
               Manage all items and inventory on your store
             </p>
           </div>
 
-          <p className="text-3 text-primary font-medium">
-            Add product via whatsapp{" "}
-          </p>
+          <CreateButtonAction to="/admin/products/new">
+            <span className="">Create Product</span>
+            <FontAwesomeIcon
+              className="text-primary hover:text-text"
+              icon={faPlus}
+            />
+          </CreateButtonAction>
         </div>
 
         <ProductTableInfo {...products} />
