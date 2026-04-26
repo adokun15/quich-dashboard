@@ -1,12 +1,18 @@
 import OrdersTableInfo from "@/components/OrdersTable";
 import { ToggleButton } from "@/components/ToggleButton";
-import { faPen, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faInfoCircle,
+  faPen,
+  faPlay,
+  faPlus,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Access cookies for token;
-const getOrdersData = async () => {
+const getOrdersData = async ({ filter }) => {
   try {
-    // Get User Cookies first: 30mins
+    //Get User Cookies first: 30mins
     //  const cookie = await cookies();
     //const user_token = cookie?.get("quich_login_token");
 
@@ -14,9 +20,16 @@ const getOrdersData = async () => {
     //    redirect("/");
     // }
 
+    //Filter
+    const filterstring = Object.entries(filter)
+      .map(([key, value]) => {
+        return `${key}=${value}`;
+      })
+      .join("&");
+
     //Fetch data if token exist;
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/orders`,
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/orders?${filterstring}`,
       {
         method: "GET",
         headers: {
@@ -41,12 +54,14 @@ const getOrdersData = async () => {
   }
 };
 
-export default async function OrdersPage() {
-  const orders = await getOrdersData();
+export default async function OrdersPage({ searchParams }) {
+  const filter = await searchParams;
+
+  const orders = await getOrdersData({ filter });
 
   console.log(orders);
 
-  if (orders?.statusCode === 500) {
+  if (orders?.error) {
     return (
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
         <div className="flex justify-between px-4">
@@ -71,7 +86,7 @@ export default async function OrdersPage() {
           </button>
         </div>
 
-        <p className="text-center text-2xl">{orders?.message}</p>
+        <p className="text-center text-2xl">{orders?.error}</p>
       </main>
     );
   }
@@ -81,13 +96,18 @@ export default async function OrdersPage() {
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
         <div className="flex justify-between">
           <div className="px-4">
-            <h2 className="text-6">Orders</h2>
+            <h2 className="text-2xl font-medium">Orders</h2>
             <p className="text-muted text-2">
               Keep track of all your business sales.
             </p>
           </div>
 
-          <button className="text-primary ">How are Orders created ?</button>
+          <button className="space-x-2 cursor-pointer">
+            <span className="font-medium  text-base text-muted">
+              How are orders created
+            </span>
+            <FontAwesomeIcon className="text-primary " icon={faInfoCircle} />
+          </button>
         </div>
 
         <OrdersTableInfo {...orders} />

@@ -12,7 +12,7 @@ import CreateButtonAction from "@/components/CreateButton";
 
 const getStoreProducts = async ({ filter = {} }) => {
   try {
-    // Get User Cookies first: 30mins
+    //Get User Cookies first: 30mins
     //const cookie = await cookies();
     //const user_token = cookie?.get("quich_login_token");
 
@@ -40,7 +40,7 @@ const getStoreProducts = async ({ filter = {} }) => {
     );
 
     const data = await res.json();
-    console.log(data);
+    //console.log(data);
     if (!data?.status) {
       // Prompt modal if cookie has expired
 
