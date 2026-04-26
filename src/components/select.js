@@ -93,7 +93,15 @@ export function SelectForm({
   );
 }
 
-export function SelectActionButton({ className, title, children }) {
+//Manage Global Action Button
+export function SelectActionButton({
+  className,
+  logo,
+  title,
+  logo_right = false,
+  logo_style = "",
+  children,
+}) {
   const [selectorIsOpened, setSelectorIsOpened] = useState(false);
 
   const toggle = () => setSelectorIsOpened((prev) => !prev);
@@ -106,21 +114,29 @@ export function SelectActionButton({ className, title, children }) {
 
   return (
     <div className={`relative inline-block text-left ${className}`}>
-      {/* Trigger Button */}
       <button
         onClick={toggle}
-        className="flex items-center justify-between gap-2 px-3 py-2 bg-primary90 border border-gray-300 rounded-md shadow-sm hover:bg-opacity-90 transition"
+        className="flex items-center 
+        justify-between hover:cursor-pointer gap-2 px-3 py-2  
+        border border-gray-300 rounded-md  
+        hover:bg-opacity-90 transition"
       >
-        {title}
+        {logo && !logo_right && (
+          <FontAwesomeIcon icon={logo} className={logo_style} />
+        )}
+        <span>{title}</span>
+        {logo && logo_right && (
+          <FontAwesomeIcon icon={logo} className={logo_style} />
+        )}
       </button>
 
-      {/* Dropdown */}
       <ul
         onClick={handleCloseEventForChild}
         className={`
-          absolute left-0 mt-2 min-w-44 w-fit origin-top-left
-          bg-white border h-fit border-gray-200 rounded-md shadow-lg
-          overflow-hidden
+          absolute right-0 mt-2 min-w-44 
+          bg-white/80 py-2 space-y-2 w-fit origin-top-right
+         border h-fit border-gray-200 rounded-md 
+          [&_li]:hover:bg-gray-100 cursor-pointer [&_li]:px-2 overflow-hidden
           transition-all duration-200 ease-out
           ${
             selectorIsOpened

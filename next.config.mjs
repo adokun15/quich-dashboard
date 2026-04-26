@@ -11,6 +11,9 @@ const nextConfig = {
       },
     ],
   },
+  logging: {
+    browserToterminal: true,
+  },
 };
 
 export default nextConfig;

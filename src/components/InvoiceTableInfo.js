@@ -34,10 +34,15 @@ export default function InvoiceList() {
           <button>Apply Filter</button>
         </form>
       </SelectActionButton>
-      <Card>
-        <h1>INV_41314</h1>
-        <p>Periodity: 23 March - 23 April</p>
-        <p>Payment status: pending</p>
+      <Card className="flex items-center justify-between pr-4">
+        <h1 className="font-medium ">INV_41314</h1>
+        <p> 23 March - 23 April</p>
+        <p
+          className="text-primary border-primary border-dotted 
+        border-3 px-6 py-2 rounded-full text-base font-medium"
+        >
+          pending
+        </p>
       </Card>
 
       <Card>

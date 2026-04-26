@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "@/components/card";
 import ProductTableInfo from "@/components/ProductTable";
 
-const getStoreProducts = async () => {
+const getStoreProducts = async ({ filter = {} }) => {
   try {
     // Get User Cookies first: 30mins
     //const cookie = await cookies();
@@ -19,9 +19,16 @@ const getStoreProducts = async () => {
     // redirect("/");
     // }
 
+    //Filter
+    const filterstring = Object.entries(filter)
+      .map(([key, value]) => {
+        return `${key}=${value}`;
+      })
+      .join("&");
+
     //Fetch data if token exist;
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/products`,
+      `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/products?${filterstring}`,
       {
         method: "GET",
         headers: {
@@ -42,11 +49,13 @@ const getStoreProducts = async () => {
 
     return data?.data;
   } catch (e) {
+    console.log(e);
     return { error: e?.message };
   }
 };
 
-export default async function ProductsPage() {
+export default async function ProductsPage({ searchParams }) {
+  const filter = await searchParams;
   /* if (products?.statusCode === 500) {
     return (
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
@@ -77,7 +86,7 @@ export default async function ProductsPage() {
     );
   }
 */
-  const products = await getStoreProducts();
+  const products = await getStoreProducts({ filter });
   return (
     <>
       <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
