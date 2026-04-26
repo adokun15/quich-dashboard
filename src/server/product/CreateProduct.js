@@ -50,15 +50,6 @@ export async function CreateProductAction(prev, formData) {
     return { error };
   }
 
-  /*  if (!name) {
-    return {
-      error: {
-        message: "Invalid product name!",
-      },
-    };
-  }
-*/
-
   //Proceed to Backend
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/products`,

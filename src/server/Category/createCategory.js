@@ -1,8 +1,9 @@
 "use server";
 import { getToken } from "@/utils/local-access";
+import { redirect } from "next/navigation";
 
 // Update customerda
-export async function AddNewCategory({ name }) {
+export async function AddNewCategory(prev, formData) {
   //Prevent bad field;
   //  const token = await getToken();
 
@@ -15,7 +16,12 @@ export async function AddNewCategory({ name }) {
   //  };
   // }
 
-  console.log(name);
+  const name = formData.get("category");
+
+  if (!name || !isNaN(name)) {
+    return { error: "Invalid name" };
+  }
+
   //Proceed to Backend
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/category`,
@@ -25,28 +31,22 @@ export async function AddNewCategory({ name }) {
         "Content-Type": "application/json",
         Authorization: `Bearer some-tokem`,
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name: name?.toLowerCase() }),
     },
   );
 
   const category = await res.json();
 
-  if (!category?.status) {
-    return { error: "Something Went Wrong!" };
-  }
-  //Return Error if available
+  console.log(category);
 
-  /*
-  if (category?.error){
+  if (!category?.status) {
     return {
-      error: {
-        message: customer?.error?.message,
-        status: ca?.error?.status,
-      },
+      error: category?.message,
     };
   }
-*/
 
-  //rETURN data
-  return category?.id;
+  //Invalidate Cache;
+
+  //Redirect
+  return category?.status && redirect(`/admin/category/${category?.id}`);
 }

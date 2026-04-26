@@ -62,7 +62,7 @@ export default function ProductTableInfo({
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden  rounded-xl ">
+      <div className="overflow-hidden rounded-xl ">
         <table className="w-full text-sm text-left">
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
             <tr>

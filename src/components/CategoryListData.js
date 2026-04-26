@@ -1,5 +1,5 @@
 // Category info;
-
+"use client";
 import {
   faChevronDown,
   faChevronLeft,
@@ -7,79 +7,70 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import SearchInput from "./SearchInput";
+import useQueryParams from "@/utils/state/FilterParams";
+import { useRouter } from "next/navigation";
 
 //Max per all store: 15;
-export default function CategoryListData({ category, pages, total_category }) {
+export default function CategoryListData({ category, total_category }) {
+  const router = useRouter();
+
+  const toCategoryId = (id) => {
+    router.push(`/admin/category/${id}`);
+  };
+
   return (
-    <div>
-      <header className="flex justify-between">
-        <article>
-          <h3>Category</h3>
-          <p className="text-muted">Group products into different category</p>
-        </article>
-        <article className="flex">
-          <button>Share</button>
-          <button>
-            <Link href="/admin/category/new">Create</Link>
-          </button>
-        </article>
-      </header>
-
+    <div className="p-6 rounded bg-white">
       {/* Search and Filter */}
-      <div className="flex gap-3">
-        <article className="grow">
-          <input placeholder="Search category" />
-        </article>
+      <div className="flex items-center justify-between mb-6">
+        <SearchInput
+          placeholder="Search category..."
+          className="w-80 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+        />
 
-        <button>Filter</button>
+        {/*<button>Filter</button>*/}
       </div>
 
       {/* Data Display */}
       {category && category.length === 0 && <p>No Category yet</p>}
       {category && category.length > 0 && (
-        <table className="w-full  text-gray-500  text-left">
-          <thead className="text-xs text-gray-500 uppercase bg-gray-50 ">
-            <tr className="">
-              <th scope="col" className="px-6 py-3">
-                Category
-              </th>
-              <th className="px-6 py-3 text-nowrap">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {category?.map((c) => (
-              <tr key={c?.id}>
-                <td>
-                  <h3>
-                    <Link href={`/admin/category/${c?.id}`}>{c?.name}</Link>
-                  </h3>
-                </td>
-                <td>{c?.isvisible ? "Visible" : "Not visible"}</td>
+        <div className="overflow-hidden rounded-xl ">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Category
+                </th>
+                <th className="px-6 py-3 text-nowrap">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {category?.map((c) => (
+                <tr
+                  onClick={() => toCategoryId(c?.id)}
+                  className="hover:bg-gray-50 cursor-pointer transition"
+                  key={c?.id}
+                >
+                  <td className="capitalize px-6 py-4 text-gray-700">
+                    <h3>
+                      <Link href={`/admin/category/${c?.id}`}>{c?.name}</Link>
+                    </h3>
+                  </td>
+                  <td className="px-6 py-4 text-gray-700">
+                    {c?.isvisible ? "Visible" : "Not visible"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Limit, Paginate */}
       <div className="flex justify-between">
-        <p className="text-3 font-medium grow">Total 8 </p>
-
-        <article className="flex gap-4">
-          <button>
-            {" "}
-            <span>100</span>
-            <FontAwesomeIcon icon={faChevronDown} />
-          </button>
-          <div>
-            <button>
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-            <button>
-              <FontAwesomeIcon icon={faChevronRight} />
-            </button>
-          </div>
-        </article>
+        <p className="text-sm text-gray-600">
+          Total <span className="font-semibold">{total_category}</span>
+        </p>{" "}
       </div>
     </div>
   );
