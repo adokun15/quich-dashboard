@@ -1,11 +1,39 @@
 // Simple proxy used by Next to control routing for specific paths.
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import { NextResponse, NextRequest } from "next/server";
+import { updateSession } from "./lib/supabase/proxy";
 export default async function proxy(req) {
   const host = req.headers.get("host") || "";
   const pathname = req.nextUrl.pathname;
 
   let subdomain = host?.split(".")[0];
+
+  //Authentication Domain
+  if (subdomain === "auth" && pathname?.startsWith("/login")) {
+    return NextResponse.rewrite(new URL(`/auth/login`, req.url));
+  }
+
+  if (subdomain === "auth" && pathname?.startsWith("/confirm-login")) {
+    return NextResponse.rewrite(new URL(`/auth/confirm-login`, req.url));
+  }
+
+  //Auth protection;
+  if (
+    subdomain === "auth" &&
+    !pathname?.startsWith("/login") &&
+    !pathname?.startsWith("/confirm-login")
+  ) {
+    return NextResponse.rewrite(new URL(`/auth/not_found`, req.url));
+  }
+
+  //Onboarding
+  if (subdomain === "onboarding") {
+    /* local storage: Check Cookie if still active */
+    /* db: Check if onboarding was completed ---> store.name.com */
+    /* or: Check Current step and proceed */
+    // return NextResponse.rewrite(new URL(`/auth/not_found`, req.url));
+  }
 
   // Store Routes
   if (pathname === "/checkout") {
@@ -20,7 +48,7 @@ export default async function proxy(req) {
 
   //Admin Page:
   if (pathname?.startsWith("/admin")) {
-    const cookie = await cookies();
+    await updateSession(req);
 
     // if (!cookie.get("quich-session")) {
     //Validate here and Cache Request
@@ -36,7 +64,7 @@ export default async function proxy(req) {
 
 export const config = {
   // Ensure both /settings and nested paths are matched.
-  matcher: ["/", "/checkout", "/admin/:path*"],
+  matcher: ["/login", "/confirm-login", "/", "/checkout", "/admin/:path*"],
 };
 
 //Validate /admin Paths

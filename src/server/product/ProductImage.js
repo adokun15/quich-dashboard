@@ -1,6 +1,6 @@
 "use server";
 
-import { createClientFromSupabase } from "@/lib/supabase";
+import { createClientFromSupabase } from "@/lib/supabase/client";
 import { UpdateProductDetail } from "./UpdateProduct";
 const supabase = createClientFromSupabase();
 
