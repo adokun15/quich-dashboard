@@ -1,16 +1,19 @@
 //Single Customer Page!
-
+import Card from "@/components/card";
 import SingleCustomerInfo from "@/components/SingleCustomerInfo";
+import { faCircleInfo, faInfo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cookies } from "next/headers";
 
 const getSingleCustomer = async (id) => {
   try {
     // Get User Cookies first: 30mins
-    //const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookie = await cookies();
+    const user_token = cookie?.get("quichshop_access_token");
 
     //if (!user_token) {
-    // redirect("/");
-    // }
+    // redirect("auth.localhost.3000/login");
+    //}
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -19,7 +22,7 @@ const getSingleCustomer = async (id) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-value`,
+          Authorization: `Bearer ${user_token}`,
         },
       },
     );
@@ -27,21 +30,40 @@ const getSingleCustomer = async (id) => {
     const data = await res.json();
 
     if (!data?.status) {
-      // Prompt modal if cookie has expired
-
-      //Show modal if store name don't match!
-      return { error: data?.message, status_code: data?.status_code };
+      return {
+        error: {
+          code: data?.code,
+          message: data?.message,
+        },
+      };
     }
 
     return data?.customer;
   } catch (e) {
-    return { error: e?.message };
+    return { error: { message: e?.message, code: 500 } };
   }
 };
 
 export default async function CustomerDetailPage({ params }) {
   const { customerId } = await params;
   const customer = await getSingleCustomer(customerId);
+
+  if (customer?.error) {
+    return (
+      <main className="mx-auto  w-full max-w-xl space-y-4">
+        <Card className="space-y-5">
+          <div>
+            <h2 className="text-xl font-medium">
+              <FontAwesomeIcon icon={faCircleInfo} />
+              <span>Error</span>
+            </h2>
+            <p className="text-base text-muted">{customer?.error?.message}</p>
+          </div>
+          <button className="bg-primary rounded">Retry</button>
+        </Card>
+      </main>
+    );
+  }
 
   return <SingleCustomerInfo customer={customer} />;
 }

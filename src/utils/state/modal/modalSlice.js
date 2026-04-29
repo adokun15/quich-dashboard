@@ -8,8 +8,23 @@ export const ModalSlice = createSlice({
   initialState: {
     cart_modal: false,
     product_modal: { show: false, product: {} },
+    admin_modal: false,
+    dropdown: { tag: null, show: null },
+    toaster_modal: { type: null, show: false, message: "", title: "" },
   },
   reducers: {
+    ToasterModalToggle: (state, action) => {
+      if (!state.toaster_modal.show) {
+        state.toaster_modal = {
+          type: action.payload.type,
+          message: action.payload.message,
+          title: action.payload.title,
+        };
+      }
+
+      state.product_modal.show = !state.toaster_modal.show;
+    },
+
     CartModalToggle: (state) => {
       state.cart_modal = !state.cart_modal;
     },
@@ -24,6 +39,7 @@ export const ModalSlice = createSlice({
   },
 });
 
-export const { CartModalToggle, ProductModalToggle } = ModalSlice.actions;
+export const { CartModalToggle, ProductModalToggle, ToasterModalToggle } =
+  ModalSlice.actions;
 
 export const { reducer: ModalReducer } = ModalSlice;

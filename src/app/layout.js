@@ -1,6 +1,10 @@
+"use client";
 import "./globals.css";
 import { ThemeProvider } from "../utils/theme-provider";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import ToasterMessage from "@/components/Toaster";
+import { Provider } from "react-redux";
+import store from "@/utils/state/store";
 
 /*import { Geist, Geist_Mono } from "next/font/google";
 const geistSans = Geist({
@@ -20,15 +24,20 @@ export default function RootLayout({ children, modals }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnchange
-        >
-          <div className="relative min-h-screen">{children}</div>
-          <div>{modals}</div>
-        </ThemeProvider>
+        <Provider store={store}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnchange
+          >
+            <div className="relative min-h-screen">
+              {children}
+              {/*  <ToasterMessage />*/}
+            </div>
+            <div>{modals}</div>
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

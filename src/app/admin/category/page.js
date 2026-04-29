@@ -1,5 +1,6 @@
 import CategoryListData from "@/components/CategoryListData.js";
 import CreateButtonAction from "@/components/CreateButton";
+import { TableSkeleton } from "@/components/Skeleton";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

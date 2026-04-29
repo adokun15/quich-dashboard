@@ -1,9 +1,11 @@
+"use server";
 import { getToken } from "@/utils/local-access";
+import { revalidateTag } from "next/cache";
 
 // Update customerda
-export async function UpdateCustomerDetail({ store_id, customer_id }) {
+export async function DeleteCustomerDetail({ customer_id }) {
   //Prevent bad field;
-  const token = await getToken();
+  /* const token = await getToken();
 
   if (!token) {
     return {
@@ -13,33 +15,38 @@ export async function UpdateCustomerDetail({ store_id, customer_id }) {
       },
     };
   }
-
+*/
   //Proceed to Backend
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/customers/${customer_id}`,
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+
+        Authorization: `Bearer sfd`,
       },
-      body: JSON.stringify({
-        store_id,
-      }),
     },
   );
 
   const customer = await res.json();
   //Return Error if available
 
-  if (customer?.error) {
+  console.log(customer);
+  if (!customer?.status) {
     return {
       error: {
-        message: customer?.error?.message,
-        status: customer?.error?.status,
+        message: customer?.message,
+        code: customer?.code,
       },
     };
   }
 
+  //Invalidate Cache
+  revalidateTag("customers");
+
+  console.log(customer);
+
   //rETURN data
-  return { name: customer?.customer?.name };
+  return { name: "" };
 }
