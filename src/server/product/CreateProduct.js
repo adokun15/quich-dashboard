@@ -1,6 +1,6 @@
 "use server";
 import { getToken } from "@/utils/local-access";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function CreateProductAction(prev, formData) {
@@ -86,6 +86,9 @@ export async function CreateProductAction(prev, formData) {
   const id = product?.status && product?.data?.id;
 
   //  revalidatePath("/admin/products");
+
+  //Invalidate Product
+  updateTag("products");
 
   redirect(`/admin/products/${id}`);
 }

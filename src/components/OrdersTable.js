@@ -31,7 +31,7 @@ export default function OrdersTableInfo({ orders, total_orders, page }) {
     <main className=" bg-white px-4 space-y-4 py-6 rounded">
       {/* Search, Filter, Sort; */}
       <article className="flex justify-between">
-      {/* Bug: wont filter number expect u remove the '0' */}
+        {/* Bug: wont filter number expect u remove the '0' */}
         <SearchInput
           placeholder="Search Order by id, customer name"
           className="w-80 rounded-md border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
@@ -64,110 +64,114 @@ export default function OrdersTableInfo({ orders, total_orders, page }) {
         </div>
       </article>
 
-      {/* Customer data */}
-    {orders?.length === 0 && <p className="text-center font-medium text-xl">Order not found</p>}   
-    {orders?.length > 0 && 
-      <>
+      {orders?.length === 0 && (
+        <p className="text-center font-medium text-xl">Order not found</p>
+      )}
 
-      <div className="overflow-hidden rounded-xl ">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                OrderId
-              </th>
-              <th className="px-6 py-3 text-nowrap">Customer</th>
-              <th className="px-6 py-3 text-nowrap">Total amt</th>
-              <th className="px-6 py-3 text-nowrap">Status</th>
-              <th className="px-6 py-3 text-nowrap">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders &&
-              orders?.length > 0 &&
-              orders?.map((order) => (
-                <tr key={order?.order_id}>
-                  <td className="px-6 font-medium text-base capitalize py-4 text-gray-700">
-                    <Link href={`orders/${order?.order_id}`}>
-                      #{order?.order_id}
-                    </Link>
-                  </td>
-                  <td className="px-6 capitalize py-4 text-gray-700">
-                    <h3 className="font-medium">{order?.customer_name}</h3>
-                    <p className="font-muted">0{order?.customer_phone}</p>
-                  </td>
-                  <td className="space-x-1 px-6 capitalize py-4 text-gray-700">
-                    NGN
-                    <span className="text-xl  font-medium">
-                      {Number(order?.total_amount).toLocaleString()}
-                    </span>
-                  </td>
-                  <td className="px-6 capitalize py-4 text-gray-700 capitalize">
-                    <span className=" rounded-full  bg-input border px-3 py-1">
-                      {order?.status}
-                    </span>
-                  </td>
-                  <td className="px-6 capitalize py-4 text-gray-700">
-                    {new Date(order?.order_creation).toLocaleDateString()}
-                  </td>
+      {orders?.length > 0 && (
+        <>
+          <div className="overflow-hidden rounded-xl ">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    OrderId
+                  </th>
+                  <th className="px-6 py-3 text-nowrap">Customer</th>
+                  <th className="px-6 py-3 text-nowrap">Total amt</th>
+                  <th className="px-6 py-3 text-nowrap">Status</th>
+                  <th className="px-6 py-3 text-nowrap">Date</th>
                 </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {orders &&
+                  orders?.length > 0 &&
+                  orders?.map((order) => (
+                    <tr key={order?.order_id}>
+                      <td className="px-6 font-medium text-base capitalize py-4 text-gray-700">
+                        <Link
+                          className="border-b-primary border-dashed border-b-2"
+                          href={`orders/${order?.order_id}`}
+                        >
+                          #{order?.order_id}
+                        </Link>
+                      </td>
+                      <td className="px-6 capitalize py-4 text-gray-700">
+                        <h3 className="font-medium">{order?.customer_name}</h3>
+                        <p className="font-muted">0{order?.customer_phone}</p>
+                      </td>
+                      <td className="space-x-1 px-6 capitalize py-4 text-gray-700">
+                        NGN
+                        <span className="text-xl  font-medium">
+                          {Number(order?.total_amount).toLocaleString()}
+                        </span>
+                      </td>
+                      <td className="px-6 capitalize py-4 text-gray-700 capitalize">
+                        <span className=" rounded-full  bg-input border px-3 py-1">
+                          {order?.status}
+                        </span>
+                      </td>
+                      <td className="px-6 capitalize py-4 text-gray-700">
+                        {order?.order_creation &&
+                          new Date(order?.order_creation).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
 
+          <div className="flex items-center justify-between mt-6">
+            <p className="text-sm text-gray-600">
+              Total <span className="font-semibold">{total_orders}</span>
+            </p>
 
-      <div className="flex items-center justify-between mt-6">
-        <p className="text-sm text-gray-600">
-          Total <span className="font-semibold">{total_orders}</span>
-        </p>
-
-        <article className="flex items-center gap-4">
-          <SelectActionButton
-            title={queryParams?.get("limit") || 30}
-            logo_right={true}
-            logo_style="text-black"
-            logo={faChevronDown}
-            >
-            <li>
-              <button
-                onClick={() =>
-                  setQueryParams({
-                    limit: 30,
-                  })
-                }
-                >
-                30
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() =>
-                  setQueryParams({
-                    limit: 50,
-                  })
-                }
-                >
-                50
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() =>
-                  setQueryParams({
-                    limit: 100,
-                  })
-                }
-                >
-                100
-              </button>
-            </li>
-          </SelectActionButton>
-          <PaginateButton total_item_length={total_orders} />
-        </article>
-      </div>
-    </>
-    }
+            <article className="flex items-center gap-4">
+              <SelectActionButton
+                title={queryParams?.get("limit") || 30}
+                logo_right={true}
+                logo_style="text-black"
+                logo={faChevronDown}
+              >
+                <li>
+                  <button
+                    onClick={() =>
+                      setQueryParams({
+                        limit: 30,
+                      })
+                    }
+                  >
+                    30
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() =>
+                      setQueryParams({
+                        limit: 50,
+                      })
+                    }
+                  >
+                    50
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() =>
+                      setQueryParams({
+                        limit: 100,
+                      })
+                    }
+                  >
+                    100
+                  </button>
+                </li>
+              </SelectActionButton>
+              <PaginateButton total_item_length={total_orders} />
+            </article>
+          </div>
+        </>
+      )}
     </main>
   );
 }

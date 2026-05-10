@@ -1,9 +1,22 @@
+import StoreIntroVideo from "@/components/AboutVideo";
 import Card from "@/components/card";
+import WelcomeGreetings from "@/components/WelcomeGreetings";
 import { faViadeoSquare } from "@fortawesome/free-brands-svg-icons";
-import { faNoteSticky } from "@fortawesome/free-regular-svg-icons";
-import { faExternalLink, faVideo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCopy,
+  faMessage,
+  faNoteSticky,
+} from "@fortawesome/free-regular-svg-icons";
+import {
+  faShare,
+  faExternalLink,
+  faVideo,
+  faMailBulk,
+  faMailReply,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -52,31 +65,33 @@ const getAdminData = async () => {
 export default async function AdminHome() {
   const d = await getAdminData();
 
-  console.log(d);
+  //console.log(d);
   //Checkout after completing the order!
   return (
     <main className="space-y-6 mx-auto max-w-xl">
-      <section className="space-y-2">
-        <h1 className="text-2xl font-bold">Good Afternoon, Daniel!</h1>
-        <div className="flex  gap-x-4">
-          {/* Outline Buttons */}
-          <button className="outline_button">Share Store</button>
-          <button className="outline_button">Upgrade plan</button>
-        </div>
-      </section>
+      {/*<WelcomeGreetings />*/}
 
       <section className="space-y-2">
-        <div className="flex items-center justify-between">
-          <p className="text-muted  font-semibold">Store Overview</p>
-          <button className="rounded-full text-muted px-6 py-2 ">
-            <Link className="" href="/">
-              Check your store here{" "}
-            </Link>
-            <FontAwesomeIcon icon={faExternalLink} />
-          </button>
+        <div className="flex items-center my-4 justify-between">
+          <p className="text-muted text-xl font-semibold">Store Overview</p>
+
+          <div className="flex gap-x-1">
+            <button className="px-1 space-x-1 rounded-full text-muted  ">
+              <Link className="" href="/">
+                Share store
+              </Link>
+              <FontAwesomeIcon className="" icon={faShare} />
+            </button>
+            <button className="px-1 space-x-1 rounded-full text-muted  ">
+              <Link className="" href="/">
+                Live store
+              </Link>
+              <FontAwesomeIcon icon={faExternalLink} />
+            </button>
+          </div>
         </div>
 
-        <Card>
+        {/*    <Card>
           <article className="flex justify-between items-center">
             <h2>Credit Left</h2>
             <p className="bg-secondary px-6 rounded-full text-muted py-1">
@@ -85,20 +100,8 @@ export default async function AdminHome() {
           </article>
           <p className="text-6xl">300</p>
         </Card>
-        <Card>
-          <div>
-            <p className="text-base font-medium">
-              Upload a video about your business, atleast 30-seconds - 60
-              seconds long
-            </p>
-            <p className="text-muted text-desc">paid feature</p>
-          </div>
-          <FontAwesomeIcon
-            className="text-center text-primary w-full text-[15rem]"
-            icon={faVideo}
-          />
-          <button className="bg-input rounded w-full">Upload</button>
-        </Card>
+    */}
+        <StoreIntroVideo />
         {/* Overview of Store 
         <Card className="flex justify-between">
           <p className="text-based">Views Today </p>
@@ -119,7 +122,7 @@ export default async function AdminHome() {
           <p className="text-based">Active Customers</p>
           <p className="text-xl font-medium">13</p>
         </Card>
-          */}
+        */}
       </section>
 
       {/*
@@ -129,7 +132,9 @@ export default async function AdminHome() {
         <article className=" text-muted text-desc">Coming soon!</article>
       </section>
 */}
-      <section>
+
+      {/*
+    <section>
         <h2 className="text-muted font-semibold">Usage Log (Whatsapp)</h2>
         <Card className="">
           <ul className="space-y-4">
@@ -157,27 +162,65 @@ export default async function AdminHome() {
           </ul>
         </Card>
       </section>
+      */}
 
       <section>
         <h2 className="text-muted font-semibold">Support</h2>
-        <div className="space-y-5">
-          <Card className="">
-            <p>Email help@quich.shop</p>
-          </Card>
-          <Card className="">
-            <p>Engage with us on socials</p>
-            <p>x(Twitter)</p>
-            <p>Whatsapp Channel</p>
-          </Card>
-
-          <Card className="">
-            <p>Want us to add a dope feature? let us know</p>
-          </Card>
-
-          <Card className="">
+        <div className="space-y-2">
+          <Card className="flex items-center justify-between">
             <p>
-              <FontAwesomeIcon icon={faNoteSticky} />
-              Send a feedback
+              <span className="text-muted font-medium">Email</span>
+            </p>
+            <p className="space-x-2 flex gap-x-2 items-center">
+              <span className="border-b-4 p-1 border-primary border-dashed ">
+                help@quich.shop
+              </span>
+              <span>
+                <FontAwesomeIcon
+                  className="bg-gray-200 rounded-2xl p-1"
+                  icon={faCopy}
+                />
+              </span>
+            </p>
+          </Card>
+          <Card className="space-y-3">
+            <div className="border-b py-2">
+              <p className="text-muted font-medium">Socials</p>
+              <p className="text-xs text-muted">Engage with us on socials</p>
+            </div>
+            <div className="flex gap-x-4">
+              <p
+                className="bg-gray-200 text-[14px] px-4 py-1
+              rounded-full "
+              >
+                x <span className="">(twitter)</span>
+              </p>
+
+              <p
+                className="bg-gray-200 text-[14px] py-1 px-4
+                 rounded-full "
+              >
+                Whatsapp Channel
+              </p>
+            </div>
+          </Card>
+
+          <Card className=" space-y-2">
+            <p className="text-muted font-medium">Feature Request</p>
+            <p className="text-[14px] text-muted">
+              Want us to add a dope feature?{" "}
+              <span className="underline text-medium text-text cursor-pointer hover:underline-offset-1">
+                let us know
+              </span>
+            </p>
+          </Card>
+          <Card className=" space-y-2">
+            <p className="text-muted font-medium">Feedback</p>
+            <p className="text-[14px] text-muted">
+              The app is not working the way it should?{" "}
+              <span className="underline text-medium text-text cursor-pointer hover:underline-offset-1">
+                send us a feedback
+              </span>
             </p>
           </Card>
         </div>

@@ -4,80 +4,119 @@ import Card from "./card";
 import {
   faChevronDown,
   faChevronRight,
+  faExternalLink,
+  faPlus,
+  faSpinner,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useFormStateData } from "@/utils/state/FormState";
 import { ToggleButton } from "./ToggleButton";
 import { useState } from "react";
+import SearchInput from "./SearchInput";
+import { UpdateCategoryDetail } from "@/server/Category/updateCategory";
+import { DeleteSingleCategory } from "@/server/Category/DeleteCategory";
+import { useDispatch } from "react-redux";
+import { ToasterModalToggle } from "@/utils/state/modal/modalSlice";
+import ErrorText from "./errorText";
 
-export default function SingleCategory({ category, products }) {
+export default function SingleCategory({ category }) {
   //Manage field
+  //  const [search, setSearch] = useState("");
+  const { handleInputChanges, handleBooleanChanges, updatedField, isDirty } =
+    useFormStateData({ oldStateData: category });
 
-  const [search, setSearch] = useState("");
+  const [state, setState] = useState({
+    loading: null,
+    error: null,
+  });
 
+  const dispatch = useDispatch();
+
+  const isFormDirty = isDirty;
+
+  /*
+  //Product
   const [selectedProducts, setSelectedProducts] = useState(
     category?.productlist || [],
   );
 
-  const [addedProducts, setAddedProducts] = useState([]);
-  const [removedProducts, setRemovedProducts] = useState([]);
-  const {
-    handleInputChanges,
-    handleSelectChanges,
-    handleBooleanChanges,
-    isDirty,
-    updatedField,
-    newData,
-  } = useFormStateData({ oldStateData: category });
 
-  const toggleProduct = (product) => {
-    const exists = selectedProducts.find((p) => p.id === product.id);
+  const [newProductset, setNewProductSet] = useState([]);
 
-    if (exists) {
-      // remove
-      setSelectedProducts((prev) => prev.filter((p) => p.id !== product.id));
-
-      // track removal (only if originally existed)
-      if (category?.productlist.find((p) => p.id === product.id)) {
-        setRemovedProducts((prev) => [...prev, product.id]);
-      }
-
-      // remove from added if user reverts
-      setAddedProducts((prev) => prev.filter((id) => id !== product.id));
-    } else {
-      // add
-      setSelectedProducts((prev) => [...prev, product]);
-
-      // track addition (only if not originally in category)
-      if (!category?.productlist?.find((p) => p.id === product.id)) {
-        setAddedProducts((prev) => [...prev, product.id]);
-      }
-
-      // remove from removed if user reverts
-      setRemovedProducts((prev) => prev.filter((id) => id !== product.id));
-    }
+  //New Set of product
+  const toggleProduct = (newproduct) => {
+    setNewProductSet((p) => {
+      return [...p, newproduct];
+    });
   };
 
-  const filteredProducts = products?.filter((p) =>
-    p?.name.toLowerCase().includes(search.toLowerCase()),
-  );
 
-  const hasProductChanges =
-    addedProducts.length > 0 || removedProducts.length > 0;
+  const SaveProductCategory = async () => {
+    //Remove to that exist before and save new ones
+    let newproduct = [];
 
-  const isFormDirty = isDirty || hasProductChanges;
+    console.log(newProductset);
+  };
+*/
 
   //Action
   const EditCategory = async () => {
-    const payload = {
-      ...newData, // name, visibility etc
-      addedProducts,
-      removedProducts,
-    };
+    if (!isDirty || !updatedField) return;
 
-    console.log(payload);
+    setState((p) => ({ ...p, loading: "edit" }));
+    //console.log("reached");
 
-    // send to API
+    try {
+      //Check if the updated Value has an Empty String
+      const { error, id } = await UpdateCategoryDetail({
+        updates: updatedField,
+        category_id: category?.id,
+      });
+
+      if (error) {
+        setState((p) => ({ loading: null, error: error?.message }));
+        return;
+      }
+
+      dispatch(
+        ToasterModalToggle({
+          type: "success",
+          title: "Category updated",
+        }),
+      );
+
+      setState((p) => ({ loading: null, error: "" }));
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  const DeleteCategory = async () => {
+    if (!window.confirm("Are you sure you want to delete this category?"))
+      return;
+
+    setState((p) => ({ ...p, loading: "delete" }));
+
+    const { error } = await DeleteSingleCategory({
+      category_id: category?.id,
+    });
+
+    if (error) {
+      setState((p) => ({ loading: null, error: error?.message }));
+      return;
+    }
+
+    //tOAST
+    dispatch(
+      ToasterModalToggle({
+        type: "success",
+        title: `Category deleted!`,
+      }),
+    );
+
+    setState((p) => ({ loading: null, error: "" }));
+  };
+
   return (
     <main className="mx-auto w-full max-w-xl space-y-4">
       {/* Navigate Customer */}
@@ -87,14 +126,35 @@ export default function SingleCategory({ category, products }) {
         </article>
 
         <article className="flex items-center gap-3">
-          {/* Edit, View Order, Delete */}
-          <button className="text-danger">View</button>
-          <button className="text-danger">Share</button>
+          <button
+            className="text-primary py-1 
+                        px-4 space-x-2
+                       cursor-pointer rounded-[10px]"
+            onClick={() => setEditInputToOpen(false)}
+          >
+            <FontAwesomeIcon icon={faExternalLink} />
+            <span>View</span>
+          </button>
+          <button
+            disabled={state?.loading === "delete"}
+            onClick={DeleteCategory}
+            className="text-danger  px-2 space-x-2 cursor-pointer rounded"
+          >
+            {state?.loading === "delete" ? (
+              <FontAwesomeIcon icon={faSpinner} />
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faTrash} />
+                <span>Delete</span>
+              </>
+            )}
+          </button>{" "}
         </article>
       </section>
 
       <form className=" space-y-4">
         <Card className="space-y-6">
+          <ErrorText>{state?.error}</ErrorText>
           <div>
             <p>Name</p>
             <input
@@ -110,14 +170,31 @@ export default function SingleCategory({ category, products }) {
           <div className="flex justify-between items-center">
             <p>Visibility</p>
             <ToggleButton
-              field_name={"invisible"}
+              field_name={"isvisible"}
               cn={handleBooleanChanges}
-              defaultState={category?.invisible}
+              defaultState={category?.isvisible}
             />
           </div>
+          <article className="flex justify-between">
+            <button
+              type="button"
+              className={`filled_button ${!state?.loading && "opacity-100"} disabled:opacity-60 disabled:text-gray-700`}
+              disabled={!isFormDirty || state?.loading === "edit"}
+              onClick={EditCategory}
+            >
+              {state?.loading === "edit" ? (
+                <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
+              ) : (
+                <>
+                  <span>Save</span>
+                </>
+              )}
+            </button>
+          </article>
         </Card>
 
-        <Card className="space-y-3">
+        {/*
+        <Card className="space-y-4">
           <article className="flex justify-between ">
             <div>
               <h3 className="font-semibold">Products</h3>
@@ -126,23 +203,19 @@ export default function SingleCategory({ category, products }) {
               </p>
             </div>
             <button className="underline">
-              Total {selectedProducts.length}
+              {selectedProducts?.length > 0 &&
+                `add ${selectedProducts.length} product(s)`}
             </button>{" "}
           </article>
 
-          {/* search */}
           <div>
-            <input
-              placeholder="Find product"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />{" "}
+            <SearchInput placeholder="Find product" className="w-full" />
           </div>
 
-          {/* product list */}
           <div>
+            <p className="text-muted">Suggested list</p>
             <ul className="space-y-2">
-              {filteredProducts?.map((p) => {
+              {products?.map((p) => {
                 const isSelected = selectedProducts?.find(
                   (sp) => sp.id === p.id,
                 );
@@ -150,34 +223,34 @@ export default function SingleCategory({ category, products }) {
                 return (
                   <li
                     key={p.id}
-                    className="flex justify-between items-center cursor-pointer"
+                    className="flex gap-x-4 items-center cursor-pointer"
                     onClick={() => toggleProduct(p)}
                   >
+                    <div>
+                      <input
+                        type="checkbox"
+                        className="block"
+                        checked={isSelected}
+                      />
+                    </div>
                     <span>{p.name}</span>
-
-                    {isSelected ? (
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    ) : (
-                      <FontAwesomeIcon icon={faChevronRight} />
-                    )}
                   </li>
                 );
               })}
             </ul>
           </div>
+          <button
+            type="button"
+            onClick={SaveProductCategory}
+            disabled={selectedProducts?.length === 0}
+            className="flex gap-x-3 disabled:opacity-50 items-center border-2"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            <span className="font-medium">Add products</span>
+          </button>
         </Card>
+            */}
       </form>
-      <article className="flex justify-between">
-        <button
-          type="button"
-          className="filled_button disabled:opacity-60 disabled:text-gray-700"
-          disabled={!isFormDirty}
-          onClick={EditCategory}
-        >
-          Save
-        </button>
-        <button>Delete</button>
-      </article>
     </main>
   );
 }

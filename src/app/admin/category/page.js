@@ -3,8 +3,11 @@ import CreateButtonAction from "@/components/CreateButton";
 import { TableSkeleton } from "@/components/Skeleton";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cacheTag } from "next/cache";
 
 const getCategoryData = async ({ filter }) => {
+  "use cache";
+  cacheTag("category");
   try {
     // Get User Cookies first: 30mins
     // const cookie = await cookies();

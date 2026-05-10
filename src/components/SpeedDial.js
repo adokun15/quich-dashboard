@@ -10,7 +10,7 @@ export default function SpeedDial() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 ">
+    <div className="fixed z-10 bottom-4 right-4 ">
       <div
         className={`${
           controlledModal && "visible"

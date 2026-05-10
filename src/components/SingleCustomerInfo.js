@@ -32,7 +32,6 @@ export default function SingleCustomerInfo({ customer }) {
   //Edit
   const EditCustomerInfo = async () => {
     //vALIDATE STRING
-    console.log(updatedField);
     if (
       updatedField?.name &&
       (updatedField?.name === "" || !isNaN(updatedField?.name))

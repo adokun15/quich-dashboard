@@ -1,7 +1,9 @@
 //all modal trigger!
 //Use global state management for user cart!
 
+import Dropdown from "@/components/dropdown";
 import { createSlice } from "@reduxjs/toolkit";
+import { nullish } from "zod";
 
 export const ModalSlice = createSlice({
   name: "modal",
@@ -9,14 +11,13 @@ export const ModalSlice = createSlice({
     cart_modal: false,
     product_modal: { show: false, product: {} },
     admin_modal: false,
-    dropdown: { tag: null, show: null },
     toaster_modal: { type: null, show: false, message: "", title: "" },
   },
   reducers: {
     ToasterModalToggle: (state, action) => {
       if (!state.toaster_modal.show) {
         state.toaster_modal = {
-          type: action.payload.type,
+          type: action.payload.type, //warning, success, failed
           message: action.payload.message,
           title: action.payload.title,
         };

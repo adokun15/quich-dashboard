@@ -1,7 +1,12 @@
+import ErrorComponent from "@/components/ErrorComponent";
 import SingleOrderInfo from "@/components/SingleOrderInfo";
+import { cacheTag } from "next/cache";
 
 //Fetch single data
 const getSingleOrder = async (id) => {
+  "use cache";
+  cacheTag("single_order");
+
   try {
     // Get User Cookies first: 30mins
     //const cookie = await cookies();
@@ -27,22 +32,22 @@ const getSingleOrder = async (id) => {
     );
 
     const data = await res.json();
-
-    //if (!data?.status) {
-    // Prompt modal if cookie has expired
-
-    //Show modal if store name don't match!
-    // return { error: data?.message, status_code: data?.status_code };
-    //}
+    if (!data?.status) {
+      return { error: { message: data?.message, code: data?.code } };
+    }
 
     return data.order;
   } catch (e) {
-    return { error: e?.message };
+    return { error: { message: e?.message } };
   }
 };
 
 export default async function SingleOrderPage({ params }) {
   const { orderId } = await params;
   const order = await getSingleOrder(orderId);
+
+  if (order?.error) {
+    return <ErrorComponent error={order?.error} />;
+  }
   return <SingleOrderInfo order={order} />;
 }

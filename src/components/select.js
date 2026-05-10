@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export function SelectForm({
   hasSearch = false,
   title,
+  field,
   className,
   onChangeValue,
   items,
@@ -22,10 +23,11 @@ export function SelectForm({
       setDataList(items);
     };
     once();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className={`w-72 font-medium max-h-80 h-fit relative ${className}`}>
+    <div className={`w-72 font-medium max-h-40 h-fit relative ${className}`}>
       <div
         className=" w-full p-2 flex bg-primary90  items-center justify-between border rounded"
         onClick={() => setSelectorIsOpened(!selectorIsOpened)}
@@ -42,7 +44,9 @@ export function SelectForm({
 
       <ul
         className={`
-         absolute w-full bg-primary90 mt-2 overflow-y-auto max-h-0 ${selectorIsOpened && "max-h-60"}`}
+         absolute w-full z-10 bg-gray-100 shadow-xl rounded 
+         mt-2 h-0 overflow-y-auto transition 
+         ${selectorIsOpened && "max-h-40 h-fit"}`}
       >
         {/* Search */}
         {hasSearch && (
@@ -76,7 +80,7 @@ export function SelectForm({
 
                 //Propagate Data to up;
                 onChangeValue({
-                  field: "category_id",
+                  field,
                   data: data?.id,
                 });
               }}
@@ -101,25 +105,34 @@ export function SelectActionButton({
   logo_right = false,
   logo_style = "",
   children,
+  tag = "",
 }) {
-  const [selectorIsOpened, setSelectorIsOpened] = useState(false);
-
-  const toggle = () => setSelectorIsOpened((prev) => !prev);
+  //Load current
+  const [selectorIsOpened, setSelectorIsOpened] = useState({
+    opened: false,
+    tag: null,
+  });
+  const toggle = () => {
+    setSelectorIsOpened((prev) => ({
+      opened: !prev.opened,
+      tag: tag,
+    }));
+  };
 
   const handleCloseEventForChild = (e) => {
     if (e.target.closest("button")) {
-      setSelectorIsOpened(false);
+      setSelectorIsOpened((prev) => ({
+        opened: false,
+        tag: "",
+      }));
     }
   };
-
   return (
-    <div className={`relative inline-block text-left ${className}`}>
+    <div className={`relative inline-block text-left`}>
       <button
         onClick={toggle}
-        className="flex items-center 
-        justify-between hover:cursor-pointer gap-2 px-3 py-2  
-        border border-gray-300 rounded-md  
-        hover:bg-opacity-90 transition"
+        className={`flex items-center 
+        justify-between hover:cursor-pointer  ${className} gap-2 px-3 py-2 transition`}
       >
         {logo && !logo_right && (
           <FontAwesomeIcon icon={logo} className={logo_style} />
@@ -137,11 +150,11 @@ export function SelectActionButton({
           bg-white/80 py-2 space-y-2 w-fit origin-top-right
          border h-fit border-gray-200 rounded-md 
           [&_li]:hover:bg-gray-100 cursor-pointer [&_li]:px-2 overflow-hidden
-          transition-all duration-200 ease-out
+          transition-all duration-200 ease-out z-20
           ${
-            selectorIsOpened
+            selectorIsOpened.opened && selectorIsOpened.tag === tag
               ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none"
+              : "opacity-0 scale-0 pointer-events-none"
           }
         `}
       >

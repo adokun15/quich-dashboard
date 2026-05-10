@@ -1,5 +1,6 @@
 "use server";
 import { getToken } from "@/utils/local-access";
+import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 // Update customerda
@@ -37,8 +38,6 @@ export async function AddNewCategory(prev, formData) {
 
   const category = await res.json();
 
-  console.log(category);
-
   if (!category?.status) {
     return {
       error: category?.message,
@@ -46,7 +45,8 @@ export async function AddNewCategory(prev, formData) {
   }
 
   //Invalidate Cache;
+  updateTag("category");
 
   //Redirect
-  return category?.status && redirect(`/admin/category/${category?.id}`);
+  redirect(`/admin/category/${category?.id}`);
 }

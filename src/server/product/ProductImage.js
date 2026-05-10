@@ -2,6 +2,7 @@
 
 import { createClientFromSupabase } from "@/lib/supabase/client";
 import { UpdateProductDetail } from "./UpdateProduct";
+import { revalidateTag, updateTag } from "next/cache";
 const supabase = createClientFromSupabase();
 
 //Connect to supabase Storage INstead
@@ -9,43 +10,55 @@ export async function AddProductImage({ filepath, file, product_id }) {
   // Upload file using standard upload
   const { data, error } = await supabase.storage
     .from("quich")
-    .upload(filepath, file, { upsert: true }); //You
+    .upload(filepath, file, { upsert: true });
 
-  console.log(data);
-  console.log(error);
   if (error) {
     // Handle error
-    console.log(error);
     if (error?.message === "fetch failed") {
-      return { error: "Network Error. Check your Internet Connection" };
+      return {
+        error: { message: "Network Error. Check your Internet Connection" },
+      };
     }
     if (error?.message === "The resource already exists") {
-      return { error: error?.message };
+      return { error: { message: "Image path already exist!", code: 500 } };
     }
-    console.log(error.message);
-    return { error: error?.message };
+    return { error: { message: error?.message, code: 500 } };
   }
 
   //Next process: Generate public url;
   const url = supabase.storage.from("quich").getPublicUrl(data?.path);
 
-  console.log(url);
+  try {
+    //Final process: Update Public url;
+    const product_image = await UpdateProductDetail({
+      updates: {
+        images: [url.data.publicUrl], //Later multiple images
+      },
+      product_id,
+    });
 
-  //Final process: Update Public url;
-  const product_image = await UpdateProductDetail({
-    updates: {
-      images: [url.data.publicUrl], //Later multiple images
-    },
-    product_id,
-  });
+    if (!product_image?.status) {
+      //Reverse action(supabase)
 
-  if (product_image?.error) {
-    console.log(product_image?.error);
-    return { error: "Something went wrong" };
+      return {
+        error: {
+          message: product_image?.message,
+          code: product_image?.code,
+        },
+      };
+    }
+
+    updateTag("single_product");
+
+    return { message: "Upload successful", url: url.data.publicUrl };
+  } catch (e) {
+    return {
+      error: {
+        message: e?.message,
+        code: 500,
+      },
+    };
   }
-
-  console.log(product_image);
-  return { message: "Upload successful", url: url.data.publicUrl };
 }
 
 export async function DeleteProductImage({ filepath, productId }) {
@@ -58,14 +71,16 @@ export async function DeleteProductImage({ filepath, productId }) {
   if (checkError) {
     // Handle error
     if (error?.message === "fetch failed") {
-      return { error: "Network Error. Check your Internet Connection" };
+      return {
+        error: { message: "Network Error. Check your Internet Connection" },
+      };
     }
-    return { error: error?.message };
+    return { error: { message: error?.message } };
   }
 
   //Does this Resource exist
   if (!doesExist) {
-    return { error: "No resource found!" };
+    return { message: "Failed to delete. The resource does not exist." };
   }
 
   const { error } = await supabase.storage.from("quich").remove([get_path]);
@@ -73,26 +88,43 @@ export async function DeleteProductImage({ filepath, productId }) {
   if (error) {
     // Handle error
     if (error?.message === "fetch failed") {
-      return { error: "Network Error. Check your Internet Connection" };
+      return {
+        error: { message: "Network Error. Check your Internet Connection" },
+      };
     }
 
-    console.log(error.message);
-    return { error: error?.message };
+    return { error: { message: error?.message } };
   }
 
-  //Final process:
-  const product_image = await UpdateProductDetail({
-    updates: {
-      images: null, //Later multiple images
-    },
-    product_id: productId,
-  });
+  try {
+    //Final process:
+    const product_image = await UpdateProductDetail({
+      updates: {
+        images: null, //Later multiple images
+      },
+      product_id: productId,
+    });
 
-  if (product_image?.error) {
-    console.log(product_image?.error);
-    return { error: "Something went wrong" };
+    if (!product_image?.status) {
+      //Reverse action(supabase)
+
+      return {
+        error: {
+          message: product_image?.message,
+          code: product_image?.code,
+        },
+      };
+    }
+
+    updateTag("single_product");
+
+    return { message: "Deleted successful", id: product_image?.id };
+  } catch (e) {
+    return {
+      error: {
+        message: e?.message,
+        code: 500,
+      },
+    };
   }
-
-  console.log(product_image);
-  return { message: "Deleted successful", id: product_image?.id };
 }

@@ -18,7 +18,13 @@ import {
   faPlusSquare,
   faSave,
 } from "@fortawesome/free-regular-svg-icons";
-import { faRepeat, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRepeat,
+  faSpinner,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { ToasterModalToggle } from "@/utils/state/modal/modalSlice";
 //import { Button } from "../ui/button";
 //import placeImg from "../../image/undraw/undraw_Meditation_re_gll0.png";
 //import { useUploadImageMutation } from "../../store/Slices/uploads";
@@ -42,8 +48,9 @@ export default function ProductImageUpload({
   //Product Upload state;
   const [product_images, setProductImages] = useState(imgUrl);
 
-  //const [uploadMyProfile, { isLoading }] = useUploadImageMutation();
+  const dispatch = useDispatch();
 
+  const [pending, setPending] = useState(null);
   const compressImageSize = async (file) => {
     return new Compressor(file, {
       width: 500,
@@ -51,14 +58,10 @@ export default function ProductImageUpload({
       quality: 0.6,
       convertSize: 5_000_000, //5mb
       success(file) {
-        //console.log(file);
-        console.log(file);
         setImgFile(file);
         setImageError("");
-        //return file;
       },
       error(e) {
-        console.log(e.message);
         setImageError(e.message);
       },
     });
@@ -68,19 +71,19 @@ export default function ProductImageUpload({
   const handleImgChange = async (e) => {
     const imgFile = e.target.files[0];
 
-    console.log(imgFile);
     const size = (imgFile.size / (1024 * 1024)).toFixed(2);
 
     //Check If They are Sending video
-    // if (imgFile?.type !== "image/png" || imgFile?.type !== "image/jpeg") {
-    //   setImageError("Invalid File Retrieved.");
-    ///  return;
-    // }
+    if (!imgFile?.type?.startsWith("image/")) {
+      setImageError("Invalid File Retrieved.");
+      return;
+    }
 
     setPreviewImage(URL.createObjectURL(imgFile));
 
-    if (size > 50) {
-      setImageError("Image is too large. Pick Image less than 50mb");
+    //10mb limit
+    if (size > 10) {
+      setImageError("Image is larger than 10mb!");
       return;
     }
 
@@ -93,37 +96,29 @@ export default function ProductImageUpload({
 
     if (file) {
       const fileExt = file.name.split(".").pop();
-      const filepath = `store/${store_id}/products/${product_id}.${fileExt}`;
+      const filepath = `store/${store_id}/products/${product_id}-${new Date().getTime()}.${fileExt}`;
 
+      setPending("edit");
       const upload = await AddProductImage({ file, filepath, product_id });
 
       if (upload?.error) {
-        setImageError(upload?.error);
+        setImageError(upload?.error?.message);
+        setPending(null);
         return;
       }
 
       setPreviewImage("");
 
       //Product Modal: Alert first
-
-      console.log(upload);
+      dispatch(
+        ToasterModalToggle({
+          type: "success",
+          title: upload?.message,
+        }),
+      );
 
       setProductImages([upload?.url]);
-
-      /*await uploadMyProfile({ uid, file })
-        .unwrap()
-        .then((data) => {
-          //Close Modal
-          onClose();
-          //Alert User
-          toast.success("Profile pic updated", { description: data });
-        })
-        .catch((e) => {
-          //Send toast
-          toast.error("Profile pic update failed ", {
-            description: e?.message,
-          });
-        });*/
+      setPending(null);
     }
   };
 
@@ -131,20 +126,27 @@ export default function ProductImageUpload({
     if (!window.confirm("Are you sure you want to remove this image?")) return;
 
     if (imgUrl) {
+      setPending("delete");
       const upload = await DeleteProductImage({
         filepath: imgUrl,
         productId: product_id,
       });
 
       if (upload?.error) {
-        setImageError(upload?.error);
+        setPending(null);
+        setImageError(upload?.error?.message);
         return;
       }
 
-      //Product Modal: Alert first
-      console.log(upload);
+      dispatch(
+        ToasterModalToggle({
+          type: "success",
+          title: upload?.message,
+        }),
+      );
 
-      setProductImages(null);
+      setPending(null);
+      if (upload?.id) setProductImages(null);
     }
   };
 
@@ -158,6 +160,7 @@ export default function ProductImageUpload({
             //src={previewImg || imgUrl || placeImg}
             width={190}
             height={210}
+            loading="eager"
             alt="A product item"
           />
         )}
@@ -211,8 +214,14 @@ export default function ProductImageUpload({
              hover:text-muted text-danger
              cursor-pointer rounded-full "
             >
-              <FontAwesomeIcon icon={faTrash} />
-              Delete
+              {pending === "delete" ? (
+                <FontAwesomeIcon icon={faSpinner} />
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faTrash} />
+                  Delete
+                </>
+              )}
             </button>
           </>
         )}
@@ -225,8 +234,14 @@ export default function ProductImageUpload({
              hover:text-muted bg-primary/30 
              cursor-pointer rounded-full "
           >
-            <FontAwesomeIcon icon={faSave} />
-            Save Image
+            {pending === "edit" ? (
+              <FontAwesomeIcon icon={faSpinner} />
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faSave} />
+                Save Image
+              </>
+            )}
           </button>
         )}
       </div>

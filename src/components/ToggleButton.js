@@ -8,27 +8,27 @@ export function ToggleButton({ cn, field_name = "", defaultState = false }) {
   };
 
   return (
-    <label class=" inline-flex cursor-pointer rounded-base">
+    <label className="inline-flex cursor-pointer rounded">
       <input
         defaultChecked={defaultState}
         onClick={detectState}
         type="checkbox"
         data-field_name={field_name}
         value=""
-        class="sr-only peer"
+        className="sr-only peer"
       />
       <div
-        class="
-      shrink-0 relative w-7 h-5 bg-primary700 
-      peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary 
-      dark:peer-focus:ring-primary rounded-full 
-      
+        className="
+      shrink-0 relative w-9 h-5 bg-gray-200 
+      peer-focus:outline-none rounded-xl 
+      transition duration-800 ease-in-out shadow-2xl
+
       after:content-[''] after:absolute after:top-0.5 
-      after:start-0.5 after:bg-background after:rounded-full after:h-4 
-      after:w-4 after:transition-all peer-checked:after:translate-x-full 
+      after:start-0.5 after:bg-gray-400 after:rounded-full after:h-4 
+      after:w-5 after:transition-all peer-checked:after:bg-gray-100 peer-checked:after:translate-x-full 
     
       rtl:peer-checked:after:-translate-x-full  
-      peer-checked:bg-primary peer-checked:peer-focus:ring-offset-1
+      peer-checked:bg-primary z-1 
       "
       ></div>
     </label>

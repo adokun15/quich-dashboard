@@ -1,6 +1,7 @@
 "use client";
 
 import Card from "@/components/card";
+import ErrorText from "@/components/errorText";
 import { AddNewCategory } from "@/server/Category/createCategory";
 import { useActionState } from "react";
 
@@ -10,7 +11,6 @@ export default function CreateCategory() {
   const { error } = state;
   //convert array to object
 
-  console.log(error);
   return (
     <main className="mx-auto w-full max-w-xl space-y-4">
       <article>
@@ -18,6 +18,7 @@ export default function CreateCategory() {
       </article>
 
       <form action={action} className="space-y-4">
+        <ErrorText>{error}</ErrorText>
         <Card className="space-y-4">
           <div className="">
             <p className="text-muted font-medium">Name</p>

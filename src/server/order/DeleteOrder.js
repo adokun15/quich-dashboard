@@ -1,9 +1,13 @@
+"use server";
 import { getToken } from "@/utils/local-access";
+import { revalidateTag, updateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 // Update customerda
-export async function DeleteOrderDetail({ store_id, order_id }) {
+export async function DeleteOrderDetail({ customer_id, order_id }) {
   //Prevent bad field;
 
+  /*
   //AUTHENTICATE
   const token = await getToken();
 
@@ -15,6 +19,7 @@ export async function DeleteOrderDetail({ store_id, order_id }) {
       },
     };
   }
+  */
 
   //Proceed to Backend
   const res = await fetch(
@@ -22,26 +27,30 @@ export async function DeleteOrderDetail({ store_id, order_id }) {
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer token`,
       },
       body: JSON.stringify({
-        store_id,
+        customer_id,
       }),
     },
   );
 
-  const order = await res.json();
+  const deleted_order = await res.json();
   //Return Error if available
 
-  if (customer?.error) {
+  console.log(deleted_order);
+  if (!deleted_order?.status) {
     return {
       error: {
-        message: customer?.error?.message,
-        status: customer?.error?.status,
+        message: deleted_order?.message,
+        code: deleted_order?.code,
       },
     };
   }
 
-  //rETURN data
-  return { order };
+  //Invalidate cahche
+  updateTag("orders");
+
+  redirect("/admin/orders");
 }

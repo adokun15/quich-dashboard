@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export const useFormStateData = ({ oldStateData }) => {
   const [currentData, setCurrentData] = useState(null);
   const [formData, setFormData] = useState({});
-  const [hasEmptyError, setHasEmptyError] = useState({});
+  // const [hasEmptyError, setHasEmptyError] = useState({});
 
   //init
   useEffect(() => {
@@ -16,9 +16,6 @@ export const useFormStateData = ({ oldStateData }) => {
   }, []);
 
   function handleSelectChanges({ field, data }) {
-    console.log(field);
-    console.log(data);
-    //Data is some Id / Data
     setFormData((prev) => ({
       ...prev,
       [field]: data,
@@ -82,7 +79,7 @@ export const useFormStateData = ({ oldStateData }) => {
 
   return {
     isDirty,
-    hasEmptyError,
+    hasEmptyError: null,
     handleInputChanges,
     handleSelectChanges,
     handleBooleanChanges,

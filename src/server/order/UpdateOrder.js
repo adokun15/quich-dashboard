@@ -1,15 +1,13 @@
+"use server";
 import { getToken } from "@/utils/local-access";
+import { updateTag } from "next/cache";
 
 // Update customerda
-export async function UpdateOrderDetail({
-  updates,
-  store_id,
-  customer_id,
-  order_id,
-}) {
+export async function UpdateOrderDetail({ updates, customer_id, order_id }) {
   //Prevent bad field;
 
   //Authenticated change
+  /*
   const token = await getToken();
 
   if (!token) {
@@ -20,17 +18,18 @@ export async function UpdateOrderDetail({
       },
     };
   }
+*/
 
   //Proceed to Backend
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/orders/${order_id}`,
     {
-      method: "DELETE",
+      method: "PATCH",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer default`,
       },
       body: JSON.stringify({
-        store_id,
         customer_id,
         updates,
       }),
@@ -40,15 +39,19 @@ export async function UpdateOrderDetail({
   const order = await res.json();
   //Return Error if available
 
-  if (order?.error) {
+  if (!order?.status) {
     return {
       error: {
-        message: order?.error?.message,
-        status: order?.error?.status,
+        message: order?.message,
+        code: order?.code,
+        details: order?.details,
       },
     };
   }
 
-  //rETURN data
-  return { order };
+  //Invalidate cache
+  updateTag("single_order");
+
+  //rETURN data: status,note, address
+  return order?.order;
 }

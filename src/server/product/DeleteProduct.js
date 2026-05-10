@@ -1,6 +1,8 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { DeleteProductImage } from "./ProductImage";
+import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 // Update customerda
 export async function DeleteProductAction({ product_id, hasFile }) {
@@ -38,12 +40,13 @@ export async function DeleteProductAction({ product_id, hasFile }) {
   if (!product?.status) {
     return {
       error: {
-        message: product?.error?.message,
-        status: product?.error?.status,
+        message: product?.message,
+        code: product?.code,
       },
     };
   }
 
-  //rETURN data
-  return product;
+  revalidateTag("products");
+
+  redirect("/admin/products");
 }

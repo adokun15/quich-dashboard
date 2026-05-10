@@ -1,16 +1,15 @@
+import ErrorComponent from "@/components/ErrorComponent";
 import OrdersTableInfo from "@/components/OrdersTable";
 import { ToggleButton } from "@/components/ToggleButton";
-import {
-  faInfoCircle,
-  faPen,
-  faPlay,
-  faPlus,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cacheTag } from "next/cache";
 
 //Access cookies for token;
 const getOrdersData = async ({ filter }) => {
+  "use cache";
+  cacheTag("orders");
+
   try {
     //Get User Cookies first: 30mins
     //  const cookie = await cookies();
@@ -45,12 +44,12 @@ const getOrdersData = async ({ filter }) => {
       // Prompt modal if cookie has expired
 
       //Show modal if store name don't match!
-      return { error: data?.message, status_code: data?.status_code };
+      return { error: { message: data?.message, code: data?.code } };
     }
 
     return data.data;
   } catch (e) {
-    return { error: e?.message };
+    return { error: { message: e?.message } };
   }
 };
 
@@ -59,36 +58,8 @@ export default async function OrdersPage({ searchParams }) {
 
   const orders = await getOrdersData({ filter });
 
-  console.log(orders);
-
   if (orders?.error) {
-    return (
-      <main className="w-full bg-primary700 rounded-xl p-6 space-y-6 py-4 mx-auto min-h-screen">
-        <div className="flex justify-between px-4">
-          <div>
-            <h2 className="text-6">Orders</h2>
-            <p className="text-muted text-2">
-              Keep track of all your business sales.
-            </p>
-          </div>
-          <button className="px-6">
-            <FontAwesomeIcon className="mr-3" icon={faPlus} />
-            <span>Add</span>
-          </button>
-        </div>
-        <div className="flex gap-2">
-          <input
-            className=" rounded-full pl-2 "
-            placeholder="Search product by name"
-          />
-          <button className="px-6 text-nowrap">
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
-        </div>
-
-        <p className="text-center text-2xl">{orders?.error}</p>
-      </main>
-    );
+    return <ErrorComponent error={orders?.error} />;
   }
 
   return (

@@ -1,7 +1,13 @@
+import Card from "@/components/card";
 import SingleProductForm from "@/components/SingleProductForm";
+import { cacheTag } from "next/cache";
+import ErrorComponent from "@/components/ErrorComponent";
 
 //Get Single Product Item;
 const getSingleProduct = async (id) => {
+  "use cache";
+  cacheTag("single_product");
+
   try {
     // Get User Cookies first: 30mins
     //const cookie = await cookies();
@@ -24,12 +30,10 @@ const getSingleProduct = async (id) => {
     );
 
     const data = await res.json();
+
     console.log(data);
     if (!data?.status) {
-      // Prompt modal if cookie has expired
-
-      //Show modal if store name don't match!
-      return { error: data?.message, status_code: data?.status_code };
+      return { error: { message: data?.message, code: data?.code } };
     }
 
     return data.data.product;
@@ -40,6 +44,8 @@ const getSingleProduct = async (id) => {
 
 //Prefetch category data
 const category = async () => {
+  "use cache";
+  cacheTag("category");
   try {
     // Get User Cookies first: 30mins
     // const cookie = await cookies();
@@ -67,7 +73,7 @@ const category = async () => {
       // Prompt modal if cookie has expired
 
       //Show modal if store name don't match!
-      return { error: data?.message, status_code: data?.status_code };
+      return { error: { message: data?.message, code: data?.code } };
     }
 
     const d = data?.data?.category?.map((c) => ({
@@ -80,10 +86,65 @@ const category = async () => {
     return { error: e?.message };
   }
 };
+
+export async function generateMetadata({ params }) {
+  "use cache";
+  const { productId } = await params;
+  const product = await getSingleProduct(productId);
+  if (product?.error) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+
+  return {
+    title: product?.name,
+    openGraph: {
+      title: product?.name,
+      description: product?.description,
+      //url: 'https://${}.org',
+      images: [
+        {
+          url: product?.images && product?.images[0], // Must be an absolute URL
+          width: 500,
+          height: 500,
+        },
+        //   {
+        //   url: 'https://nextjs.org/og-alt.png', // Must be an absolute URL
+        //    width: 1800,
+        //    height: 1600,
+        //    alt: 'My custom alt',
+        // },
+      ],
+      videos: [
+        //   {
+        //   url: 'https://nextjs.org/video.mp4', // Must be an absolute URL
+        //    width: 800,
+        //    height: 600,
+        // },
+      ],
+      audio: [
+        {
+          //    url: 'https://nextjs.org/audio.mp3', // Must be an absolute URL
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+  };
+}
+
 export default async function SingleProductPage({ params }) {
   const { productId } = await params;
   const product = await getSingleProduct(productId);
 
   const data = await category();
+
+  const retry = `/admin/products/${data?.id}`;
+
+  if (product?.error) {
+    return <ErrorComponent error={product?.error} retry={retry} />;
+  }
+
   return <SingleProductForm product={product} getCategoryItem={data} />;
 }
