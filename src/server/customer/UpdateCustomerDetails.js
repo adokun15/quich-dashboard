@@ -25,7 +25,6 @@ export async function UpdateCustomerDetail({ updates, customer_id }) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-
         Authorization: `Bearer ass`,
       },
       body: JSON.stringify({
@@ -46,11 +45,9 @@ export async function UpdateCustomerDetail({ updates, customer_id }) {
     };
   }
 
-  console.log(customer);
-
   //Invalidate Cache
-  revalidateTag("single-customer");
+  revalidateTag("single_customer");
 
   //rETURN data
-  return { name: "" };
+  return customer;
 }

@@ -3,9 +3,13 @@ import Card from "@/components/card";
 import SingleCustomerInfo from "@/components/SingleCustomerInfo";
 import { faCircleInfo, faInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cacheTag } from "next/cache";
 import { cookies } from "next/headers";
 
 const getSingleCustomer = async (id) => {
+  "use cache";
+  cacheTag("single_customer");
+
   try {
     // Get User Cookies first: 30mins
     const cookie = await cookies();
@@ -43,6 +47,27 @@ const getSingleCustomer = async (id) => {
     return { error: { message: e?.message, code: 500 } };
   }
 };
+
+export async function generateMetadata({ params }) {
+  "use cache";
+  const { customerId } = await params;
+  const customer = await getSingleCustomer(customerId);
+
+  if (customer?.error) {
+    return {
+      title: "Customer not Found!",
+    };
+  }
+
+  return {
+    title: `Customer | ${customer?.name}`,
+    openGraph: {
+      title: `Customer | ${customer?.name}`,
+      locale: "en_US",
+      type: "website",
+    },
+  };
+}
 
 export default async function CustomerDetailPage({ params }) {
   const { customerId } = await params;

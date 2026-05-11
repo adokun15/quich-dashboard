@@ -42,6 +42,27 @@ const getSingleOrder = async (id) => {
   }
 };
 
+export async function generateMetadata({ params }) {
+  "use cache";
+  const { orderId } = await params;
+  const order = await getSingleOrder(orderId);
+
+  if (order?.error) {
+    return {
+      title: "Order not Found!",
+    };
+  }
+
+  return {
+    title: `Order | #${order?.id} - ${order?.customer_name}`,
+    openGraph: {
+      title: `Order | #${order?.id} - ${order?.customer_name}`,
+      locale: "en_US",
+      type: "website",
+    },
+  };
+}
+
 export default async function SingleOrderPage({ params }) {
   const { orderId } = await params;
   const order = await getSingleOrder(orderId);

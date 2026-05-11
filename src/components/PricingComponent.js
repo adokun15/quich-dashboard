@@ -1,52 +1,118 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "./card";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function PricingPlan() {
   return (
-    <main className="max-w-3xl space-y-6 py-1 mx-auto min-h-screen">
-      <div className="space-y-6">
-        <article>
-          <h2 className="text-7">Billing</h2>
-          <p className="border-2 rounded-full w-fit text-1 px-2">
-            Current Plan
-          </p>
-        </article>
-
-        <p>NGN1900/Month (First Month)</p>
-
-        <button>Manage Subscription</button>
-      </div>
-
-      <div className="space-y-4">
-        <h2 className="text-7">Plans</h2>
-
-        <Card className=" justify-between flex-wrap">
-          <h1 className="text-xl">Starter Plan</h1>
-          <p>NGN1900 / Month</p>
+    <main className="max-w-5xl space-y-6 py-1 mx-auto min-h-screen">
+      <div className="space-y-4 flex flex-wrap *:md:w-[45%] h-fit gap-x-5">
+        <Card className="justify-between grow flex-wrap">
+          <h1 className="text-xl font-medium">Basic plan </h1>
+          <p className="text-muted ">NGN1000/Month (First Month)</p>
+          <p className="text-muted ">NGN1900/Month (After First Month)</p>
 
           <article className="my-5 ">
-            <li>Unlimited direct orders</li>
-            <li>Add your Community link</li>
-            <li>30 products upload</li>
-            <li>Storefront link</li>
-            <li>Community & Email Support</li>
+            <p className="font-medium">Package</p>
+            <ul className="list-none text-muted pl-1">
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Unlimited direct orders</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Add your Community link</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>30 products upload</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Custom web store</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Community & Email Support</span>
+              </li>
+            </ul>
           </article>
-          <button>Subcribe</button>
+          <button className="filled_button">Try it Now</button>
         </Card>
 
-        <Card className=" justify-between flex-wrap">
+        <Card className=" justify-between grow  flex-wrap">
           <h1 className="text-xl"> Growth Plan</h1>
-          <p>NGN7500 / Month</p>
-          <article className="my-5">
-            <li>Unlimited direct orders</li>
-            <li>Add your Community link</li>
-            <li>100 products upload</li>
-            <li>Shareaable StoreFront link</li>
-            <li>Community & Email Support, Direct DM access</li>
-            {/* <li>Review/Testimonial/About Us page (Coming soon)</li> */}
-            <li>1-min video header</li>
-          </article>
+          <p>NGN4500 / Month</p>
+          <article className="my-5 ">
+            <p className="font-medium">Package</p>
+            <ul className="list-none text-muted pl-1">
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Unlimited direct orders</span>
+              </li>
 
-          <button>Subcribe</button>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>300 credit messaging tokens</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Add your Community link</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>100 products upload</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Custom web store</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Community & Email Support</span>
+              </li>
+            </ul>
+          </article>
+          <button className="filled_button">Subscribe</button>
+        </Card>
+
+        <Card className="min-w-full justify-between flex-wrap">
+          <h1 className="text-xl">Business Plan</h1>
+          <p>NGN10000 / Month</p>
+          <article className="my-5 ">
+            <p className="font-medium">Package</p>
+            <ul className="list-none text-muted pl-1">
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Unlimited direct orders</span>
+              </li>
+
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>10000 credit messaging tokens</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Add your Community link</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>300 products upload</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Custom web store</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Community & Email Support, Direct Dm</span>
+              </li>
+              <li className="space-x-2 ">
+                <FontAwesomeIcon className="text-primary" icon={faCheck} />
+                <span>Promo Video Ad</span>
+              </li>
+            </ul>
+          </article>
+          <button className="filled_button">Subcribe</button>
         </Card>
       </div>
     </main>

@@ -1,6 +1,7 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 // Update customerda
 export async function DeleteCustomerDetail({ customer_id }) {
@@ -32,7 +33,6 @@ export async function DeleteCustomerDetail({ customer_id }) {
   const customer = await res.json();
   //Return Error if available
 
-  console.log(customer);
   if (!customer?.status) {
     return {
       error: {
@@ -45,8 +45,5 @@ export async function DeleteCustomerDetail({ customer_id }) {
   //Invalidate Cache
   revalidateTag("customers");
 
-  console.log(customer);
-
-  //rETURN data
-  return { name: "" };
+  redirect("/admin/customers");
 }
