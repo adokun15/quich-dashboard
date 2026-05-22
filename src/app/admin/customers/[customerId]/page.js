@@ -6,15 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cacheTag } from "next/cache";
 import { cookies } from "next/headers";
 
-const getSingleCustomer = async (id) => {
+const getSingleCustomer = async (id, user_token) => {
   "use cache";
   cacheTag("single_customer");
 
   try {
-    // Get User Cookies first: 30mins
-    const cookie = await cookies();
-    const user_token = cookie?.get("quichshop_access_token");
-
     //if (!user_token) {
     // redirect("auth.localhost.3000/login");
     //}
@@ -70,8 +66,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CustomerDetailPage({ params }) {
+  // Get User Cookies first: 30mins
+  const cookie = await cookies();
+  const user_token = cookie?.get("quichshop_access_token");
+
   const { customerId } = await params;
-  const customer = await getSingleCustomer(customerId);
+  const customer = await getSingleCustomer(customerId, user_token);
 
   if (customer?.error) {
     return (

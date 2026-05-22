@@ -24,7 +24,7 @@ export async function StoreUpdate({ updates }) {
   );
 
   const store = await res.json();
-  //Return Error if available;
+  //Return Error if available
 
   if (!store?.status && store?.code == 400) {
     return {
