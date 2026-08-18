@@ -1,12 +1,12 @@
+"use client";
 import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/utils/theme-provider";
-import Link from "next/link";
-import Popover from "@/components/popover";
-import Image from "next/image";
+import { ThemeProvider } from "../utils/theme-provider";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import Sidebar from "@/components/Sidebar";
+import ToasterMessage from "@/components/Toaster";
+import { Provider } from "react-redux";
+import store from "@/utils/state/store";
 
+/*import { Geist, Geist_Mono } from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -16,28 +16,28 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-export const metadata = {
-  title: "Dashboard | QuichShop",
-  description: "Manage your store for your customers.",
-};
+*/
+//className={`${/*geistSans.variable*/} ${geistMono.variable} antialiased`}
 
 //Dynamic page load: Login / Homepage;
 export default function RootLayout({ children, modals }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnchange
-        >
-          <div className="relative bg-primary900 min-h-screen">{children}</div>
-          <div>{modals}</div>
-        </ThemeProvider>
+      <body>
+        <Provider store={store}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnchange
+          >
+            <div className="relative min-h-screen">
+              {children}
+              {/*  <ToasterMessage />*/}
+            </div>
+            <div>{modals}</div>
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

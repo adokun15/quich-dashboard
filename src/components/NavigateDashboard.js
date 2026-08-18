@@ -11,7 +11,7 @@ export default function NavigateDashborad() {
 
   return (
     <main className="py-4 mb-6">
-      <div className="flex px-[10vw] justify-between">
+      <div className="flex pl-[1vw] px-[10vw] justify-between">
         <div className="flex w-fit gap-x-1  items-center">
           <Image
             src="/favicon.ico"

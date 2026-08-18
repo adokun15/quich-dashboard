@@ -42,7 +42,7 @@ shadow-lg w-72`}
           <p className="w-full h-[0.1px] bg-black"></p>
           <li className="mx-1 px-1 hover:bg-secondary hover:shadow rounded-xl hover:text-white">
             <Link
-              href="/billing"
+              href="/admin/subscription"
               className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
             >
               Billing
@@ -51,7 +51,7 @@ shadow-lg w-72`}
 
           <li className="px-1 mx-1 hover:bg-secondary hover:shadow rounded-xl hover:text-white">
             <Link
-              href="/settings"
+              href="/admin/settings"
               className="inline-flex items-center w-full p-2
           hover:bg-neutral-tertiary-medium hover:text-heading rounded"
             >

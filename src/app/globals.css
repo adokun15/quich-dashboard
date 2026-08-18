@@ -1,152 +1,95 @@
 @import "tailwindcss";
 
 :root {
-/* Color */
---background: hsl(117, 80%, 99%);
---foreground: #171717;
---primary: hsl(117, 75%, 30%);
+  /* Color */
+--background: hsl(0, 0%, 90%);
+--foreground: hsl(0, 0%, 10%);
 
+--primary: hsl(140, 50%, 50%);
+--primary-70: hsl(140, 50%, 70%);
+--primary-90: hsl(140, 50%, 99%);
 
-/*
---card1: hsl(117, 80%, 95%);  
---card2: hsl(117, 75%, 90%);  
---primary900: hsl(117, 75%, 90%);
---primary800: hsl(117, 75%, 85%);
---primary700: hsl(117, 75%, 80%);
-*/
---card1: hsl(0, 0%, 99%);  
---card2: hsl(0, 0%, 99%);  
---primary900: hsl(117, 75%, 90%);
---primary800: hsl(117, 75%, 85%);
+--secondary: hsl(64, 95%, 50%);
+--secondary-70: hsl(64, 95%, 70%);
+--secondary-90: hsl(64, 95%, 90%);
 
-/* Card */
---primary700: hsl(0, 0%, 99%);
+--border: hsl(140, 50%, 30%);
 
---secondary: hsl(57, 50%, 10%);
+--text: hsl(140, 90%, 5%);
+--muted:  hsl(140, 0%, 50%);
 
---tertiary: hsl(57, 50%, 94%);  
---accent: hsl(357, 80%, 20%);  
+--input: hsl(180, 1%, 86%);
 
---text: hsl(150, 3%, 20%);
---text-muted:hsl(150, 3%, 45%);;
+--danger-red: hsl(8, 77%, 38%);
 
-
---border: hsl(117, 75%, 5%);;
---border-muted: hsl(149 100% 5%);
-
---danger: hsl(8 68% 66%);
---warning: hsl(52 59% 44%);
---success: hsl(152 45% 49%);
---info: hsl(217 80% 68%);
-
-/* Spacing */
---spacing1: 4px;
---spacing2: 8px;
---spacing3: 16px;
---spacing4: 20px;
---spacing5: 24px;
---spacing6: 28px;
---spacing7: 40px;
---spacing8: 60px;
---spacing9: 100px;
 
 /*Typography*/
---text1: 0.75rem;
---text2: 0.875rem;
---text3: 1rem;
---text4: 1.125rem;
---text5: 1.25rem;
---text6: 1.5rem;
---text7:2rem;
+--text-xl2: 1.25rem; /** 20px **/
+--text-xl: 1.125rem; /** 18px **/
+--text-base: 1rem; /** 16px **/
+--text-desc: 0.875rem;  /** 14px **/
+--text-tiny: 0.75rem;  /** 12px **/
+
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono)
- 
-  
---color-card1: var(--card1);  
---color-card2: var(--card2);  
-
---color-primary900:var(--primary900);
---color-primary800: var(--primary800);
---color-primary700: var(--primary700);
+/*colors*/
+--color-background: var(--background);
+--color-foreground: var(--foreground);
 
 --color-primary: var(--primary);
---color-secondary: var(--secondary);
+--color-primary70: var(--primary-70);
+--color-primary90: var(--primary-90);
 
---color-tertiary:var(--tertiary);  
---color-accent: var(--accent);  
+
+--color-secondary: var(--secondary);
+--color-secondary70: var(--secondary-70);
+--color-secondary90: var(--secondary-90);
 
 --color-text: var(--text);
---color-muted: var(--text-muted);
+--color-muted: var(--muted);
 
 --color-border: var(--border);
---color-border-muted: var(--border);
 
---color-danger: var(--danger);
---color-warning: var(--warning);
---color-success: var(--success);
---color-info: var(--info);
+--color-input: var(--input);
+--color-danger: var(--danger-red);
 
-/* Spacing */
---spacing-1: var(--spacing1);
---spacing-2:  var(--spacing2);
---spacing-3:  var(--spacing3);
---spacing-4:  var(--spacing4);
---spacing-5:  var(--spacing5);
---spacing-6:  var(--spacing6);
---spacing-7:  var(--spacing7);
---spacing-8:  var(--spacing8);
---spacing-9:  var(--spacing9);
+/*Fonts*/
+--font-sans: var(--font-geist-sans);
+--font-mono: var(--font-geist-mono)
+ 
 
 /*Typography*/
---text-1: var(--text1);
---text-2:var(--text2);
---text-3: var(--text3);
---text-4: var(--text4);
---text-5: var(--text5);
---text-6: var(--text6);
---text-7:var(--text7)
+--text-xl2: var(--text-xl2); /** 20px **/
+--text-xl: var(--text-xl); /** 18px **/
+--text-base: var(--text-base); /** 16px **/
+--text-desc: var(--text-desc);  /** 14px **/
+--text-tiny: var(--text-tiny);  /** 12px **/
+
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --card1: hsl(117, 80%, 5%);  
-    --card2: hsl(117, 75%, 5%);
+  :root {    
+--background: hsl(0, 0%, 10%);
+--foreground: hsl(0, 0%, 90%);
 
-    --background: #0a0a0a;
-    --foreground: #ededed;
+--primary: hsl(140, 50%, 50%);
+--primary-70: hsl(140, 50%, 30%);
+--primary-90: hsl(140, 50%, 10%);
 
---card1: hsl(117, 80%, 95%);  
---card2: hsl(117, 75%, 90%);  
+--secondary: hsl(64, 95%, 50%);
+--secondary-70: hsl(64, 95%, 30%);
+--secondary-90: hsl(64, 95%, 10%);
 
---primary: hsl(117, 75%, 30%);
---secondary: hsl(57, 50%, 10%);
+--border: hsl(0, 0%, 75%);
 
---tertiary: hsl(57, 50%, 94%);  
---accent: hsl(357, 80%, 20%);  
+--text: hsl(140, 90%, 95%);
+--muted:  hsl(140, 0%, 50%);
 
---text: hsl(150, 3%, 20%);
---text-muted:hsl(117, 75%, 10%);;
+--input: hsl(140, 0%, 55%);
 
-
---border: hsl(117, 75%, 5%);;
---border-muted: hsl(149 100% 5%);
-
---danger: hsl(8 68% 66%);
---warning: hsl(52 59% 44%);
---success: hsl(152 45% 49%);
---info: hsl(217 80% 68%);
-
-/*    --color-primary: hsl(57, 50%, 10%);
-    --color-secondary: hsl(57, 50%, 90%);
-    --color-tertiary: hsl(117, 80%, 80%);
-    --color-accent: hsl(357, 80%, 80%);  
-  */
+--danger-red: hsl(8, 77%, 50%);
 }
 }
 
@@ -154,40 +97,125 @@
 @layer base {
 body {
   @apply bg-background text-foreground;
-  font-family: Arial, Helvetica, sans-serif;
+/*  font-family: Arial, Helvetica, sans-serif; */
 }
 
-
-/* Typography */
-h1 {
-  font: bold var(--text7)/1em var(--font-sans);
-  color: var(--text);
-}
-
-h2 {
-  font: bold var(--text6)/1em var(--font-sans);
-  color: var(--text);
-}
-
-p{
-  font: bold var(--text2)/1em var(--font-sans);
-  color: var(--text);
-}
-
-a{
-  font: medium var(--text2)/1em var(--font-mono);
-}
-
+/*Based Input Class*/
 input {
-  border: 2px solid var(--secondary);
   display: block;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  padding: var(--spacing2);
-  border-radius: var(--spacing2);
+  font-weight: 500;
+  color:var(--muted);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
   outline: none;
+  font-size: var(--text-base);
   width: 100%;
+  background-color: var(--input);
+  max-width: 30vw;
 }
 
+textarea{
+  /*box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);*/
+  font-weight: 500;
+  color:var(--muted);
+  display: block;
+  resize: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+  min-height: 10rem;
+  width: 100%;
+  font-size: var(--text-base);
+  width: 100%;
+  background-color: var(--input);
+  max-width: 30vw;
+}
+
+button {
+  display: block;
+  padding: 0.25rem 1rem;
+  outline: none;
+  width:fit-content;
+}
+
+/*Hover*/
+
+button:hover{
+  color: muted;
+  transition-duration: 1.2s;
+  transition-property: color;
+  transition-timing-function: ease-in;
+  opacity: 50%; 
+}
+
+input:focus, textarea:focus{
+  transition-duration: 0.4s;
+  transition-property: all;
+  transition-timing-function: ease-in;
+  border:1px solid var(--muted);
+}
+
+
+/*Filled Button Class*/
+.filled_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white; 
+  border-radius: 0.5rem;
+}
+
+
+
+/*Muted Button Class*/
+.muted_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*Disabled Button Class*/
+.disabled_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*Danger Button Class*/
+.danger_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*Linked Button Class*/
+.linked_button{
+  font: medium; 
+  
+  color: var(--text);
+}
+
+
+
+/*Outline Button Class*/
+.outlined_button{
+  font: bold var(--text3) / 1em var(--font-sans);
+  background-color: var(--primary); 
+  color: white;
+  padding: var(--spacing2);
+  border: 2px solid var(--border);  
+  border-radius: 24px;
+}
+
+/*
 textarea{
   border: 2px solid var(--secondary);
   display: block;
@@ -198,7 +226,9 @@ textarea{
   outline: none;
   width: 100%;
 }
-/* Components */
+*/
+
+/* Components 
 button{
   font: bold var(--text3) / 1em var(--font-sans);
   background-color: var(--primary); 
@@ -207,5 +237,6 @@ button{
   border: 2px solid var(--border);  
   border-radius: 24px;
 }
+*/
 
 }

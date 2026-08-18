@@ -1,17 +1,165 @@
-export function Select({ children, items }) {
+"use client";
+
+import { faChevronDown, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+
+export function SelectForm({
+  hasSearch = false,
+  title,
+  field,
+  className,
+  onChangeValue,
+  items,
+}) {
+  const [datalist, setDataList] = useState([]);
+  const [selectedData, setSelectedData] = useState(null);
+  const [selectorIsOpened, setSelectorIsOpened] = useState(null);
+
+  const [inputValueSearch, setInputValueSearch] = useState(null);
+
+  useEffect(() => {
+    const once = () => {
+      setDataList(items);
+    };
+    once();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <form class="">
-      <select
-        class="block w-full px-3 py-2.5 bg-primary700 border border-primary900 text-sm rounded-base
-         focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+    <div className={`w-72 font-medium max-h-40 h-fit relative ${className}`}>
+      <div
+        className=" w-full p-2 flex bg-primary90  items-center justify-between border rounded"
+        onClick={() => setSelectorIsOpened(!selectorIsOpened)}
       >
-        {/* <option selected>Choose a country</option>*/}
-        {items?.map((item) => (
-          <option key={item?.value} value={item?.value}>
-            {item?.name}
-          </option>
-        ))}
-      </select>
-    </form>
+        <span>{selectedData ?? title}</span>
+        <span>
+          <FontAwesomeIcon
+            className={`transition-colors ${selectorIsOpened && "rotate-180"}`}
+            icon={faChevronDown}
+            fontSize={20}
+          />
+        </span>
+      </div>
+
+      <ul
+        className={`
+         absolute w-full z-10 bg-gray-100 shadow-xl rounded 
+         mt-2 h-0 overflow-y-auto transition 
+         ${selectorIsOpened && "max-h-40 h-fit"}`}
+      >
+        {/* Search */}
+        {hasSearch && (
+          <div className="flex items-center px-2 sticky top-0 bg-white">
+            <span>
+              <FontAwesomeIcon icon={faSearch} />
+            </span>
+            <input
+              className="p-2 outline-none"
+              value={inputValueSearch}
+              onChange={(e) =>
+                setInputValueSearch(e.target.value.toLowerCase())
+              }
+              placeholder={hasSearch}
+            />
+          </div>
+        )}
+
+        {/* List Items */}
+        {datalist?.length > 0 ? (
+          datalist?.map((data, i) => (
+            <li
+              className={`p-2 text-desc hover:text-primary ${selectedData == data?.name && "text-primary"} ${/*!selectedData?.toLowerCase().startsWith(inputValueSearch) && "hidden"*/ ""}</ul>}`}
+              onClick={() => {
+                //select actual data;
+                setSelectedData(data?.name);
+                //Reset INPUT value
+                setInputValueSearch("");
+                //Close Modal
+                setSelectorIsOpened(false);
+
+                //Propagate Data to up;
+                onChangeValue({
+                  field,
+                  data: data?.id,
+                });
+              }}
+              key={i}
+            >
+              {data?.name}
+            </li>
+          ))
+        ) : (
+          <p>No Data yet</p>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+//Manage Global Action Button
+export function SelectActionButton({
+  className,
+  logo,
+  title,
+  logo_right = false,
+  logo_style = "",
+  children,
+  tag = "",
+}) {
+  //Load current
+  const [selectorIsOpened, setSelectorIsOpened] = useState({
+    opened: false,
+    tag: null,
+  });
+  const toggle = () => {
+    setSelectorIsOpened((prev) => ({
+      opened: !prev.opened,
+      tag: tag,
+    }));
+  };
+
+  const handleCloseEventForChild = (e) => {
+    if (e.target.closest("button")) {
+      setSelectorIsOpened((prev) => ({
+        opened: false,
+        tag: "",
+      }));
+    }
+  };
+  return (
+    <div className={`relative inline-block text-left`}>
+      <button
+        onClick={toggle}
+        className={`flex items-center 
+        justify-between hover:cursor-pointer  ${className} gap-2 px-3 py-2 transition`}
+      >
+        {logo && !logo_right && (
+          <FontAwesomeIcon icon={logo} className={logo_style} />
+        )}
+        <span>{title}</span>
+        {logo && logo_right && (
+          <FontAwesomeIcon icon={logo} className={logo_style} />
+        )}
+      </button>
+
+      <ul
+        onClick={handleCloseEventForChild}
+        className={`
+          absolute right-0 mt-2 min-w-44 
+          bg-white/80 py-2 space-y-2 w-fit origin-top-right
+         border h-fit border-gray-200 rounded-md 
+          [&_li]:hover:bg-gray-100 cursor-pointer [&_li]:px-2 overflow-hidden
+          transition-all duration-200 ease-out z-20
+          ${
+            selectorIsOpened.opened && selectorIsOpened.tag === tag
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-0 pointer-events-none"
+          }
+        `}
+      >
+        {children}
+      </ul>
+    </div>
   );
 }
