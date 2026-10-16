@@ -60,13 +60,9 @@ export async function generateMetadata({ params }) {
 }
 
 //This Default page is the user store
-export default async function MerchantStoreHome(params) {
-  const { store_slug } = await params?.params;
+export default async function MerchantStoreHome({ params }) {
+  const { store_slug } = await params;
   const data = await getStoreInfo(store_slug);
-
-  // if (!status) {
-  //   throw new Error(message);
-  //  }
 
   const products = await getStoreProduct(data?.data?.store?.id);
 

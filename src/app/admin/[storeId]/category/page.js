@@ -51,6 +51,10 @@ const getCategoryData = async ({ filter }) => {
   }
 };
 
+export const metadata = {
+  title: "All available category",
+};
+
 export default async function CategoryPage({ searchParams }) {
   const filter = await searchParams;
   const category = await getCategoryData({ filter });

@@ -2,9 +2,57 @@
 
 import Card from "@/components/card";
 import { SelectForm } from "@/components/select";
+import { UpdateMerchantSettings } from "@/server/merchant/UpdateMerchantAccount";
 import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function ManageSettings() {
+  const ref = useRef();
+  const [hasChanged, setChanges] = useState(null);
+  const [timer, setTimer] = useState(0);
+
+
+  const [] = useState({
+    error: null,
+    loading: null,
+  })
+  const AutoSaveRadioSettings = (e) => {
+    //Check RADIO TYPE;
+    const value = "adasda";
+
+    //add to execution list:
+    setChanges((p) => ({ ...p, key: "new_value" }));
+
+    //Set timer @ 5secs
+    setTimer(5);
+  };
+
+  //Action to update all
+  const saveChangesAtOnce = useCallback(async() => {
+     try{
+       const res = await UpdateMerchantSettings({
+        updates: hasChanged, 
+       })
+
+       if(res?.error){
+
+       }
+
+       //Success: alert user
+      }catch(e){
+
+     }
+  }, []);
+
+  //Auto-Save
+  useEffect(() => {
+    //Call the function once, only if there is a change input, execute in 5 seconds;
+   setTimeout(()=>{
+
+
+    //Set tImer to 0
+   }, timer)
+  }, []);
   return (
     <>
       <main className="max-w-3xl  space-y-6 py-1 pb-4 mx-auto min-h-screen dark:bg-black">
@@ -20,7 +68,12 @@ export default function ManageSettings() {
 
             <section className="flex flex-col gap-x-2 gap-y-1">
               <div className="space-x-1 flex-row flex">
-                <input className="w-fit peer" type="checkbox" />
+                <input
+                  ref={ref}
+                  onClick={AutoSaveRadioSettings}
+                  className="w-fit peer"
+                  type="checkbox"
+                />
                 <span className="text-muted peer-checked:text-text">Email</span>
               </div>
 

@@ -8,7 +8,7 @@ import { Suspense } from "react";
 //import Sidebar from "@/components/Sidebar";
 
 //Translate token -- user object
-export default function SellerLayout({ billing, children }) {
+export default function SellerLayout({ params, children }) {
   //Verifies request
   return (
     <div>
@@ -17,7 +17,9 @@ export default function SellerLayout({ billing, children }) {
         <Suspense>
           <Sidebar />
         </Suspense>
-        <div className="w-full grow">{children}</div>
+        <Suspense fallback={<p>FFallback..</p>}>
+          <div className="w-full grow">{children}</div>
+        </Suspense>
       </main>
     </div>
   );

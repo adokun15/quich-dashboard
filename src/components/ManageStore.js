@@ -65,6 +65,7 @@ export default function ManageStore({ store }) {
 
     dispatch(
       ToasterModalToggle({
+        show: true,
         type: "success",
         title: "Store updated",
       }),

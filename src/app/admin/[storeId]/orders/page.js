@@ -53,6 +53,10 @@ const getOrdersData = async ({ filter }) => {
   }
 };
 
+export const metadata = {
+  title: "Orders Page",
+};
+
 export default async function OrdersPage({ searchParams }) {
   const filter = await searchParams;
 

@@ -1,10 +1,11 @@
+"use server";
+
 import { getToken } from "@/utils/local-access";
 
 // Update customerda
-export async function UpdateCustomerDetail({ updates, merchant_id }) {
-  //Prevent bad field;
-  const token = await getToken();
-
+export async function UpdateMerchantSettings({ updates }) {
+  /*
+ const token = await getToken();
   if (!token) {
     return {
       error: {
@@ -13,31 +14,34 @@ export async function UpdateCustomerDetail({ updates, merchant_id }) {
       },
     };
   }
+*/
 
   //Proceed to Backend
   const res = await fetch(`${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/user`, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
-      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer token`,
     },
-    body: JSON.stringify({
-      merchant_id,
-      updates,
-    }),
+    body: JSON.stringify({ updates }),
   });
 
-  const user = await res.json();
+  const merchant = await res.json();
   //Return Error if available
 
-  if (user?.error) {
+  if (!merchant?.status) {
     return {
       error: {
-        message: user?.error?.message,
-        status: user?.error?.status,
+        message: merchant?.message,
+        code: merchant?.code,
+        details: merchant?.details,
       },
     };
   }
 
-  //rETURN data
-  return { user };
+  //Invalidate cache
+  updateTag("merchant");
+
+  //rETURN data: status,note, address
+  return merchant;
 }

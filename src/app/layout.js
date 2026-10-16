@@ -33,7 +33,7 @@ export default function RootLayout({ children, modals }) {
           >
             <div className="relative min-h-screen">
               {children}
-              {/*  <ToasterMessage />*/}
+              <ToasterMessage />
             </div>
             <div>{modals}</div>
           </ThemeProvider>

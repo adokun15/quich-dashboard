@@ -55,6 +55,10 @@ const getStoreProducts = async ({ filter = {} }) => {
   }
 };
 
+export const metadata = {
+  title: "Products Listing",
+};
+
 export default async function ProductsPage({ searchParams }) {
   const filter = await searchParams;
   /* if (products?.statusCode === 500) {

@@ -53,6 +53,10 @@ const getCustomersData = async ({ filters }) => {
   }
 };
 
+export const metadata = {
+  title: "Customers Listing",
+};
+
 export default async function CustomersPage({ searchParams }) {
   const filters = await searchParams;
 
