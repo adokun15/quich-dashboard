@@ -3,12 +3,13 @@ import { getToken } from "@/utils/local-access";
 import { DeleteProductImage } from "./ProductImage";
 import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
-// Update customerda
+// Delete product: permanently
 export async function DeleteProductAction({ product_id, hasFile }) {
   //Prevent bad field;
-  /* const token = await getToken();
-
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
   if (!token) {
     return {
       error: {
@@ -17,7 +18,6 @@ export async function DeleteProductAction({ product_id, hasFile }) {
       },
     };
   }
-*/
 
   if (hasFile)
     await DeleteProductImage({ filepath: hasFile, productId: product_id });
@@ -29,8 +29,9 @@ export async function DeleteProductAction({ product_id, hasFile }) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer SOME-TOKEN-VALUE`,
+        Cookie: `quich_token=${token}`,
       },
+      cache: "no-store",
     },
   );
 

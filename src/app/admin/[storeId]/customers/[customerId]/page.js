@@ -6,14 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cacheTag } from "next/cache";
 import { cookies } from "next/headers";
 
-const getSingleCustomer = async (id, user_token) => {
-  "use cache";
-  cacheTag("single_customer");
-
+const getSingleCustomer = async (id) => {
   try {
-    //if (!user_token) {
-    // redirect("auth.localhost.3000/login");
-    //}
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
+
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -21,9 +21,9 @@ const getSingleCustomer = async (id, user_token) => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user_token}`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 
@@ -45,7 +45,6 @@ const getSingleCustomer = async (id, user_token) => {
 };
 
 export async function generateMetadata({ params }) {
-  "use cache";
   const { customerId } = await params;
   const customer = await getSingleCustomer(customerId);
 

@@ -7,24 +7,26 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cookies } from "next/headers";
 
 //Access cookies for token;
 const getCustomersData = async ({ filters }) => {
   try {
-    // Get User Cookies first: 30mins
-    // const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //   if (!user_token) {
-    //   redirect("/");
-    // }
-
+    if (!token) {
+      return redirect("/login");
+    }
     //Filter
-    const filterstring = Object.entries(filters)
-      .map(([key, value]) => {
-        return `${key}=${value}`;
-      })
-      .join("&");
+    const filterstring = new URLSearchParams(
+      Object.entries(filters).reduce((params, [key, value]) => {
+        if (value !== undefined && value !== null) {
+          params[key] = String(value);
+        }
+        return params;
+      }, {}),
+    ).toString();
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -32,9 +34,10 @@ const getCustomersData = async ({ filters }) => {
       {
         method: "GET",
         headers: {
+          Cookie: `quich_token=${token}`,
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-ok`,
         },
+        cache: "no-store",
       },
     );
 

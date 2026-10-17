@@ -9,8 +9,8 @@ What i notice while editing?
 
 //Get Single Product Item;
 const getStore = async () => {
-  "use cache";
-  cacheTag("store");
+  //  "use cache";
+  //cacheTag("store");
 
   try {
     // Get User Cookies first: 30mins

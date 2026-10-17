@@ -9,23 +9,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "@/components/card";
 import ProductTableInfo from "@/components/ProductTable";
 import CreateButtonAction from "@/components/CreateButton";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const getStoreProducts = async ({ filter = {} }) => {
   try {
-    //Get User Cookies first: 30mins
-    //const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //if (!user_token) {
-    // redirect("/");
-    // }
-
+    if (!token) {
+      return redirect("/login");
+    }
     //Filter
-    const filterstring = Object.entries(filter)
-      .map(([key, value]) => {
-        return `${key}=${value}`;
-      })
-      .join("&");
+    const filterstring = new URLSearchParams(
+      Object.entries(filter).reduce((params, [key, value]) => {
+        if (value !== undefined && value !== null) {
+          params[key] = String(value);
+        }
+        return params;
+      }, {}),
+    ).toString();
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -34,7 +37,7 @@ const getStoreProducts = async ({ filter = {} }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-value`,
+          Cookie: `quich_token=${token}`,
         },
       },
     );

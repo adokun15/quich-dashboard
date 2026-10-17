@@ -1,22 +1,16 @@
 import ErrorComponent from "@/components/ErrorComponent";
 import SingleCategory from "@/components/SingleCategory";
-import { cacheTag } from "next/cache";
+import { cookies } from "next/headers";
 
 //Fetch category data
-
-//Prefetch category data
 const category = async (id) => {
-  "use cache";
-  cacheTag("single_category");
-
   try {
-    // Get User Cookies first: 30mins
-    // const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //   if (!user_token) {
-    //   redirect("/");
-    // }
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -24,9 +18,10 @@ const category = async (id) => {
       {
         method: "GET",
         headers: {
+          Cookie: `quich_token=${token}`,
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-ok`,
         },
+        cache: "no-store",
       },
     );
 
@@ -84,7 +79,7 @@ const getProducts = async ({ filter }) => {
 */
 
 export async function generateMetadata({ params }) {
-  "use cache";
+  //"use cache";
   const { category_id } = await params;
   const c = await category(category_id);
   if (c?.error) {

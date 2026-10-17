@@ -30,6 +30,7 @@
   "devDependencies": {
     "@supabase/supabase-js": "^2.105.0",
     "@tailwindcss/postcss": "^4",
+    "baseline-browser-mapping": "^2.11.29",
     "eslint": "^9",
     "eslint-config-next": "16.0.4",
     "tailwindcss": "^4"

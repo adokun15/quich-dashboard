@@ -1,19 +1,21 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 export async function UpdateCategoryDetail({ updates, category_id }) {
   //Prevent bad field;
-  //  const token = await getToken();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
-  //if (!token) {
-  ///  return {
-  ///     error: {
-  ///       message: "Access Denied. Login to continue",
-  ///      status: 401,
-  //    },
-  //  };
-  // }
+  if (!token) {
+    return {
+      error: {
+        message: "Access Denied. Login to continue",
+        status: 401,
+      },
+    };
+  }
 
   if (updates?.name && !isNaN(updates?.name)) {
     return { error: { message: "Invalid name" } };
@@ -27,8 +29,9 @@ export async function UpdateCategoryDetail({ updates, category_id }) {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
         body: JSON.stringify({ updates }),
       },
     );
@@ -44,7 +47,7 @@ export async function UpdateCategoryDetail({ updates, category_id }) {
       };
     }
 
-    revalidateTag("single_category");
+    //revalidateTag("single_category");
 
     return { id: category?.data?.id };
   } catch (e) {

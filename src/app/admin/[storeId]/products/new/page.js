@@ -16,7 +16,6 @@ export default function NewProductPage() {
 
       <form action={action} className=" space-y-4">
         <Card className="space-y-4">
-          {}
           <div>
             <p>Name</p>
             <input

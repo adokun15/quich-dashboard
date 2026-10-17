@@ -2,20 +2,17 @@ import Card from "@/components/card";
 import SingleProductForm from "@/components/SingleProductForm";
 import { cacheTag } from "next/cache";
 import ErrorComponent from "@/components/ErrorComponent";
+import { cookies } from "next/headers";
 
 //Get Single Product Item;
 const getSingleProduct = async (id) => {
-  "use cache";
-  cacheTag("single_product");
-
   try {
-    // Get User Cookies first: 30mins
-    //const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //if (!user_token) {
-    // redirect("/");
-    // }
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -24,14 +21,14 @@ const getSingleProduct = async (id) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-value`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 
     const data = await res.json();
 
-    console.log(data);
     if (!data?.status) {
       return { error: { message: data?.message, code: data?.code } };
     }
@@ -44,16 +41,13 @@ const getSingleProduct = async (id) => {
 
 //Prefetch category data
 const category = async () => {
-  "use cache";
-  cacheTag("category");
   try {
-    // Get User Cookies first: 30mins
-    // const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //   if (!user_token) {
-    //   redirect("/");
-    // }
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -62,8 +56,9 @@ const category = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-ok`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 
@@ -88,7 +83,6 @@ const category = async () => {
 };
 
 export async function generateMetadata({ params }) {
-  "use cache";
   const { productId } = await params;
   const product = await getSingleProduct(productId);
   if (product?.error) {
@@ -102,30 +96,11 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: product?.name,
       description: product?.description,
-      //url: 'https://${}.org',
       images: [
         {
           url: product?.images && product?.images[0], // Must be an absolute URL
           width: 500,
           height: 500,
-        },
-        //   {
-        //   url: 'https://nextjs.org/og-alt.png', // Must be an absolute URL
-        //    width: 1800,
-        //    height: 1600,
-        //    alt: 'My custom alt',
-        // },
-      ],
-      videos: [
-        //   {
-        //   url: 'https://nextjs.org/video.mp4', // Must be an absolute URL
-        //    width: 800,
-        //    height: 600,
-        // },
-      ],
-      audio: [
-        {
-          //    url: 'https://nextjs.org/audio.mp3', // Must be an absolute URL
         },
       ],
       locale: "en_US",

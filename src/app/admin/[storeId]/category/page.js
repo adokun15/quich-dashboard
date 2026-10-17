@@ -1,53 +1,54 @@
 import CategoryListData from "@/components/CategoryListData.js";
 import CreateButtonAction from "@/components/CreateButton";
-import { TableSkeleton } from "@/components/Skeleton";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cacheTag } from "next/cache";
 
 const getCategoryData = async ({ filter }) => {
-  "use cache";
-  cacheTag("category");
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
+
+  if (!token) {
+    return redirect("/login");
+  }
+
   try {
-    // Get User Cookies first: 30mins
-    // const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const filterstring = new URLSearchParams(
+      Object.entries(filter).reduce((params, [key, value]) => {
+        if (value !== undefined && value !== null) {
+          params[key] = String(value);
+        }
+        return params;
+      }, {}),
+    ).toString();
 
-    //   if (!user_token) {
-    //   redirect("/");
-    // }
-
-    //Filter
-    const filterstring = Object.entries(filter)
-      .map(([key, value]) => {
-        return `${key}=${value}`;
-      })
-      .join("&");
-
-    //Fetch data if token exist;
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/category?${filterstring}`,
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer some-token-ok`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 
     const data = await res.json();
 
-    if (!data?.status) {
-      // Prompt modal if cookie has expired
-
-      //Show modal if store name don't match!
-      return { error: data?.message, status_code: data?.status_code };
+    if (!res.ok || !data?.status) {
+      return {
+        error: data?.message || "Failed to fetch categories",
+      };
     }
 
     return data.data;
-  } catch (e) {
-    return { error: e?.message };
+  } catch (error) {
+    // Don't swallow Next.js redirect errors.
+    if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw error;
+    }
+    return { error: error?.message || "Something went wrong" };
   }
 };
 
@@ -70,7 +71,7 @@ export default async function CategoryPage({ searchParams }) {
         </div>
 
         <CreateButtonAction to="/admin/category/new">
-          <span className="">Create Category</span>
+          <span>Create Category</span>
           <FontAwesomeIcon
             className="text-primary hover:text-text"
             icon={faPlus}

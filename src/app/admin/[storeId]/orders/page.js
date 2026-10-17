@@ -3,28 +3,26 @@ import OrdersTableInfo from "@/components/OrdersTable";
 import { ToggleButton } from "@/components/ToggleButton";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cacheTag } from "next/cache";
+import { cookies } from "next/headers";
 
 //Access cookies for token;
 const getOrdersData = async ({ filter }) => {
-  "use cache";
-  cacheTag("orders");
-
   try {
-    //Get User Cookies first: 30mins
-    //  const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //  if (!user_token) {
-    //    redirect("/");
-    // }
-
+    if (!token) {
+      return redirect("/login");
+    }
     //Filter
-    const filterstring = Object.entries(filter)
-      .map(([key, value]) => {
-        return `${key}=${value}`;
-      })
-      .join("&");
+    const filterstring = new URLSearchParams(
+      Object.entries(filter).reduce((params, [key, value]) => {
+        if (value !== undefined && value !== null) {
+          params[key] = String(value);
+        }
+        return params;
+      }, {}),
+    ).toString();
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -32,18 +30,16 @@ const getOrdersData = async ({ filter }) => {
       {
         method: "GET",
         headers: {
+          Cookie: `quich_token=${token}`,
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token`,
         },
+        cache: "no-store",
       },
     );
 
     const data = await res.json();
 
     if (!data?.status) {
-      // Prompt modal if cookie has expired
-
-      //Show modal if store name don't match!
       return { error: { message: data?.message, code: data?.code } };
     }
 

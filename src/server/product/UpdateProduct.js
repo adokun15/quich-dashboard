@@ -1,12 +1,14 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 // Update customerda
 export async function UpdateProductDetail({ updates, product_id }) {
   //Prevent bad field;
-  //const token = await getToken();
-  /*
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
+
   if (!token) {
     return {
       error: {
@@ -15,7 +17,7 @@ export async function UpdateProductDetail({ updates, product_id }) {
       },
     };
   }
-*/
+
   try {
     //Proceed to Backend
     const res = await fetch(
@@ -24,8 +26,9 @@ export async function UpdateProductDetail({ updates, product_id }) {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer SOME-TOKEN-VALUE`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
         body: JSON.stringify({ updates }),
       },
     );

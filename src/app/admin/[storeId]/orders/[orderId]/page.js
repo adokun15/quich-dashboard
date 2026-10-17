@@ -1,20 +1,17 @@
 import ErrorComponent from "@/components/ErrorComponent";
 import SingleOrderInfo from "@/components/SingleOrderInfo";
 import { cacheTag } from "next/cache";
+import { cookies } from "next/headers";
 
 //Fetch single data
 const getSingleOrder = async (id) => {
-  "use cache";
-  cacheTag("single_order");
-
   try {
-    // Get User Cookies first: 30mins
-    //const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //if (!user_token) {
-    // redirect("/");
-    // }
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Translate token to storeId;
     const store_id = "c5b2c5a4-26f4-4806-b156-cab3db6ba716";
@@ -26,8 +23,9 @@ const getSingleOrder = async (id) => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 
@@ -43,7 +41,6 @@ const getSingleOrder = async (id) => {
 };
 
 export async function generateMetadata({ params }) {
-  "use cache";
   const { orderId } = await params;
   const order = await getSingleOrder(orderId);
 
