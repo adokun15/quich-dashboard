@@ -1,5 +1,49 @@
 // Simple proxy used by Next to control routing for specific paths.
-import { cookies } from "next/headers";
+
+import { NextResponse } from "next/server";
+
+export default async function proxy(req) {
+  const { pathname } = req.nextUrl;
+
+  // Authentication pages
+  if (pathname === "/login" || pathname.startsWith("/login/")) {
+    return NextResponse.rewrite(new URL("/auth/login", req.url));
+  }
+
+  if (pathname === "/register" || pathname.startsWith("/register/")) {
+    return NextResponse.rewrite(new URL(`/auth/signup`, req.url));
+  }
+
+  // Seller dashboard: preserve the original route.
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    return NextResponse.next();
+  }
+
+  // Routes already using the internal storefront prefix
+  // should not be rewritten again.
+  if (pathname === "/store" || pathname.startsWith("/store/")) {
+    return NextResponse.next();
+  }
+
+  // Public storefront:
+  const segments = pathname.split("/").filter(Boolean);
+  const storeName = segments[0];
+
+  if (storeName) {
+    return NextResponse.rewrite(
+      new URL(`/store/${segments.join("/")}`, req.url),
+    );
+  }
+
+  // Root route: leave it available for your landing page.
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/).*)"],
+};
+
+/*import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { NextResponse, NextRequest } from "next/server";
 import { updateSession } from "./lib/supabase/proxy";
@@ -53,3 +97,4 @@ export default async function proxy(req) {
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|api/).*)"],
 };
+*/
