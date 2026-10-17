@@ -97,7 +97,11 @@ export default function Cart({ trigger: close, modal }) {
             ))}
         </div>
         <div>
-          <Link onClick={close} href="checkout" className="block">
+          <Link
+            onClick={close}
+            href={`${store_slug}/checkout`}
+            className="block"
+          >
             <button
               className="bg-yellow-300  text-blue-950 w-full mt-5 py-2 rounded font-roboto
               transition flex md:justify-self-end md:gap-7 px-4 justify-between text-2xl 
