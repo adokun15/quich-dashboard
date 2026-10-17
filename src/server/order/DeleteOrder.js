@@ -1,15 +1,15 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { revalidateTag, updateTag } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 // Update customerda
 export async function DeleteOrderDetail({ customer_id, order_id }) {
   //Prevent bad field;
 
-  /*
-  //AUTHENTICATE
-  const token = await getToken();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
   if (!token) {
     return {
@@ -19,7 +19,6 @@ export async function DeleteOrderDetail({ customer_id, order_id }) {
       },
     };
   }
-  */
 
   //Proceed to Backend
   const res = await fetch(
@@ -28,8 +27,9 @@ export async function DeleteOrderDetail({ customer_id, order_id }) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer token`,
+        Cookie: `quich_token=${token}`,
       },
+      cache: "no-store",
       body: JSON.stringify({
         customer_id,
       }),

@@ -68,6 +68,7 @@ export default function SingleOrderInfo({ order }) {
 
     dispatch(
       ToasterModalToggle({
+        show: true,
         type: "success",
         title: "Order updated!",
       }),
@@ -94,6 +95,7 @@ export default function SingleOrderInfo({ order }) {
 
     dispatch(
       ToasterModalToggle({
+        show: true,
         type: "success",
         title: "Order updated!",
       }),

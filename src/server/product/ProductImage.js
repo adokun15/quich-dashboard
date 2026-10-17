@@ -39,6 +39,7 @@ export async function AddProductImage({ filepath, file, product_id }) {
 
     if (!product_image?.status) {
       //Reverse action(supabase)
+      await supabase.storage.from("quich").remove([filepath]);
 
       return {
         error: {
@@ -48,7 +49,7 @@ export async function AddProductImage({ filepath, file, product_id }) {
       };
     }
 
-    updateTag("single_product");
+    // updateTag("single_product");
 
     return { message: "Upload successful", url: url.data.publicUrl };
   } catch (e) {

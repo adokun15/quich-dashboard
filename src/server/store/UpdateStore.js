@@ -1,12 +1,22 @@
 "use server";
 
 import { updateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 //Change existing store information
 export async function StoreUpdate({ updates }) {
   //Authenticate
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
-  //Proceed to backend
+  if (!token) {
+    return {
+      error: {
+        message: "Access Denied. Login to continue",
+        status: 401,
+      },
+    };
+  }
 
   //Proceed to Backend
   const res = await fetch(
@@ -15,8 +25,9 @@ export async function StoreUpdate({ updates }) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer SOME-TOKEN-VALUE`,
+        Cookie: `quich_token=${token}`,
       },
+      cache: "no-store",
       body: JSON.stringify({
         updates,
       }),
@@ -24,7 +35,7 @@ export async function StoreUpdate({ updates }) {
   );
 
   const store = await res.json();
-  //Return Error if available;
+  //Return Error if available
 
   if (!store?.status && store?.code == 400) {
     return {
@@ -40,11 +51,11 @@ export async function StoreUpdate({ updates }) {
 
   const id = store?.status && store?.data?.id;
 
-  console.log(id);
+  //  console.log(id);
   //  revalidatePath("/admin/products");
 
   //Invalidate Product
-  updateTag("store");
+  //updateTag("store");
 
   return id;
 }

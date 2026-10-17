@@ -112,6 +112,7 @@ export default function ProductImageUpload({
       //Product Modal: Alert first
       dispatch(
         ToasterModalToggle({
+          show: true,
           type: "success",
           title: upload?.message,
         }),
@@ -140,6 +141,7 @@ export default function ProductImageUpload({
 
       dispatch(
         ToasterModalToggle({
+          show: true,
           type: "success",
           title: upload?.message,
         }),

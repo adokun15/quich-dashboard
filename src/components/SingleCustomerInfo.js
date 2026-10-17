@@ -53,6 +53,7 @@ export default function SingleCustomerInfo({ customer }) {
         //Toast message
         dispatch(
           ToasterModalToggle({
+            show: true,
             type: "fail",
             title: "An error occurred",
             message: res?.error?.message,
@@ -64,6 +65,7 @@ export default function SingleCustomerInfo({ customer }) {
       //Toast message
       dispatch(
         ToasterModalToggle({
+          show: true,
           type: "success",
           title: "Changes saved",
           message: "",
@@ -93,6 +95,7 @@ export default function SingleCustomerInfo({ customer }) {
         //Toast message
         dispatch(
           ToasterModalToggle({
+            show: true,
             type: "fail",
             title: "An error occurred",
             message: res?.error?.message,
@@ -103,6 +106,7 @@ export default function SingleCustomerInfo({ customer }) {
       //Send Toast message
       dispatch(
         ToasterModalToggle({
+          show: true,
           type: "success",
           title: "Customer Deleted Successfully!",
           message: "",

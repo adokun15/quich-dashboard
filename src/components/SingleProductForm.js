@@ -61,6 +61,7 @@ export default function SingleProductForm({ product, getCategoryItem }) {
 
     dispatch(
       ToasterModalToggle({
+        show: true,
         type: "success",
         title: "Product updated",
       }),
@@ -88,6 +89,7 @@ export default function SingleProductForm({ product, getCategoryItem }) {
     //tOAST
     dispatch(
       ToasterModalToggle({
+        show: true,
         type: "success",
         title: "Product deleted successfully",
       }),

@@ -79,8 +79,8 @@ export default function SingleCategory({ category }) {
       }
 
       dispatch(
-        ToasterModalToggle({
-          type: "success",
+        ToasterModalToggle({ show:  true,
+   type: "success",
           title: "Category updated",
         }),
       );
@@ -108,8 +108,8 @@ export default function SingleCategory({ category }) {
 
     //tOAST
     dispatch(
-      ToasterModalToggle({
-        type: "success",
+      ToasterModalToggle({ show:  true,
+ type: "success",
         title: `Category deleted!`,
       }),
     );

@@ -1,5 +1,3 @@
-"use client";
-
 import useQueryParams from "@/utils/state/FilterParams";
 import { useEffect, useState } from "react";
 

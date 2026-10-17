@@ -1,12 +1,14 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-// Update customerda
+// Update customer details
 export async function DeleteCustomerDetail({ customer_id }) {
   //Prevent bad field;
-  /* const token = await getToken();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
   if (!token) {
     return {
@@ -16,7 +18,7 @@ export async function DeleteCustomerDetail({ customer_id }) {
       },
     };
   }
-*/
+
   //Proceed to Backend
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/customers/${customer_id}`,
@@ -24,9 +26,9 @@ export async function DeleteCustomerDetail({ customer_id }) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-
-        Authorization: `Bearer sfd`,
+        Cookie: `quich_token=${token}`,
       },
+      cache: "no-store",
     },
   );
 

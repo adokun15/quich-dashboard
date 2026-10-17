@@ -1,54 +1,180 @@
 "use client";
+import { createClientFromSupabase } from "@/lib/supabase/client";
 import { useState, useRef } from "react";
-export default function FilePreviewer() {
-  const [imagePreview, setImagePreview] = useState(null);
-  const [videoPreview, setVideoPreview] = useState(null);
-  const filePicekerRef = useRef(null);
+//import { createClient } from "@supabase/supabase-js";
 
-  function previewFile(e) {
-    // Reading New File (open file Picker Box)
-    const reader = new FileReader();
-    // Gettting Selected File (user can select multiple but we are choosing only one)
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      reader.readAsDataURL(selectedFile);
+const MAX_BYTES = 100 * 1024 * 1024;
+const MIN_SECS = 15;
+const MAX_SECS = 60;
+
+export default function VideoUpload({ storeId }) {
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [duration, setDuration] = useState(null);
+  const [error, setError] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const inputRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const handleFile = (f) => {
+    setError("");
+    setDone(false);
+    setProgress(0);
+
+    if (!f?.type.startsWith("video/")) {
+      setError("Please select a video file.");
+      return;
     }
-    // As the File loaded then set the stage as per the file type
-    reader.onload = (readerEvent) => {
-      if (selectedFile.type.includes("image")) {
-        setImagePreview(readerEvent.target.result);
-      } else if (selectedFile.type.includes("video")) {
-        setVideoPreview(readerEvent.target.result);
-      }
-    };
-  }
-  
-  function clearFiles() {
-    setImagePreview(null);
-    setVideoPreview(null);
-  }
+    if (f.size > MAX_BYTES) {
+      setError(`Max size is 4 MB. Your file is ${formatSize(f.size)}.`);
+      return;
+    }
+
+    if (preview) URL.revokeObjectURL(preview);
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
+    setDuration(null);
+  };
+
+  const onMetaLoaded = () => {
+    const secs = videoRef.current?.duration;
+    setDuration(secs);
+    if (secs < MIN_SECS) {
+      setError(
+        `Video is too short (${Math.round(secs)}s). Minimum is ${MIN_SECS}s.`,
+      );
+      setFile(null);
+    } else if (secs > MAX_SECS) {
+      setError(
+        `Video is too long (${Math.round(secs)}s). Maximum is ${MAX_SECS}s.`,
+      );
+      setFile(null);
+    }
+  };
+
+  const upload = async () => {
+    if (!file) return;
+    setUploading(true);
+    setProgress(0);
+
+    const ext = file.name.split(".").pop();
+    const path = `stores/${storeId}/${Date.now()}.${ext}`;
+
+    const { error: uploadError } = await createClientFromSupabase()
+      .storage.from("store-videos")
+      .upload(path, file, {
+        contentType: file.type,
+        upsert: true,
+        onUploadProgress: (e) => {
+          setProgress(Math.round((e.loaded / e.total) * 100));
+        },
+      });
+
+    setUploading(false);
+
+    if (uploadError) {
+      setError("Upload failed. Please try again.");
+    } else {
+      setDone(true);
+    }
+  };
+
+  const clear = () => {
+    if (preview) URL.revokeObjectURL(preview);
+    setFile(null);
+    setPreview(null);
+    setDuration(null);
+    setError("");
+    setDone(false);
+    setProgress(0);
+    if (inputRef.current) inputRef.current.value = "";
+  };
 
   return (
-    <div>
-      <h1>Preview Image/Video</h1>
-      <div className="btn-container">
-        <input
-          ref={filePicekerRef}
-          accept="image/*, video/*"
-          onChange={previewFile}
-          type="file"
-          hidden
-        />
-        <button className="btn" onClick={() => filePicekerRef.current.click()}>
-          Choose
+    <div className="w-full max-w-sm">
+      <input
+        ref={inputRef}
+        type="file"
+        accept="video/*"
+        className="hidden"
+        onChange={(e) => handleFile(e.target.files[0])}
+      />
+
+      {!preview ? (
+        <button
+          onClick={() => inputRef.current?.click()}
+          className="w-full border border-dashed border-gray-300 rounded-xl py-10
+                     text-sm text-gray-400 hover:border-gray-400 hover:text-gray-500
+                     transition-colors bg-gray-50"
+        >
+          Tap to select your store video
+          <span className="block text-xs mt-1 text-gray-300">
+            15 – 30 seconds · max 4 MB
+          </span>
         </button>
-        <button className="btn">x</button>
-      </div>
-      <div className="preview">
-        {videoPreview != null && <video controls src={videoPreview}></video>}
-      </div>
+      ) : (
+        <div className="rounded-xl border border-gray-200 overflow-hidden">
+          <video
+            ref={videoRef}
+            src={preview}
+            controls
+            playsInline
+            className="w-full bg-black"
+            onLoadedMetadata={onMetaLoaded}
+          />
+
+          <div className="px-4 py-3 flex items-center justify-between gap-3">
+            <div className="text-xs text-gray-400 space-y-0.5">
+              <p className="text-gray-700 font-medium truncate max-w-[160px]">
+                {file?.name}
+              </p>
+              <p>
+                {duration ? `${Math.round(duration)}s` : "…"} ·{" "}
+                {formatSize(file?.size)}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={clear}
+                className="text-xs text-gray-400 hover:text-gray-600"
+              >
+                Remove
+              </button>
+              <button
+                onClick={upload}
+                disabled={uploading || done || !!error}
+                className="px-4 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium
+                           disabled:opacity-40 hover:bg-gray-700 transition-colors"
+              >
+                {done ? "Uploaded ✓" : uploading ? `${progress}%` : "Upload"}
+              </button>
+            </div>
+          </div>
+
+          {uploading && (
+            <div className="h-0.5 bg-gray-100">
+              <div
+                className="h-full bg-gray-900 transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
     </div>
   );
+}
+
+function formatSize(bytes) {
+  if (!bytes) return "";
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 /*"use client";
 

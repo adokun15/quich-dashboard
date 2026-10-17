@@ -1,22 +1,22 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { updateTag } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 // Update customerda
 export async function AddNewCategory(prev, formData) {
-  //Prevent bad field;
-  //  const token = await getToken();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
-  //if (!token) {
-  ///  return {
-  ///     error: {
-  ///       message: "Access Denied. Login to continue",
-  ///      status: 401,
-  //    },
-  //  };
-  // }
-
+  if (!token) {
+    return {
+      error: {
+        message: "Access Denied. Login to continue",
+        status: 401,
+      },
+    };
+  }
   const name = formData.get("category");
 
   if (!name || !isNaN(name)) {
@@ -30,8 +30,9 @@ export async function AddNewCategory(prev, formData) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer some-tokem`,
+        Cookie: `quich_token=${token}`,
       },
+      cache: "no-store",
       body: JSON.stringify({ name: name?.toLowerCase() }),
     },
   );
@@ -43,9 +44,6 @@ export async function AddNewCategory(prev, formData) {
       error: category?.message,
     };
   }
-
-  //Invalidate Cache;
-  updateTag("category");
 
   //Redirect
   redirect(`/admin/category/${category?.id}`);

@@ -1,13 +1,14 @@
 "use server";
 import { getToken } from "@/utils/local-access";
 import { revalidatePath, updateTag } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function CreateProductAction(prev, formData) {
   //Auth;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
-  //const token = await getToken();
-  /*
   if (!token) {
     return {
       error: {
@@ -16,13 +17,7 @@ export async function CreateProductAction(prev, formData) {
       },
     };
   }
-*/
 
-  /*const session = await auth()
-  if (!session?.user) {
-    throw new Error('Unauthorized')
-  }
- */
   let error = [];
 
   const name = formData.get("name");
@@ -57,8 +52,10 @@ export async function CreateProductAction(prev, formData) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer SOME-TOKEN-VALUE`,
+        Cookie: `quich_token=${token}`,
       },
+      cache: "no-store",
+
       body: JSON.stringify({
         name,
         price,
@@ -85,10 +82,6 @@ export async function CreateProductAction(prev, formData) {
 
   const id = product?.status && product?.data?.id;
 
-  //  revalidatePath("/admin/products");
-
-  //Invalidate Product
-  updateTag("products");
-
+  //revalidatePath("/admin/products");
   redirect(`/admin/products/${id}`);
 }

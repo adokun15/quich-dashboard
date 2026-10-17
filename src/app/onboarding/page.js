@@ -1,11 +1,19 @@
-//import CheckMerchantToken from "@/components/CheckMerchantToken";
-//import { verifyIdentity } from "@/server/merchant/VerifyMerchant";
-//import { useRouter, useSearchParams } from "next/navigation";
+//Name and Verify phone number
+export default function CreateMerchantAccount() {
+  const sendPhoneVerification = () => {};
+  const createAccount = () => {};
 
-// Error Message | Admin(cookies: 30mins);
-export default async function OnboardingPage({ searchParams }) {
-  //const info = await verifyIdentity(p.token);
-
-  // return <CheckMerchantToken token={p.token} info={info} />;
-  return <p>Hey it work</p>;
+  return (
+    <main>
+      <form>
+        heyyy
+        {/* Name */}
+        <input className="text-red-500" placeholder="" />
+        {/*Phone */}
+        <input className="text-red-500" placeholder="" />
+        {/* Otp */}
+        <input type="number" className="text-red-500" placeholder="" />
+      </form>
+    </main>
+  );
 }

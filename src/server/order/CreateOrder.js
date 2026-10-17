@@ -1,6 +1,6 @@
 //Using ZOD;
 export async function CreateOrder({ cart, store_id, customer }) {
-  //FIELD TO AVOID
+  //Ratelimit control: public url
 
   //Proceed to Backend
   const res = await fetch(
@@ -20,7 +20,6 @@ export async function CreateOrder({ cart, store_id, customer }) {
 
   const order = await res.json();
 
-  console.log(order);
   //Return Error if available
   if (order?.error) {
     return {

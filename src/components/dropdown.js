@@ -1,4 +1,111 @@
-//Button with Dropdown Element;
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import {
+  faChevronDown,
+  faCreditCard,
+  faGear,
+  faArrowRightFromBracket,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export default function Dropdown() {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+
+    function handleEscape(event) {
+      if (event.key === "Escape") setOpen(false);
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  return (
+    <div className="relative shrink-0" ref={menuRef}>
+      <button
+        type="button"
+        onClick={() => setOpen((previous) => !previous)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-text transition-colors hover:bg-background hover:opacity-100"
+      >
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary90 text-text">
+          <FontAwesomeIcon icon={faUser} />
+        </span>
+
+        <span className="hidden sm:inline">My Account</span>
+
+        <FontAwesomeIcon
+          icon={faChevronDown}
+          className={`text-xs transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-border bg-white shadow-lg"
+        >
+          <div className="border-b border-border px-4 py-3">
+            <p className="font-semibold text-text">My Account</p>
+            <p className="mt-1 text-xs text-muted">Manage your store account</p>
+          </div>
+
+          <div className="p-2">
+            <Link
+              href="/admin/subscription"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text hover:bg-background"
+            >
+              <FontAwesomeIcon icon={faCreditCard} className="w-4" />
+              Billing
+            </Link>
+
+            <Link
+              href="/admin/settings"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text hover:bg-background"
+            >
+              <FontAwesomeIcon icon={faGear} className="w-4" />
+              Settings
+            </Link>
+          </div>
+
+          <div className="border-t border-border p-2">
+            <button
+              type="button"
+              disabled
+              title="Logout has not been implemented yet"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted opacity-60"
+            >
+              <FontAwesomeIcon icon={faArrowRightFromBracket} className="w-4" />
+              Sign out (coming soon)
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/*
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -77,3 +184,4 @@ shadow-lg w-72`}
     </main>
   );
 }
+*/
