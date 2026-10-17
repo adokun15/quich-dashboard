@@ -38,13 +38,12 @@ const getAdminData = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJFUzI1NiIsImtpZCI6IjY5NzZjZTUwLTEzYjctNGE4Yy04MjA5LTVhMDQyY2EyMTE2NSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Zjampvbml4ZW14c25rcWlyd3NqLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhNDQ5MWMwOC00M2YwLTRlZGItYjQ3OC0yYmE3NWRlOTA1NDkiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc3MzkxNzM2LCJpYXQiOjE3NzczODgxMzYsImVtYWlsIjoiYW1vc2RhbmllbDIwMDVAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImFtb3NkYW5pZWwyMDA1QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInN1YiI6ImE0NDkxYzA4LTQzZjAtNGVkYi1iNDc4LTJiYTc1ZGU5MDU0OSJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im90cCIsInRpbWVzdGFtcCI6MTc3NzM4ODEzNn1dLCJzZXNzaW9uX2lkIjoiZTY0MGZlMWEtZjJhZi00NDg3LTg1ZWMtYmYxYTBlNTc4OGFjIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.8tvM198Q1xB6_L8-0SAnnya2SYYIIIy7L0Tn2Y7Zy6h9KgWWXy5djDYTH78PiwmXHXcKXpKkdsjCL6wcB0vn8Q`,
+          Authorization: `Bearer nothing-for-you`,
         },
       },
     );
 
     const data = await res.json();
-    console.log(data);
 
     if (!data?.status) {
       // Prompt modal if cookie has expired

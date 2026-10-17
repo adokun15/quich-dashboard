@@ -1,5 +1,17 @@
-/* -- `store_slug.quich.shop/admin/subscription?t=access_token`---  */
-import NavigateDashborad from "@/components/NavigateDashboard";
+import { Suspense } from "react";
+import DashboardWrapper from "@/components/DashboardWrapper";
+
+export default function SellerLayout({ children }) {
+  return (
+    <DashboardWrapper>
+      <Suspense fallback={<p className="text-sm text-muted">Loading...</p>}>
+        {children}
+      </Suspense>
+    </DashboardWrapper>
+  );
+}
+
+/*import NavigateDashborad from "@/components/NavigateDashboard";
 import Sidebar from "@/components/Sidebar";
 import { verifyIdentity } from "@/server/merchant/VerifyMerchant";
 import { getToken } from "@/utils/local-access";
@@ -24,3 +36,4 @@ export default function SellerLayout({ params, children }) {
     </div>
   );
 }
+*/
