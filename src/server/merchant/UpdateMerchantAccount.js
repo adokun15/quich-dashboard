@@ -4,8 +4,8 @@ import { getToken } from "@/utils/local-access";
 
 // Update customerda
 export async function UpdateMerchantSettings({ updates }) {
-  /*
- const token = await getToken();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
   if (!token) {
     return {
       error: {
@@ -14,15 +14,15 @@ export async function UpdateMerchantSettings({ updates }) {
       },
     };
   }
-*/
 
   //Proceed to Backend
   const res = await fetch(`${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/user`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer token`,
+      Cookie: `quich_token=${token}`,
     },
+    cache: "no-store",
     body: JSON.stringify({ updates }),
   });
 

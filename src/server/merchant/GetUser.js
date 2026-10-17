@@ -1,3 +1,4 @@
+/* iGNORE this file!! */
 import { createClientFromSupabase } from "@/lib/supabase/client";
 
 //Get user via token;

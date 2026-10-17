@@ -1,8 +1,9 @@
-import { getToken } from "@/utils/local-access";
+import { cookies } from "next/headers";
 
 // Update customerda
 export async function DeleteMerchantAccount({ merchant_id }) {
-  const token = await getToken();
+  const cookieStore = await cookies();
+  const token = cookieStore.get("quich_token")?.value;
 
   if (!token) {
     return {
@@ -17,8 +18,9 @@ export async function DeleteMerchantAccount({ merchant_id }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_QUICH_BACKEND_API}/user`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Cookie: `quich_token=${token}`,
     },
+    cache: "no-store",
     body: JSON.stringify({
       merchant_id,
     }),

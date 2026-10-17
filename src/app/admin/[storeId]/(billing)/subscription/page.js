@@ -2,20 +2,20 @@ import CreditQuotas from "@/components/CreditQuotas";
 import ErrorComponent from "@/components/ErrorComponent";
 import SubcriptionPlanCard from "@/components/SubcriptionPlanCard";
 import { cacheTag } from "next/cache";
+import { cookies } from "next/headers";
 
 //Dynamic Page;
 const getBillingSubscription = async () => {
-  "use cache";
-  cacheTag("billing");
+  // "use cache";
+  // cacheTag("billing");
 
   try {
-    // Get User Cookies first: 30mins
-    //const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //if (!user_token) {
-    // redirect("/");
-    // }
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -24,8 +24,9 @@ const getBillingSubscription = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-value`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 

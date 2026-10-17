@@ -1,6 +1,6 @@
 import ErrorComponent from "@/components/ErrorComponent";
 import ManageStore from "@/components/ManageStore";
-import { cacheTag } from "next/cache";
+import { cookies } from "next/headers";
 /*
 What i notice while editing?
 - max stock by a single user;
@@ -13,13 +13,12 @@ const getStore = async () => {
   //cacheTag("store");
 
   try {
-    // Get User Cookies first: 30mins
-    //const cookie = await cookies();
-    //const user_token = cookie?.get("quich_login_token");
+    const cookieStore = await cookies();
+    const token = cookieStore.get("quich_token")?.value;
 
-    //if (!user_token) {
-    // redirect("/");
-    // }
+    if (!token) {
+      return redirect("/login");
+    }
 
     //Fetch data if token exist;
     const res = await fetch(
@@ -28,8 +27,9 @@ const getStore = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer some-token-value`,
+          Cookie: `quich_token=${token}`,
         },
+        cache: "no-store",
       },
     );
 
@@ -46,7 +46,6 @@ const getStore = async () => {
 };
 
 export async function generateMetadata() {
-  "use cache";
   const store = await getStore();
   if (store?.error) {
     return {
